@@ -27,6 +27,8 @@ import moment from "moment/moment";
 import Loading from "../../components/app/Loading";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import useFetch from "../../hooks/useFetch";
+import {useFormErrorsHandle} from "../../hooks/useFormErrorsHandle"
+import NotesEcommerce from "../../components/ecommerce/home/NotesEcommerce";
 
 
 moment.updateLocale('fr', {
@@ -43,23 +45,26 @@ export default function ProductDetailsScreen() {
     const navigation = useNavigation()
     const route = useRoute()
     const [produitnote, Setproduitnote] = useState([])
-    const [userNote, SetuserNote] = useState([])
+    const [allNotes, setAllNotes] = useState([])
+    const [loadingAllNotes, setLoadingAllNotes] = useState(true)
+    const [createNotes, setCreateNotes] = useState(null)
     const { product } = route.params
 
     const [loadingShopProducts, shopProducts] = useFetch(`/products?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
     const [loadingSimilarProducts, similarProducs] = useFetch(`/products?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
 
     const user = useSelector(userSelector)
+    // console.log(user.ID_USER)
+    // console.log(allNotes[0]?.ID_USER)
     const modalizeRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
-    const [loading, setLoading] = useState(false)
     const [note, setNote] = useState(null)
     const [commentaire, Setcommentaire] = useState(null)
+    const[loadingNotes, setLoadingNotes] = useState(null)
     const productInCart = useSelector(ecommerceProductSelector(product.produit_partenaire.ID_PARTENAIRE_SERVICE))
-    //console.log(note)
-    //console.log(product.produit.ID_PRODUIT)
-    //console.log(data.commentaire)
+
+    // var userConnect = 
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
@@ -77,11 +82,59 @@ export default function ProductDetailsScreen() {
         product.produit_partenaire.IMAGE_3 ? product.produit_partenaire.IMAGE_3 : undefined,
     ]
     const [data,handleChange] = useForm({
-        
         commentaire: "",
-        
-})
+    })
+    const { errors, setError, getErrors, setErrors, checkFieldData, isValidate, getError, hasError } = useFormErrorsHandle (data, {
+        commentaire: {
+                  required: true,
+        },
+    }, {
+        commentaire: {
+                    required: "Le commentaire est obligatoire",
+            },
+    })
 //console.log(data.commentaire)
+
+
+    const onSubmit = async () => {
+        try {
+            setLoadingNotes(true)
+                const form = new FormData()
+                form.append("COMMENTAIRE",data.commentaire)
+                form.append("ID_PRODUIT",product.produit.ID_PRODUIT)
+                form.append("NOTE",note)
+                const Notes = await fetchApi('/products/note',{
+                            method: "POST",
+                            body: form
+                })
+                setCreateNotes(Notes)
+        } catch (error) {
+                console.log(error)
+        } finally{
+            setLoadingNotes(false)
+        }
+    }   
+
+    const fetchNotes = async () =>{
+        try{
+            var url = `/products/note/${product.produit.ID_PRODUIT}`
+            if(createNotes){
+                const reponse = await fetchApi (url)
+                setAllNotes(reponse.result)
+            }
+            const reponse = await fetchApi (url)
+            setAllNotes(reponse.result)
+        }
+        catch(error){
+            console.log(error)
+        }finally{
+            setLoadingAllNotes(false)
+        }
+    }
+
+    useFocusEffect(useCallback(()=>{
+        fetchNotes()
+    },[product, createNotes]))
 
     useEffect(() => {
         if (isOpen) {
@@ -100,7 +153,6 @@ export default function ProductDetailsScreen() {
                 var url = `/products/note/liste/${product.produit.ID_PRODUIT_PARTENAIRE}`
                 const produitsNotes = await fetchApi(url)
                 Setproduitnote(produitsNotes.result)
-                //console.log(produitsNotes)
             } catch (error) {
                 console.log(error)
             }
@@ -108,37 +160,7 @@ export default function ProductDetailsScreen() {
     }, [])
 
 
-    useEffect(() => {
-        (async () => {
-            try {
-                var url = `/products/note/${product.produit.ID_PRODUIT}`
-                const userNotes = await fetchApi(url)
-                SetuserNote(userNotes.result)
-                console.log(product)
-            } catch (error) {
-                console.log(error)
-            }
-        })()
-    }, [])
-    const onSubmit = async () => {
-        
-        try {
-                 
-                  const form = new FormData()
-                 
-                  
-                  form.append("COMMENTAIRE",data.commentaire)
-                  form.append("ID_PRODUIT",product.produit.ID_PRODUIT)
-                  form.append("NOTE",note)
-                  const Notes = await fetchApi('/products/note',{
-                            method: "POST",
-                            body: form
-                  })
-                  data.commentaire=""
-        } catch (error) {
-                  console.log(error)
-        } 
-}
+  
 
 useEffect(() => {
         
@@ -146,7 +168,7 @@ useEffect(() => {
 
     return (
         <>
-            {loading && <Loading />}
+            {loadingNotes && <Loading />}
             <View style={{ marginTop: 0, flex: 1 }}>
                 <View style={styles.cardHeader}>
                     <TouchableNativeFeedback
@@ -214,45 +236,54 @@ useEffect(() => {
                     <View>
                         <Text style={styles.plusText}>Notes et Revus</Text>
                     </View>
-                    <View style={styles.notes}>
-                        {new Array(5).fill(0).map((_, index) => {
+                    {(user.ID_USER != allNotes[0]?.ID_USER) ?
+                        <>
+                        <View style={styles.notes}>
+                            {new Array(5).fill(0).map((_, index) => {
 
-                            return (
+                                return (
 
-                                <TouchableOpacity onPress={() => setNote(index + 1)} style={styles.etoiles} >
-                                    {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                        <AntDesign name="star" size={25} color="black" />}
-                                </TouchableOpacity>
-                            )
-                        })}
-                    </View>
-                    {note ?
-                <View>
-                <View style={styles.selectControl}>
-                <OutlinedTextField
-                    label={"Commentaire"}
-                    fontSize={13}
-                    value={data.commentaire}
-                    onChangeText={e => handleChange("commentaire", e)}
-                    
-                    lineWidth={0.5}
-                    activeLineWidth={0.5}
-                    baseColor={COLORS.smallBrown}
-                    tintColor={COLORS.primary}
-                    containerStyle={{ flex: 1, marginTop: 15, }}
-                    inputContainerStyle={{ borderRadius: 10 }}
-                    multiline
-                />
-            </View>
-            <View  style={styles.actionContainer}>
-                <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
-                    <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-            :null
-                }
-                   
+                                    <TouchableOpacity onPress={() => setNote(index + 1)} style={styles.etoiles} >
+                                        {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
+                                            <AntDesign name="star" size={25} color="black" />}
+                                    </TouchableOpacity>
+                                )
+                            })}
+                        </View>
+                       { note ?
+                            <View>
+                                <View style={styles.selectControl}>
+                                        <OutlinedTextField
+                                            label={"Commentaire"}
+                                            fontSize={13}
+                                            value={data.commentaire}
+                                            onChangeText={e => handleChange("commentaire", e)}
+                                            lineWidth={0.5}
+                                            activeLineWidth={0.5}
+                                            baseColor={COLORS.smallBrown}
+                                            tintColor={COLORS.primary}
+                                            containerStyle={{ flex: 1, marginTop: 15, }}
+                                            inputContainerStyle={{ borderRadius: 10 }}
+                                            multiline
+                                        />
+                                </View>
+                                <View  style={styles.actionContainer}>
+                                    <TouchableOpacity onPress={onSubmit} 
+                                    disabled={!isValidate()}
+                                    style={[styles.addBtn, !isValidate() && { opacity: 0.5 }]}>
+                                        <Text style={[styles.addBtnText]}>Envoyer</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>:null}
+                    </>:null}
+
+                {loadingAllNotes ? <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator animating={true} size="large" color={"black"} />
+                </View>:
+
+                <View style={{marginHorizontal:10}}>
+                    <NotesEcommerce allNotes={allNotes}/>
+                </View>}
 
 
                     {loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts
