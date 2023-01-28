@@ -5,7 +5,7 @@ import { FontAwesome, Fontisto, EvilIcons, AntDesign, Feather, Ionicons } from '
 import { useNavigation } from "@react-navigation/native";
 import fetchApi from "../../helpers/fetchApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserAction } from "../../store/actions/userActions"
 import { COLORS } from '../../styles/COLORS';
 import { useForm } from '../../hooks/useForm';
@@ -13,7 +13,6 @@ import { useFormErrorsHandle } from '../../hooks/useFormErrorsHandle';
 import Loading from '../../components/app/Loading';
 import registerPushNotification from '../../helpers/registerPushNotification';
 import { notificationTokenSelector } from '../../store/selectors/appSelectors';
-import { userSelector } from '../../store/selectors/userSelector';
 
 
 export default function ConnexionScreen() {
@@ -22,7 +21,7 @@ export default function ConnexionScreen() {
           const [showPassword, setShowPassword] = useState(false)
           const [loading, setLoading] = useState(false);
           const passwordInputRef = useRef(null)
-        //   const token = userSelector(notificationTokenSelector) 
+          const token = useSelector(notificationTokenSelector) 
          
 
           const [data, handleChange, setValue] = useForm({
@@ -53,13 +52,12 @@ export default function ConnexionScreen() {
           const [additioanalErrors, setAdditionalErrors] = useState({})
 
           const handleLogin = async () => {
-                const token = await registerPushNotification()
                     const user = {
                               // email,
                               // password
                               email: data.email,
                               password: data.password,
-                              PUSH_NOTIFICATION_TOKEN: token?.data,
+                              PUSH_NOTIFICATION_TOKEN: token,
                               DEVICE: Platform.OS === 'ios' ? 1 : 0
                     }
                     try {
