@@ -59,7 +59,7 @@ export default function NotesEcommerce({ allNotes }) {
                                                                 <View style={{justifyContent:"center", alignItems:"center"}}>
                                                                         <View><Text>{moment(note.DATE_INSERTION).format('HH:mm')} </Text></View>
                                                                         <TouchableOpacity style={{marginTop:10}}>
-                                                                                <MaterialCommunityIcons name="dots-vertical" size={24} color="black" />
+                                                                                <AntDesign name="delete" size={24} color="black" />
                                                                         </TouchableOpacity>
                                                                 </View>
 

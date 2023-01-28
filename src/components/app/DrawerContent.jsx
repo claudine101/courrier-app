@@ -19,7 +19,6 @@ export default function DrawerContent({ state, navigation, descriptors }) {
           const [partenaires, setPartenaires] = useState([])
           const [commandes, setCommandes] = useState([])
           const[restoCommandes, setRestoCommandes] = useState([])
-          console.log(restoCommandes)
 
 
           const user = useSelector(userSelector)
