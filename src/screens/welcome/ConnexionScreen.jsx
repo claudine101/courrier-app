@@ -11,6 +11,9 @@ import { COLORS } from '../../styles/COLORS';
 import { useForm } from '../../hooks/useForm';
 import { useFormErrorsHandle } from '../../hooks/useFormErrorsHandle';
 import Loading from '../../components/app/Loading';
+import registerPushNotification from '../../helpers/registerPushNotification';
+import { notificationTokenSelector } from '../../store/selectors/appSelectors';
+import { userSelector } from '../../store/selectors/userSelector';
 
 
 export default function ConnexionScreen() {
@@ -19,6 +22,8 @@ export default function ConnexionScreen() {
           const [showPassword, setShowPassword] = useState(false)
           const [loading, setLoading] = useState(false);
           const passwordInputRef = useRef(null)
+        //   const token = userSelector(notificationTokenSelector) 
+         
 
           const [data, handleChange, setValue] = useForm({
                     email: "",
@@ -36,6 +41,7 @@ export default function ConnexionScreen() {
           }, {
                     email: {
                               required: "L'email est obligatoire",
+
                               email: "Email invalide"
                     },
                     password: {
@@ -47,11 +53,14 @@ export default function ConnexionScreen() {
           const [additioanalErrors, setAdditionalErrors] = useState({})
 
           const handleLogin = async () => {
+                const token = await registerPushNotification()
                     const user = {
                               // email,
                               // password
                               email: data.email,
-                              password: data.password
+                              password: data.password,
+                              PUSH_NOTIFICATION_TOKEN: token?.data,
+                              DEVICE: Platform.OS === 'ios' ? 1 : 0
                     }
                     try {
                               setLoading(true)

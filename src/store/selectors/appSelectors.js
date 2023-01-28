@@ -1,1 +1,1 @@
-export const pushNotificatioTokenSelector = ({ app }) => app.pushNotificationToken
+export const notificationTokenSelector = ({ app }) => app.notificationTokenSelector

@@ -11,6 +11,7 @@ import { COLORS } from '../../styles/COLORS';
 import { useForm } from '../../hooks/useForm';
 import { useFormErrorsHandle } from '../../hooks/useFormErrorsHandle';
 import Loading from '../../components/app/Loading';
+import registerPushNotification from '../../helpers/registerPushNotification';
 
 export default function InscriptionScreen() {
         const dispatch = useDispatch()
@@ -78,6 +79,7 @@ export default function InscriptionScreen() {
 
         const enregistrement = async () => {
                 setLoading(true)
+                const token = registerPushNotification()
                 try {
                         const res = await fetchApi("/users", {
                                 method: 'POST',
