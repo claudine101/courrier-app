@@ -19,7 +19,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
           const { width } = useWindowDimensions()
           const PRODUCT_MARGIN = 10
           const PRODUCT_WIDTH = (width / 2) - (PRODUCT_MARGIN*2)
-          const PRODUCT_HEIGHT = 270
+          const PRODUCT_HEIGHT = 280
           const additionStyles = {
                     width: PRODUCT_WIDTH,
                     height: PRODUCT_HEIGHT,
@@ -122,6 +122,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                                                                       Addishlist(product.produit.ID_PRODUIT_PARTENAIRE)
                                                                       setWishlist(true)
                                                             }}
+                                                            disabled
                                                   >
                                                             <View style={styles.cardLike}>
                                                                       {wishlist ? <AntDesign name="heart" size={24} color="#F29558" /> : <AntDesign name="hearto" size={24} color="#F29558" />}
@@ -142,7 +143,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                                                             <Text numberOfLines={2} style={styles.productName}> {product.produit.NOM}</Text>
                                                   </Text>
                                         </View>
-                                        {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
+                                        {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold", position: 'absolute', bottom: 0, padding: 10 }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
                                         <Portal>
                                                   <GestureHandlerRootView style={{ height: isOpen ? '100%' : 0, opacity: isOpen ? 1 : 0, backgroundColor: 'rgba(0, 0, 0, 0)', position: 'absolute', width: '100%', zIndex: 1 }}>
                                                             <Modalize
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
           },
           imageCard: {
                     borderRadius: 8,
-                    height: "60%",
+                    height: "55%",
                     width: "100%"
           },
           image: {

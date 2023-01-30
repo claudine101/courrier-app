@@ -36,9 +36,8 @@ export default function RestaurationComEmises() {
           }
 
           const handleCommandePress = commande => {
-  navigation.navigate('DetailCommandeMenuscreen', { commande })
-
-                    // navigation.navigate('NoHeaderSearchLivreurScreen', { commande })
+                    // navigation.navigate('DetailCommandeMenuscreen', { commande })
+                    navigation.navigate('NoHeaderSearchLivreurScreen', { commande })
           }
           useFocusEffect(useCallback(() => {
                     (async () => {
@@ -78,16 +77,20 @@ export default function RestaurationComEmises() {
           return (
                     <View style={styles.container}>
                               <View style={styles.cardHeader}>
-                                        <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-                                                  <View style={styles.menuOpenerLine} />
-                                                  <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                  <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                        </TouchableOpacity>
+                                        <TouchableNativeFeedback
+                                                  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                                                  background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
+                                                  <View style={styles.menuOpener}>
+                                                            <View style={styles.menuOpenerLine} />
+                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
+                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
+                                                  </View>
+                                        </TouchableNativeFeedback>
                                         <View style={styles.imageContainer}>
                                                   <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
                                         </View>
-                                        <View style={{ marginTop: 25 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary} />
+                                        <View style={{ marginTop: 25, padding: 10 }}>
+                                                  <AntDesign name="search1" size={24} color={COLORS.primary}  />
                                         </View>
                               </View>
                               <Text style={styles.title}>Commandes emises</Text>
@@ -100,29 +103,19 @@ export default function RestaurationComEmises() {
                                                                       <Text style={styles.emptyFeedback}>Aucune commande trouvée</Text>
                                                             </View> :
                                                             <>
-                                                                      <View style={{
-                                                                                flexDirection: "row",
-                                                                                justifyContent: "space-between",
-                                                                                paddingBottom: 10,
-                                                                                paddingHorizontal: 10
-                                                                      }}>
-                                                                                <View style={{ ...styles.carre, backgroundColor: "#EE7526" }}>
-                                                                                          <Text style={{ color: "white", textAlign: "center", fontWeight: "bold", }}>En ettente</Text>
-                                                                                </View>
-                                                                                <View style={{ ...styles.carre, backgroundColor: "#FCEADE" }}>
-                                                                                          <Text style={{ color: "#EE7526", textAlign: "center", fontWeight: "bold", }}>Livrées</Text>
-                                                                                </View>
-                                                                      </View>
                                                                       <FlatList
                                                                                 data={commandes}
                                                                                 keyExtractor={(item, index) => index}
                                                                                 showsVerticalScrollIndicator={false}
-                                                                                refreshControl={<RefreshControl
-                                                                                          colors={[COLORS.ecommercePrimaryColor]} refreshing={refreshing}
-                                                                                          onRefresh={onRefresh} />}
+                                                                                refreshControl={
+                                                                                          <RefreshControl
+                                                                                                    colors={[COLORS.ecommercePrimaryColor]} refreshing={refreshing}
+                                                                                                    onRefresh={onRefresh}
+                                                                                          />
+                                                                                }
                                                                                 renderItem={(({ item: commande, index }) => {
                                                                                           return (
-                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande)}>
+                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande)} disabled>
                                                                                                               <View style={styles.commande} key={index}>
                                                                                                                         <View style={styles.cardAchat}>
                                                                                                                                   <Image source={{ uri: commande.details[0]?.IMAGE_1 }} style={styles.productImage} />
@@ -174,7 +167,8 @@ const styles = StyleSheet.create({
                     height: 88,
           },
           menuOpener: {
-                    marginTop: 25
+                    marginTop: 25,
+                    padding: 10
           },
           menuOpenerLine: {
                     height: 3,
@@ -195,7 +189,8 @@ const styles = StyleSheet.create({
                     fontWeight: "bold",
                     fontSize: 20,
                     color: COLORS.primary,
-                    paddingVertical: 20,
+                    paddingVertical: 10,
+                    paddingBottom: 0,
                     paddingHorizontal: 10
           },
           carre: {

@@ -43,6 +43,8 @@ export default function ServicesCategories() {
         const SERVICE_WIDTH = (width / 2)
         const modalizeRef = useRef(null)
 
+        const ALLOWED_SERVICES = [1, 2]
+
         const navigation = useNavigation()
         useEffect(() => {
                 modalizeRef.current?.open()
@@ -64,7 +66,10 @@ export default function ServicesCategories() {
                                         {SERVICES.map((service, index) => {
                                                 return (
                                                         <View style={[styles.serviceContainer, { width: SERVICE_WIDTH, height: SERVICE_WIDTH }]} key={index.toString()}>
-                                                                <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("#C4C4C4")} useForeground onPress={() => navigation.navigate(service.route, { ID_SERVICE: service.ID_SERVICE })}>
+                                                                <TouchableNativeFeedback
+                                                                      disabled={!ALLOWED_SERVICES.includes(service.ID_SERVICE)}
+                                                                      background={TouchableNativeFeedback.Ripple("#C4C4C4")}
+                                                                      useForeground onPress={() => navigation.navigate(service.route, { ID_SERVICE: service.ID_SERVICE })}>
                                                                         <View style={[styles.service]}>
                                                                                 <ImageBackground source={service.imageBg} style={[styles.serviceBackgound]} borderRadius={10} resizeMode='cover' imageStyle={{ opacity: 0.8 }}>
                                                                                         <View style={{ position: 'absolute', width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.3)", borderRadius: 10 }} />

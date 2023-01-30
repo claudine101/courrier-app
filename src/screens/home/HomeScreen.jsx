@@ -4,7 +4,8 @@ import {
           Image,
           FlatList,
           useWindowDimensions,
-          TouchableOpacity
+          TouchableOpacity,
+          TouchableNativeFeedback
 } from "react-native";
 import { Feather, FontAwesome, EvilIcons, AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
@@ -20,15 +21,19 @@ export default function HomeScreen() {
                     <>
                     <View style={styles.imgBackground}>
                               <View style={styles.cardHeader}>
-                                        <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-                                                  <View style={styles.menuOpenerLine} />
-                                                  <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                  <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                        </TouchableOpacity>
+                                        <TouchableNativeFeedback
+                                                  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                                                  background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
+                                                  <View style={styles.menuOpener}>
+                                                            <View style={styles.menuOpenerLine} />
+                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
+                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
+                                                  </View>
+                                        </TouchableNativeFeedback>
                                         <View style={styles.imageContainer}>
                                                   <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
                                         </View>
-                                        <View style={{ marginTop: 25 }}>
+                                        <View style={{ marginTop: 25, padding: 10 }}>
                                                   <AntDesign name="search1" size={24} color={COLORS.primary}  />
                                         </View>
                               </View>
@@ -43,7 +48,7 @@ const styles = StyleSheet.create({
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 10,
                     height: 88
           },
           imageContainer: {
@@ -59,7 +64,8 @@ const styles = StyleSheet.create({
                     marginTop: 25
           },
           menuOpener: {
-                    marginTop: 25
+                    marginTop: 25,
+                    padding: 10
           },
           menuOpenerLine: {
                     height: 3,

@@ -17,7 +17,7 @@ import { unsetUserAction } from "../../store/actions/userActions";
 
 export default function DrawerContent({ state, navigation, descriptors }) {
           const [partenaires, setPartenaires] = useState([])
-          const [commandes, setCommandes] = useState([])
+          const [counts, setCounts] = useState({})
           const[restoCommandes, setRestoCommandes] = useState([])
           console.log(restoCommandes)
 
@@ -79,13 +79,10 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                   method: "GET",
                                                   headers: { "Content-Type": "application/json" },
                                         })
-                                        setCommandes(response.result)
+                                        setCounts(response.result)
                               } catch (error) {
                                         console.log(error)
                               }
-                              // finally {
-                              //         setLoading(false)
-                              // }
                     })()
           }, []))
 
@@ -109,15 +106,19 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                   <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 0 || state.index == 1 || state.index == 2) && { backgroundColor: COLORS.handleColor }]}>
                                                             <View style={styles.drawerItem}>
                                                                       <AntDesign name="home" size={27} color="#000" />
-                                                                      <Text style={[styles.drawerItemLabel, (state.index == 0 || state.index == 1 || state.index == 2) && { color: '#000' }]}>Produits et  services</Text>
+                                                                      <Text style={[styles.drawerItemLabel, (state.index == 0 || state.index == 1 || state.index == 2) && { color: '#000' }]}>
+                                                                                Services
+                                                                      </Text>
                                                             </View>
                                                   </View>
                                         </TouchableNativeFeedback>
                                         <TouchableNativeFeedback useForeground background={TouchableNativeFeedback.Ripple('#EFEFEF')} onPress={onCommandeToggle}>
-                                                  <View style={[{ borderRadius: 10, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, (state.index == 0) && { backgroundColor: COLORS.handleColor }]}>
+                                                  <View style={[{ borderRadius: 10, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }]}>
                                                             <View style={styles.drawerItem}>
                                                                       <Feather name="shopping-cart" size={24} color="#777" />
-                                                                      <Text style={[styles.drawerItemLabel, (state.index == 0 || state.index == 1 || state.index == 2) && { color: '#000' }]}>Commandes</Text>
+                                                                      <Text style={[styles.drawerItemLabel]}>
+                                                                                Commandes
+                                                                      </Text>
                                                             </View>
                                                             {showServiceCommands ? <Ionicons name="caret-up" size={24} color="#777" /> :
                                                                       <Ionicons name="caret-down" size={24} color="#777" />}
@@ -125,35 +126,29 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                         </TouchableNativeFeedback>
                                         {showServiceCommands && <View style={styles.services}>
 
-                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate("CommandeEmiseScreen")} style={{ borderRadius: 10 }}>
-                                                            <View style={[styles.service, (state.index == 0) && { backgroundColor: COLORS.handleColor }]}>
-                                                                      <Text style={[styles.serviceName, (state.index == 2) && { color: '#000' }]}>
-                                                                                Achats des produit
+                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate("CommandeEmiseScreen")} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
+                                                            <Text style={[styles.serviceName, (state.index == 4) && { color: '#000' }]}>
+                                                                      Achats de produits
+                                                            </Text>
+                                                            {counts.ecommerce && counts.ecommerce > 0 ? <View style={styles.actionBadge}>
+                                                                      <Text style={styles.actionBadgeText}>
+                                                                                { counts.ecommerce }
                                                                       </Text>
-                                                                      {commandes.length > 0 ? <View style={styles.actionBadge}>
-                                                                                <View></View>
-                                                                                <Text style={styles.actionBadgeText}>
-                                                                                          {commandes[0].NBRE}
-                                                                                </Text>
-                                                                      </View> : null}
-                                                            </View>
+                                                            </View> : null}
                                                   </TouchableOpacity>
-                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate("RestaurantEmiseScreen")} style={{ borderRadius: 10 }}>
-                                                            <View style={[styles.service, (state.index == 0) && { backgroundColor: COLORS.handleColor }]}>
-                                                                      <Text style={[styles.serviceName, (state.index == 2) && { color: '#000' }]}>
-                                                                                Restaurant
+                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate("RestaurantEmiseScreen")} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
+                                                            <Text style={[styles.serviceName, (state.index == 5) && { color: '#000' }]}>
+                                                                      Restaurant
+                                                            </Text>
+                                                            {counts.resto && counts.resto > 0 ? <View style={styles.actionBadge}>
+                                                                      <Text style={styles.actionBadgeText}>
+                                                                                { counts.resto }
                                                                       </Text>
-                                                                      {restoCommandes.length > 0 ? <View style={styles.actionBadge}>
-                                                                                <View></View>
-                                                                                <Text style={styles.actionBadgeText}>
-                                                                                          {restoCommandes[0].NBRE}
-                                                                                </Text>
-                                                                      </View> : null}
-                                                            </View>
+                                                            </View> : null}
                                                   </TouchableOpacity>
 
                                         </View>}
-                                        <TouchableNativeFeedback useForeground background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('WishlistTab')}>
+                                        <TouchableNativeFeedback useForeground disabled background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('WishlistTab')}>
                                                   <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 3) && { backgroundColor: COLORS.handleColor }]}>
                                                             <View style={styles.drawerItem}>
                                                                       <AntDesign name="hearto" size={24} color="#777" />
@@ -232,11 +227,12 @@ const styles = StyleSheet.create({
                     resizeMode: "center"
           },
           userNames: {
-                    marginLeft: 10
+                    marginLeft: 10,
+                    flex: 1
           },
           fullName: {
                     fontWeight: "bold",
-                    fontSize: 16,
+                    fontSize: 14,
                     maxWidth: "90%"
           },
           email: {
@@ -267,7 +263,8 @@ const styles = StyleSheet.create({
                     alignItems: "center",
                     marginTop: 5,
                     padding: 10,
-                    borderRadius: 10
+                    borderRadius: 10,
+                    overflow: 'hidden'
           },
           serviceImageContainer: {
                     width: 35,
@@ -295,7 +292,7 @@ const styles = StyleSheet.create({
                     backgroundColor: "red",
                     borderRadius: 100,
                     position: 'absolute',
-                    right: 3,
+                    right: 10,
                     // top: -9,
                     justifyContent: 'center',
                     alignItems: 'center',

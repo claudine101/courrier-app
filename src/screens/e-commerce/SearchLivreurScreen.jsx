@@ -171,7 +171,7 @@ export default function SearchLivreurScreen() {
                                                                       <Ionicons name="close" size={30} color="#777" />
                                                             </View>
                                                   </TouchableNativeFeedback>
-                                                  <TouchableNativeFeedback useForeground onPress={voirDetails}>
+                                                  <TouchableNativeFeedback useForeground onPress={voirDetails} disabled>
                                                             <View style={[styles.nextBtn]}>
                                                                       <Text style={[styles.navigationBtnText]}>
                                                                                 Voir la commande

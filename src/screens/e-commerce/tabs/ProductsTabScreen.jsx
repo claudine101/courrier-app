@@ -2,7 +2,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useCallback } from 'react'
 import React from "react";
 import { useState } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Image } from "react-native";
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useEffect } from "react";
@@ -55,9 +55,12 @@ export default function ProductsTabScreen({ shop }) {
                                                   <Tabs.ScrollView>
                                                             <View style={styles.container}>
                                                                       <View style={styles.emptyContainer}>
-                                                                                <Feather name="check-square" size={24} color="#777" />
-                                                                                <Text style={styles.emptyFeedback}>
-                                                                                          Pas de produits dans ce boutique
+                                                                                <Image source={require('../../../../assets/images/mobile-shopping.png')} style={styles.emptyImage} />
+                                                                                <Text style={styles.emptyFeedbackTitle}>
+                                                                                          Aucun menu publié
+                                                                                </Text>
+                                                                                <Text style={styles.emptyFeedbackDesc}>
+                                                                                          Commencer à publier un menu pour attirer vos clients
                                                                                 </Text>
                                                                       </View>
                                                             </View>
@@ -82,11 +85,17 @@ const styles = StyleSheet.create({
                     alignItems: "center",
                     marginTop: 30
           },
-          emptyFeedback: {
-                    marginTop: 10,
+          emptyFeedbackTitle: {
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    textAlign: 'center',
+                    marginVertical: 10
+          },
+          emptyFeedbackDesc: {
                     color: '#777',
                     textAlign: "center",
-                    paddingHorizontal: 30
+                    paddingHorizontal: 30,
+                    fontSize: 12
           },
           products: {
                     flexDirection: 'row',

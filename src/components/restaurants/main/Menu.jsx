@@ -116,6 +116,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
                                                                       Addishlist(menu.ID_RESTAURANT_MENU)
                                                                       setWishlist(true)
                                                             }}
+                                                            disabled
                                                   >
                                                             <View style={styles.cardLike}>
                                                                       {wishlist ? <AntDesign name="heart" size={24} color="#F29558" /> : <AntDesign name="hearto" size={24} color="#F29558" />}
