@@ -212,21 +212,19 @@ export default function ProductDetailsScreen() {
 
 
                                                   </TouchableNativeFeedback>
-                                                  <View>
+                                                  {/* <View>
                                                             <Text style={styles.plusText}>Notes et Revus</Text>
-                                                  </View>
-                                                  <View style={styles.notes}>
+                                                  </View> */}
+                                                  {false && <View style={styles.notes}>
                                                             {new Array(5).fill(0).map((_, index) => {
-
                                                                       return (
-
                                                                                 <TouchableOpacity onPress={() => setNote(index + 1)} style={styles.etoiles} >
                                                                                           {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
                                                                                                     <AntDesign name="star" size={25} color="black" />}
                                                                                 </TouchableOpacity>
                                                                       )
                                                             })}
-                                                  </View>
+                                                  </View>}
                                                   {note ?
                                                             <View>
                                                                       <View style={styles.selectControl}>
