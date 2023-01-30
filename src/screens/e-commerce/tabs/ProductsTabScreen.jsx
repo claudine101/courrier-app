@@ -9,88 +9,88 @@ import { useEffect } from "react";
 import fetchApi from "../../../helpers/fetchApi";
 import Product from "../../../components/ecommerce/main/Product";
 
-export default function ProductsTabScreen({ shop, serviceResto, serviceEco }) {
-        const [products, setProducts] = useState([])
-        const [loading, setLoading] = useState(true)
-        const navigation = useNavigation()
+export default function ProductsTabScreen({ shop }) {
+          const [products, setProducts] = useState([])
+          const [loading, setLoading] = useState(true)
+          const navigation = useNavigation()
 
 
-        const renderProducts = ({ item: product, index }) => {
-                return (
-                        <Product
-                                product={product}
-                                index={index}
-                                totalLength={products.length}
-                                key={index}
-                                fixMargins
-                        // IsLoadingMore={IsLoadingMore}
-                        />
-                )
-        }
+          const renderProducts = ({ item: product, index }) => {
+                    return (
+                              <Product
+                                        product={product}
+                                        index={index}
+                                        totalLength={products.length}
+                                        key={index}
+                                        fixMargins
+                              // IsLoadingMore={IsLoadingMore}
+                              />
+                    )
+          }
 
-        useFocusEffect(useCallback(() => {
-                (async () => {
-                        try {
-                                var url = `/products?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
-                                const produits = await fetchApi(url)
-                                setProducts(produits.result)
-                        } catch (error) {
-                                console.log(error)
-                        } finally {
-                                setLoading(false)
-                        }
-                })()
-        }, []))
+          useFocusEffect(useCallback(() => {
+                    (async () => {
+                              try {
+                                        var url = `/products?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
+                                        const produits = await fetchApi(url)
+                                        setProducts(produits.result)
+                              } catch (error) {
+                                        console.log(error)
+                              } finally {
+                                        setLoading(false)
+                              }
+                    })()
+          }, []))
 
-        return (
-                <>
-                        {loading ? <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-                                <View style={styles.container}>
-                                        <View style={styles.loadingContainer}>
-                                                <ActivityIndicator size={"large"} color='#777' />
+          return (
+                    <>
+                              {loading ? <Tabs.ScrollView showsVerticalScrollIndicator={false}>
+                                        <View style={styles.container}>
+                                                  <View style={styles.loadingContainer}>
+                                                            <ActivityIndicator size={"large"} color='#777' />
+                                                  </View>
                                         </View>
-                                </View>
-                        </Tabs.ScrollView> :
-                                products.length == 0 ?
-                                        <Tabs.ScrollView>
-                                                <View style={styles.container}>
-                                                        <View style={styles.emptyContainer}>
-                                                                <Feather name="check-square" size={24} color="#777" />
-                                                                <Text style={styles.emptyFeedback}>
-                                                                        Pas de produits dans ce boutique
-                                                                </Text>
-                                                        </View>
-                                                </View>
-                                        </Tabs.ScrollView> :
-                                        <Tabs.FlatList
-                                                data={products}
-                                                renderItem={renderProducts}
-                                                contentContainerStyle={styles.products}
-                                        />
-                        }
-                </>
+                              </Tabs.ScrollView> :
+                                        products.length == 0 ?
+                                                  <Tabs.ScrollView>
+                                                            <View style={styles.container}>
+                                                                      <View style={styles.emptyContainer}>
+                                                                                <Feather name="check-square" size={24} color="#777" />
+                                                                                <Text style={styles.emptyFeedback}>
+                                                                                          Pas de produits dans ce boutique
+                                                                                </Text>
+                                                                      </View>
+                                                            </View>
+                                                  </Tabs.ScrollView> :
+                                                  <Tabs.FlatList
+                                                            data={products}
+                                                            renderItem={renderProducts}
+                                                            contentContainerStyle={styles.products}
+                                                  />
+                              }
+                    </>
 
-        )
+          )
 }
 
 const styles = StyleSheet.create({
-        container: {
-                flex: 1,
-        },
-        emptyContainer: {
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 30
-        },
-        emptyFeedback: {
-                marginTop: 10,
-                color: '#777',
-                textAlign: "center",
-                paddingHorizontal: 30
-        },
-        products: {
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexWrap: 'wrap'
-        }
+          container: {
+                    flex: 1,
+          },
+          emptyContainer: {
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 30
+          },
+          emptyFeedback: {
+                    marginTop: 10,
+                    color: '#777',
+                    textAlign: "center",
+                    paddingHorizontal: 30
+          },
+          products: {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap'
+          }
 })

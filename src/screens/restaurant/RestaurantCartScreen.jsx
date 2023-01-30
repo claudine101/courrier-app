@@ -16,7 +16,7 @@ import { HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skel
 import { restaurantCartSelector } from "../../store/selectors/restaurantCartSelectors";
 import MenuCart from "../../components/restaurants/main/MenuCart";
 import Menu from "../../components/restaurants/main/Menu";
-import ServicesIDS from "../../constants/ServicesIDS"
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
 
 export default function RestaurantCartScreen() {
     const products = useSelector(ecommerceCartSelector)
@@ -155,7 +155,7 @@ export default function RestaurantCartScreen() {
                     </View>
                 </View>
                 <TouchableOpacity style={styles.checkoutBtn} onPress={() => {
-                    navigation.navigate("ShippingInfoScreen", { service: ServicesIDS.resto })
+                    navigation.navigate("ShippingInfoScreen", { service: IDS_SERVICE_CATEGORIES.resto })
                 }}>
                     <Text style={styles.checkoutBtnTitle}>CONTINUER</Text>
                 </TouchableOpacity>

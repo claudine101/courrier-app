@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { LogBox } from 'react-native';
 
 
-LogBox.ignoreLogs(["flexWrap: `wrap``"]);
+LogBox.ignoreLogs(["flexWrap: `wrap``", "Warning: This synthetic event is reused for performance reasons", "Possible Unhandled Promise Rejection"]);
 export default function App() {
           return (
                     <>

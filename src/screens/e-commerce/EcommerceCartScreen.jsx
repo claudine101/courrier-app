@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import fetchApi, { API_URL } from "../../helpers/fetchApi";
 import { HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import { useRef } from "react";
-import ServicesIDS from "../../constants/ServicesIDS";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 export default function EcommerceCartScreen() {
           const products = useSelector(ecommerceCartSelector)
@@ -147,7 +147,7 @@ export default function EcommerceCartScreen() {
                                                   </View>
                                         </View>
                                         <TouchableOpacity style={styles.checkoutBtn} onPress={() => {
-                                                  navigation.navigate("ShippingInfoScreen", { service: ServicesIDS.ecommerce })
+                                                  navigation.navigate("ShippingInfoScreen", { service: IDS_SERVICE_CATEGORIES.ecommerce })
                                         }}>
                                                   <Text style={styles.checkoutBtnTitle}>CONTINUER</Text>
                                         </TouchableOpacity>

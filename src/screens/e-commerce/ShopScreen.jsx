@@ -10,7 +10,7 @@ import fetchApi from "../../helpers/fetchApi";
 import Product from "../../components/ecommerce/main/Product";
 import ProductsTabScreen from "./tabs/ProductsTabScreen";
 import DetailsShopTabScreen from "./tabs/DetailsShopTabScreen";
-import ServicesIDS from "../../constants/ServicesIDS"
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
 import MenuTabScreen from "../restaurant/tabs/MenuTabScreen";
 
 const TopTab = createMaterialTopTabNavigator()
@@ -19,11 +19,11 @@ export default function ShopScreen() {
           const [activeIndex, setActiveIndex] = useState(0)
           const route = useRoute()
           const [products, setProducts] = useState([])
-          const[loadingShopProducts,setLoadingShopProducts] = useState(true)
+          const [loadingShopProducts, setLoadingShopProducts] = useState(true)
           const { shop } = route.params
 
-          var serviceResto = ServicesIDS.resto
-          var serviceEco = ServicesIDS.ecommerce
+          var serviceResto = IDS_SERVICE_CATEGORIES.resto
+          var serviceEco = IDS_SERVICE_CATEGORIES.ecommerce
 
 
           const Header = () => {
@@ -53,7 +53,7 @@ export default function ShopScreen() {
                                                   indicatorStyle={{ backgroundColor: '#949494', height: 2, elevation: 0, borderBottomWidth: 0 }}
                                                   inactiveColor='#777'
                                                   tabStyle={{ elevation: 0, height: "100%" }}
-                                                  style={{ elevation: 0, paddingHorizontal: 10, height: 60 }}
+                                                  style={{ elevation: 0, paddingHorizontal: 10, height: 50 }}
                                                   labelStyle={{ color: 'red', fontWeight: 'bold', paddingHorizontal: 10 }}
                                                   scrollEnabled
                                                   contentContainerStyle={{ elevation: 0 }}
@@ -61,31 +61,27 @@ export default function ShopScreen() {
                               }}
                               onIndexChange={index => setActiveIndex(index)}
                     >
-                              <Tabs.Tab name="produits" label={<View style={{ flexDirection: 'row', alignItems: "center"}}>
-                                        {(shop.ID_SERVICE == ServicesIDS.resto && shop.ID_SERVICE != ServicesIDS.ecommerce) ?
-                                          <Text style={[{ fontWeight: "bold" }, { color: activeIndex == 0 ? '#000' : "#777" }]} >Menus</Text> : 
-                                        <Text style={[{ fontWeight: "bold" }, { color: activeIndex == 0 ? '#000' : "#777"}]}>Produits</Text>}
+                              <Tabs.Tab name="produits" label={<View style={{ flexDirection: 'row', alignItems: "center" }}>
+                                        {(shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto && shop.ID_SERVICE != IDS_SERVICE_CATEGORIES.ecommerce) ?
+                                                  <Text style={[styles.headerLabel, { color: activeIndex == 0 ? '#000' : "#777" }]} >Menus</Text> :
+                                                  <Text style={[styles.headerLabel, { color: activeIndex == 0 ? '#000' : "#777" }]}>Produits</Text>}
                               </View>}>
 
-                                 {(shop.ID_SERVICE == ServicesIDS.resto && shop.ID_SERVICE != ServicesIDS.ecommerce) ?
-                                  <MenuTabScreen shop={shop} serviceResto={serviceResto} serviceEco={serviceEco}/>:
-                                 <ProductsTabScreen shop={shop} serviceResto={serviceResto} serviceEco={serviceEco}/>}
-                                 
+                                        {shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.ecommerce ?  <ProductsTabScreen shop={shop} serviceResto={serviceResto} serviceEco={serviceEco} /> : null}
+                                        {shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto ?  <MenuTabScreen shop={shop} serviceResto={serviceResto} serviceEco={serviceEco} /> : null}
                               </Tabs.Tab>
-                              <Tabs.Tab name="commandes" label={<View style={{ flexDirection: 'row', alignItems: "center"}}>
-                                        <Text style={[{ fontWeight: "bold" }, { color: activeIndex == 0 ? '#777' : "#000"}]}>Suivis</Text>
+                              <Tabs.Tab name="commandes" label={<View style={{ flexDirection: 'row', alignItems: "center" }}>
+                                        <Text style={[styles.headerLabel, { color: activeIndex == 0 ? '#777' : "#000" }]}>Suivis</Text>
                               </View>}>
                                         <Tabs.ScrollView>
                                                   <View style={[styles.box, styles.boxA]} />
                                                   <View style={[styles.box, styles.boxB]} />
                                         </Tabs.ScrollView>
                               </Tabs.Tab>
-                              <Tabs.Tab name="supp" label="A propos">
-                                      <DetailsShopTabScreen shop={shop}/>
-                                        {/* <Tabs.ScrollView>
-                                                  <View style={[styles.box, styles.boxA]} />
-                                                  <View style={[styles.box, styles.boxB]} />
-                                        </Tabs.ScrollView> */}
+                              <Tabs.Tab name="supp" label={<View style={{ flexDirection: 'row', alignItems: "center" }}>
+                                        <Text style={[styles.headerLabel, { color: activeIndex == 0 ? '#777' : "#000" }]}>A propos</Text>
+                              </View>}>
+                                        <DetailsShopTabScreen shop={shop} />
                               </Tabs.Tab>
                     </Tabs.Container>
           )
@@ -109,21 +105,24 @@ const styles = StyleSheet.create({
                     backgroundColor: '#2196f3',
           },
           actionBadge: {
-                minWidth: 20,
-                minHeight: 18,
-                backgroundColor: "#000",
-                borderRadius: 100,
-                position: 'absolute',
-                right: -25,
-                // top: -9,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 3
-            },
-            actionBadgeText: {
-                color: '#FFF',
-                fontSize: 12,
-                marginTop: -2,
-                fontWeight: "bold"
-              }
+                    minWidth: 20,
+                    minHeight: 18,
+                    backgroundColor: "#000",
+                    borderRadius: 100,
+                    position: 'absolute',
+                    right: -25,
+                    // top: -9,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingHorizontal: 3
+          },
+          actionBadgeText: {
+                    color: '#FFF',
+                    fontSize: 12,
+                    marginTop: -2,
+                    fontWeight: "bold"
+          },
+          headerLabel: {
+                    fontSize: 12
+          }
 })

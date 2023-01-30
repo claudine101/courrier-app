@@ -51,9 +51,6 @@ export default function EcommerceHomeScreen() {
                               setIsLoadingMore(false)
                     }
           }
-          const productPress = () => {
-                    navigation.navigate("PlusRecommandeScreen", { selectedOneCategorie: null, ID_PARTENAIRE_SERVICE: null })
-          }
           const getProducts = useCallback(async (offset = 0) => {
                     try {
                               var url = `/products?limit=${LIMIT}&offset=${offset}&`
@@ -115,7 +112,7 @@ export default function EcommerceHomeScreen() {
                                         }}
                                         style={styles.cardOrginal}>
 
-                                        <Text style={styles.titlePrincipal}>Achat des produits</Text>
+                                        <Text style={styles.titlePrincipal}>Achat de produits</Text>
                                         <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10 }}>
                                                   <View style={{ width: "84%" }}>
                                                             <TouchableNativeFeedback useForeground onPress={() => {
@@ -124,7 +121,7 @@ export default function EcommerceHomeScreen() {
                                                             }}>
                                                                                 <View  style={styles.searchSection} >
                                                                                           <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
-                                                                                          <Text style={styles.input}>Rechercher.......</Text>
+                                                                                          <Text style={styles.input}>Rechercher...</Text>
                                                                                 </View>
                                                                       </TouchableNativeFeedback>
                                                   </View>
@@ -137,10 +134,8 @@ export default function EcommerceHomeScreen() {
                                         {loadingProducts ? <HomeProductsSkeletons /> :
                                                   productsCommande.length > 0 ? <HomeProducts products={productsCommande} title="Les plus achetés" /> : null
                                         }
-                                        <View onPress={productPress}>
-                                                  <View style={styles.section}>
-                                                            <Text style={styles.secionTitle}>Recommandé pour vous</Text>
-                                                  </View>
+                                        <View style={styles.section}>
+                                                  <Text style={styles.secionTitle}>Recommandé pour vous</Text>
                                         </View>
                                         <View style={styles.products}>
                                                   {products.map((product, index) => {

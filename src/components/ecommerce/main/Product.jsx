@@ -139,11 +139,10 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                                         </View>
                                         <View style={styles.productNames}>
                                                   <Text numberOfLines={2} style={styles.productName}>
-
                                                             <Text numberOfLines={2} style={styles.productName}> {product.produit.NOM}</Text>
                                                   </Text>
                                         </View>
-                                        {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Fbu</Text> : null}
+                                        {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
                                         <Portal>
                                                   <GestureHandlerRootView style={{ height: isOpen ? '100%' : 0, opacity: isOpen ? 1 : 0, backgroundColor: 'rgba(0, 0, 0, 0)', position: 'absolute', width: '100%', zIndex: 1 }}>
                                                             <Modalize

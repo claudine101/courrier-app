@@ -14,11 +14,8 @@ export const HEADER_HEIGHT = 262;
  */
 export default function ShopCollapsableHeader({ shop }) {
         const optionModalizeRef = useRef()
-
-
         return (
                 <>
-
                         <View style={styles.header}>
                                 <TouchableWithoutFeedback key={1} onPress={() => {
                                         setImageIndex(1)
@@ -58,7 +55,9 @@ export default function ShopCollapsableHeader({ shop }) {
                                                 <Text style={styles.shopName}>
                                                         {shop.NOM_ORGANISATION}
                                                 </Text>
-                                               {shop.categories ? <Text style={styles.topCategory}>{shop.categories[0].NOM}</Text> : <Text>Restaurant</Text>}
+                                                <Text style={styles.topCategory}>
+                                                            {shop.categories ? shop.categories[0].NOM : 'Restaurant'}
+                                                  </Text>
                                         </View>
                                         <TouchableWithoutFeedback>
                                                 <View style={styles.topFollowers}>

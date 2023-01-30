@@ -66,10 +66,10 @@ export default function AllProductsScreen() {
                               setLoadingRestos(false)
                     }
           }
-          useFocusEffect(useCallback(() => {
+          useEffect(() => {
                     fecthProduits()
                     fetchRestos()
-          }, []))
+          }, [])
 
           useEffect(() => {
                     if (isOpen) {
@@ -193,7 +193,7 @@ export default function AllProductsScreen() {
                                                                                           <View style={styles.quickFilterBtnHeader}>
                                                                                                     <Entypo name="shop" size={20} color={COLORS.primary} />
                                                                                                     <Text style={styles.quickFilterTitle}>
-                                                                                                              {selectedResto ? selectedResto.NOM_ORGANISATION : 'Restaurants'}
+                                                                                                              {selectedResto ? selectedResto.NOM_ORGANISATION : 'Boutiques'}
                                                                                                               <Entypo name="chevron-small-down" size={12} color="#777" />
                                                                                                     </Text>
                                                                                           </View>

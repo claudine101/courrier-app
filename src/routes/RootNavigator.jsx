@@ -2,10 +2,6 @@ import { DrawerActions, NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import HomeScreen from '../screens/home/HomeScreen'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import EcommerceNavigator from './EcommerceNavigator'
-import DrawerContent from '../components/app/DrawerContent';
-import RestaurantNavigator from './RestaurantNavigator';
-import CommandeEmiseScreen from '../screens/e-commerce/CommandeEmiseScreen';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import DrawerNavigator from './DrawerNavigator';
 import PaginationHeader from '../components/ecommerce/main/PaginationHeader';
@@ -19,7 +15,6 @@ import PlusRecommandeScreen from '../screens/liste_e-commerce/PlusRecommandeList
 
 
 export default function RootNavigator() {
-          const Drawer = createDrawerNavigator()
           const Stack = createStackNavigator()
           return (
                     <NavigationContainer

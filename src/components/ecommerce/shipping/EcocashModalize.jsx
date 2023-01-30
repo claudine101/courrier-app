@@ -12,7 +12,7 @@ import { Portal } from "react-native-portalize"
 import fetchApi from '../../../helpers/fetchApi'
 import Loading from '../../app/Loading'
 import { restaurantCartSelector } from '../../../store/selectors/restaurantCartSelectors'
-import ServicesIDS from '../../../constants/ServicesIDS'
+import IDS_SERVICE_CATEGORIES from '../../../constants/IDS_SERVICE_CATEGORIES'
 import { ECONET_PHONE_NUMBER_STARTS } from '../../../constants/MOBILE_NUMBER_STARTS'
 
 
@@ -38,11 +38,11 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
 
           const getTotal = () => {
                     var total = 0
-                    if(service == ServicesIDS.ecommerce) {
+                    if(service == IDS_SERVICE_CATEGORIES.ecommerce) {
                               products.forEach(product => {
                                         total += product.combinaison ? product.combinaison.PRIX * product.QUANTITE : product.produit_partenaire.PRIX * product.QUANTITE
                               })
-                    } else if(service == ServicesIDS.resto){
+                    } else if(service == IDS_SERVICE_CATEGORIES.resto){
                         restaurants.forEach(restaurant => {
                                 total += restaurant.combinaison ? restaurant.combinaison.PRIX * restaurant.QUANTITE : restaurant.produit_partenaire.PRIX * restaurant.QUANTITE
                             })
@@ -59,7 +59,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                               if (!isnum || !ECONET_PHONE_NUMBER_STARTS.includes(phoneStart)) {
                                         return setError("tel", ["Numéro de téléphone invalide"])
                               }
-                              if (service == ServicesIDS.ecommerce) {
+                              if (service == IDS_SERVICE_CATEGORIES.ecommerce) {
                                         const orders = products.map(product => {
                                                   return {
                                                             QUANTITE: product.QUANTITE,
@@ -79,13 +79,13 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                                       PRENOM: shipping_info.prenom,
                                                                       ADRESSE: shipping_info.address,
                                                             },
-                                                            service: ServicesIDS.ecommerce,
+                                                            service: IDS_SERVICE_CATEGORIES.ecommerce,
                                                             commandes: orders
                                                   }),
                                                   headers: { "Content-Type": "application/json" },
                                         })
                                         onFInish(commande.result)
-                              } else if (service == ServicesIDS.resto) {
+                              } else if (service == IDS_SERVICE_CATEGORIES.resto) {
                                         const orders = restaurants.map(restaurant => {
                                                 return {
                                                         QUANTITE: restaurant.QUANTITE,
@@ -105,7 +105,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                                       PRENOM: shipping_info.prenom,
                                                                       ADRESSE: shipping_info.address,
                                                             },
-                                                            service: ServicesIDS.resto,
+                                                            service: IDS_SERVICE_CATEGORIES.resto,
                                                             commandes: orders
                                                   }),
                                                   headers: { "Content-Type": "application/json" },

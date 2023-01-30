@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import Menu from '../main/Menu';
 import {COLORS} from "../../../styles/COLORS"
 
-export default function HomeMenus({ menus, selectedCategorie,categorie, title = "Tous les produits"}) {
+export default function HomeMenus({ menus, resto,categorie, title = "Tous les produits"}) {
         const navigation = useNavigation()
         return (
                 <View style={styles.homeProducts}>
@@ -14,7 +14,8 @@ export default function HomeMenus({ menus, selectedCategorie,categorie, title = 
                                         accessibilityRole="button"
                                         background={TouchableNativeFeedback.Ripple('#c9c5c5')}
                                         onPress={() => navigation.navigate('MenuScreen', {
-                                                categorie
+                                                categorie,
+                                                resto
                                         })}
                               >
                                         <View style={styles.productsHeader}>
