@@ -5,12 +5,14 @@ import { FontAwesome, Fontisto, EvilIcons, AntDesign, Feather, Ionicons } from '
 import { useNavigation } from "@react-navigation/native";
 import fetchApi from "../../helpers/fetchApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserAction } from "../../store/actions/userActions"
 import { COLORS } from '../../styles/COLORS';
 import { useForm } from '../../hooks/useForm';
 import { useFormErrorsHandle } from '../../hooks/useFormErrorsHandle';
 import Loading from '../../components/app/Loading';
+import registerPushNotification from '../../helpers/registerPushNotification';
+import { notificationTokenSelector } from '../../store/selectors/appSelectors';
 
 
 export default function ConnexionScreen() {
@@ -19,6 +21,8 @@ export default function ConnexionScreen() {
           const [showPassword, setShowPassword] = useState(false)
           const [loading, setLoading] = useState(false);
           const passwordInputRef = useRef(null)
+          const token = useSelector(notificationTokenSelector) 
+         
 
           const [data, handleChange, setValue] = useForm({
                     email: "",
@@ -36,6 +40,7 @@ export default function ConnexionScreen() {
           }, {
                     email: {
                               required: "L'email est obligatoire",
+
                               email: "Email invalide"
                     },
                     password: {
@@ -51,7 +56,9 @@ export default function ConnexionScreen() {
                               // email,
                               // password
                               email: data.email,
-                              password: data.password
+                              password: data.password,
+                              PUSH_NOTIFICATION_TOKEN: token,
+                              DEVICE: Platform.OS === 'ios' ? 1 : 0
                     }
                     try {
                               setLoading(true)
