@@ -44,7 +44,6 @@ export default function RestaurationComEmises() {
                               try {
                                         const response = await getCommandes()
                                         setCommandes(response.result)
-                                        console.log(response)
                               } catch (error) {
                                         console.log(error)
                               } finally {

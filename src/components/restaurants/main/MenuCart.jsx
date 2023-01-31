@@ -9,6 +9,7 @@ import { addMenuAction, removeMenuAction } from '../../../store/actions/restaura
 import { COLORS } from '../../../styles/COLORS'
 
 
+const LIMIT = 50
 export default function MenuCart({ menu, index }) {
     const totalPrice = menu.combinaison.PRIX * menu.QUANTITE
     const [amount, setAmount] = useState(menu.QUANTITE)
@@ -27,7 +28,7 @@ export default function MenuCart({ menu, index }) {
     }
 
     const onIncrement = () => {
-        if (amount == menu.stock.QUANTITE_RESTANTE) {
+        if (amount == LIMIT) {
             return false
         }
         setAmount(l => parseInt(l) + 1)

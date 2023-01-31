@@ -93,7 +93,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
           const onCloseAddToCart = () => {
                     modalizeRef.current?.close()
           }
-          const MenuInCart = useSelector(restaurantProductSelector(menu.ID_RESTAURANT_MENU))
+          const MenuInCart = useSelector(restaurantProductSelector(menu.produit.ID_RESTAURANT_MENU))
           useEffect(() => {
                     if (isOpen) {
                               const timer = setTimeout(() => {
