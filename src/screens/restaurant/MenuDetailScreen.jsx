@@ -37,8 +37,8 @@ export default function MenuDetailScreen() {
           const [selectedRestaurant, setselectedRestaurant] = useState([])
           const MenuInCart = useSelector(restaurantProductSelector(product.ID_RESTAURANT_MENU))
 
-          const [loadingShopProducts, shopProducts] = useFetch(`/resto/menu?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
-          const [loadingSimilarProducts, similarProducs] = useFetch(`/resto/menu?category=${product.categorie.ID_CATEGORIE_MENU}`)
+          const [loadingShopProducts, shopProducts] = useFetch(`/resto/restaurant_menus?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
+          const [loadingSimilarProducts, similarProducs] = useFetch(`/resto/restaurant_menus?category=${product.categorie.ID_CATEGORIE_MENU}`)
 
           const modalizeRef = useRef(null)
           const [isOpen, setIsOpen] = useState(false)

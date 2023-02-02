@@ -10,7 +10,7 @@ export default function AddCart({ product, loadingForm, onClose }) {
           const [amount, setAmount] = useState(1)
           const [isFocused, setIsFocused] = useState(false)
           const dispatch = useDispatch()
-          const [loadingVariants, variants] = useFetch(`/products/variants/${product.produit.ID_PRODUIT}`)
+          const [loadingVariants, variants] = useFetch(`/ecommerce/ecommerce_produits/ecommerce_produit_variants/${product.produit.ID_PRODUIT}`)
           const [selectedCombinaison, setSelectedCombinaison] = useState(null)
           /**
            * Contient  un tableau des valeurs des variantes qui sont sélectionnés

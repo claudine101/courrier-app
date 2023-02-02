@@ -9,12 +9,15 @@ import { COLORS } from "../../styles/COLORS";
 import CommandeSkeletons from "../../components/app/Skeletons";
 import { useCallback } from "react";
 import LottieView from 'lottie-react-native';
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/selectors/userSelector";
 
-export default function RestaurationComEmises() {
+export default function RestaurantEmiseScreen() {
           const [commandes, setCommandes] = useState([])
           const navigation = useNavigation()
           const [loading, setLoading] = useState(true)
           const [refreshing, setRefreshing] = useState(false)
+          const user = useSelector(userSelector)
           moment.updateLocale('fr', {
                     calendar: {
                               sameDay: "[Aujourd'hui]",
@@ -26,7 +29,7 @@ export default function RestaurationComEmises() {
           })
           const getCommandes = async () => {
                     try {
-                              return await fetchApi(`/commandes/restaurant`, {
+                              return await fetchApi(`/resto/restaurant_commandes?ID_USER=${user.ID_USER}`, {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })

@@ -24,7 +24,7 @@ export default function CategorieListeScreen() {
           useEffect(() => {
                     (async () => {
                               try {
-                                        const reponse = await fetchApi("/products/categories", {
+                                        const reponse = await fetchApi("/ecommerce/ecommerce_produits/ecommerce_produit_categorie", {
                                                   method: "GET",
                                                   headers: { "Content-Type": "application/json" },
                                         })

@@ -13,10 +13,10 @@ import LottieView from 'lottie-react-native';
 import * as Location from 'expo-location';
 import CategoriesResto from "../../components/restaurants/home/CategoriesResto";
 import useFetch from "../../hooks/useFetch";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 export default function RestaurantHomeScreen() {
-
-          const [loadingResto, restaurants] = useFetch('/partenaire/service/resto')
+          const [loadingResto, restaurants] = useFetch(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.resto}`)
           const [categories, setCategories] = useState([])
           const [loadingCategories, setLoadingCatagories] = useState(true)
           const [menus, setMenus] = useState([])
@@ -56,7 +56,7 @@ export default function RestaurantHomeScreen() {
           }
           const fecthCategories = async () => {
                     try {
-                              const response = await fetchApi("/resto/menu/categories", {
+                              const response = await fetchApi("/resto/restaurant_menus/restaurant_categorie_menu", {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })
@@ -72,7 +72,7 @@ export default function RestaurantHomeScreen() {
 
           const getMenus = useCallback(async (offset = 0) => {
                     try {
-                              var url = `/resto/menu?limit=${LIMIT}&offset=${offset}&`
+                              var url = `/resto/restaurant_menus?limit=${LIMIT}&offset=${offset}&`
                               return await fetchApi(url)
                     }
                     catch (error) {

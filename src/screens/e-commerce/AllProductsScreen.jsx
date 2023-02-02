@@ -10,6 +10,7 @@ import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import { Ionicons, AntDesign, MaterialIcons, Entypo, SimpleLineIcons } from '@expo/vector-icons';
 import CategoriesModalize from "../../components/ecommerce/allProducts/CategoriesModalize";
 import ShopsModalize from "../../components/ecommerce/allProducts/ShopsModalize";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 export default function AllProductsScreen() {
           const route = useRoute()
@@ -39,7 +40,7 @@ export default function AllProductsScreen() {
 
           const fecthProduits = async () => {
                     try {
-                              const response = await fetchApi("/products/categories", {
+                              const response = await fetchApi("/ecommerce/ecommerce_produits/ecommerce_produit_categorie", {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })
@@ -54,7 +55,7 @@ export default function AllProductsScreen() {
 
           const fetchRestos = async () => {
                     try {
-                              const response = await fetchApi("/partenaire/ecommerce", {
+                              const response = await fetchApi(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.ecommerce}`, {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })
@@ -97,7 +98,7 @@ export default function AllProductsScreen() {
                                                   setLoadingProducts(true)
                                         }
                                         var queries = []
-                                        var url = "/products?"
+                                        var url = "/ecommerce/ecommerce_produits?"
                                         if (selectedCategory) {
                                                   queries.push(`category=${selectedCategory?.ID_CATEGORIE_PRODUIT}`)
                                         }

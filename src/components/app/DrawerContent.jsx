@@ -16,7 +16,6 @@ import { unsetUserAction } from "../../store/actions/userActions";
 
 
 export default function DrawerContent({ state, navigation, descriptors }) {
-          const [partenaires, setPartenaires] = useState([])
           const [counts, setCounts] = useState({})
           const[restoCommandes, setRestoCommandes] = useState([])
 
@@ -34,17 +33,6 @@ export default function DrawerContent({ state, navigation, descriptors }) {
 
           const onCommandeToggle = () => {
                     setShowCommandService(t => !t)
-          }
-          const fectPartenaires = async () => {
-                    try {
-                              const partenaire = await fetchApi("/partenaire", {ethod: "GET",
-                                        headers: { "Content-Type": "application/json" },
-                              })
-                              setPartenaires(partenaire.result)
-                    }
-                    catch (error) {
-                              console.log(error)
-                    }
           }
 
           const onLogOut = async () => {
@@ -67,14 +55,9 @@ export default function DrawerContent({ state, navigation, descriptors }) {
 
 
           useFocusEffect(useCallback(() => {
-                    fectPartenaires()
-                    commandesResto()
-          }, []))
-
-          useFocusEffect(useCallback(() => {
                     (async () => {
                               try {
-                                        const response = await fetchApi("/commandes/count", {
+                                        const response = await fetchApi("/ecommerce/ecommerce_commandes/commandes_counts", {
                                                   method: "GET",
                                                   headers: { "Content-Type": "application/json" },
                                         })

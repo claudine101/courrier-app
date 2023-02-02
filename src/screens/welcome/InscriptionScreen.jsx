@@ -83,7 +83,7 @@ export default function InscriptionScreen() {
                 setLoading(true)
                 // const token = registerPushNotification()
                 try {
-                        const res = await fetchApi("/users", {
+                        const res = await fetchApi("/auth/users", {
                                 method: 'POST',
                                 body: JSON.stringify({
                                         NOM: data.nom,

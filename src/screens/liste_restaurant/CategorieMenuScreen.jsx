@@ -27,7 +27,7 @@ export default function CategorieMenuScreen() {
           useEffect(() => {
                     (async () => {
                               try {
-                                        const reponse = await fetchApi("/resto/menu/categories", {
+                                        const reponse = await fetchApi("/resto/restaurant_menus/restaurant_categorie_menu", {
                                                   method: "GET",
                                                   headers: { "Content-Type": "application/json" },
                                         })

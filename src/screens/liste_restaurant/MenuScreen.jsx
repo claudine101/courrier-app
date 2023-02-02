@@ -13,6 +13,7 @@ import CategoriesModalizeResto from "../../components/restaurants/AllMenu/Catego
 import { HomeMenuSkeletons, HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import * as Location from 'expo-location';
 import RestosModalize from "../../components/restaurants/AllMenu/RestosModalize";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 /**
  * composant pour afficher les menus avec filtres de categories ou filtre des restaurants
@@ -49,7 +50,7 @@ export default function MenuScreen() {
 
           const fecthProduits = async () => {
                     try {
-                              const response = await fetchApi("/resto/menu/categories", {
+                              const response = await fetchApi("/resto/restaurant_menus/restaurant_categorie_menu", {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })
@@ -90,7 +91,7 @@ export default function MenuScreen() {
                     (async () => {
                               try {
                                         // return await fetchApi(`/partenaire/service/resto?lat=${lat}&long=${long}`)
-                                        const res = await fetchApi('/partenaire/service/resto')
+                                        const res = await fetchApi(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.resto}`)
                                         setRestos(res.result)
                               } catch (error) {
                                         console.log(error)
@@ -107,9 +108,9 @@ export default function MenuScreen() {
                                         if (firstLoadingProducts == false) {
                                                   setLoadingProducts(true)
                                         }
-                                        var url = "/resto/menu"
+                                        var url = "/resto/restaurant_menus"
                                         if (selectedCategory) {
-                                                  var url = `/resto/menu?category=${selectedCategory.ID_CATEGORIE_MENU}`
+                                                  var url = `/resto/restaurant_menus?category=${selectedCategory.ID_CATEGORIE_MENU}`
                                         }
                                         const reponse = await fetchApi(url)
                                         setProducts(reponse.result)

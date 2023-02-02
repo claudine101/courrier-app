@@ -63,7 +63,7 @@ export default function ConnexionScreen() {
                     try {
                               setLoading(true)
                               setAdditionalErrors({})
-                              const userData = await fetchApi("/users/login", {
+                              const userData = await fetchApi("/auth/users/login", {
                                         method: "POST",
                                         body: JSON.stringify(user),
                                         headers: { "Content-Type": "application/json" },

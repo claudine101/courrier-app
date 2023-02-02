@@ -1,21 +1,11 @@
-import React, { useCallback, useRef } from 'react'
-import { Image, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native'
-import { MaterialIcons, AntDesign, Ionicons, Entypo } from '@expo/vector-icons';
+import React, {  } from 'react'
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native'
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { COLORS } from '../../../styles/COLORS';
-import { Portal } from 'react-native-portalize';
-import { Modalize } from 'react-native-modalize';
-import AddCart from './AddCart';
 import { useState } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { ecommerceProductSelector } from '../../../store/selectors/ecommerceCartSelectors';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import fetchApi from "../../../helpers/fetchApi";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Shop({ shop, index, totalLength, fixMargins = false }) {
-          const [wishlist, setWishlist] = useState(false)
-          const [selectedSize, setSelectedSize] = useState(null)
           const navigation = useNavigation()
           const { width } = useWindowDimensions()
           const PRODUCT_MARGIN = 10
@@ -41,7 +31,7 @@ export default function Shop({ shop, index, totalLength, fixMargins = false }) {
                                                             {strUcFirst(shop.NOM_ORGANISATION.toLowerCase())}
                                                   </Text>
                                         </View>
-                                        {shop.categories[0] ? <View style={styles.shopDetail}>
+                                        {shop.categories && shop.categories[0] ? <View style={styles.shopDetail}>
                                                   <Text style={styles.shopCategory} numberOfLines={2}>
                                                   { shop.categories[0].NOM }
                                         </Text>

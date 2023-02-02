@@ -69,7 +69,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                             ID_PARTENAIRE_SERVICE: product.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                   }
                                         })
-                                        const commande = await fetchApi('/commandes/clients', {
+                                        const commande = await fetchApi('/ecommerce/ecommerce_commandes', {
                                                   method: "POST",
                                                   body: JSON.stringify({
                                                             numero: data.tel,
@@ -95,7 +95,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                         ID_PARTENAIRE_SERVICE: restaurant.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                 }
                                         })
-                                        const commande = await fetchApi('/commandes/clients/restaurant', {
+                                        const commande = await fetchApi('/resto/restaurant_commandes', {
                                                   method: "POST",
                                                   body: JSON.stringify({
                                                             numero: data.tel,

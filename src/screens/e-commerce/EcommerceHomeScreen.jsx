@@ -13,6 +13,7 @@ import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import * as Location from 'expo-location';
 import useFetch from "../../hooks/useFetch";
 import Categories from "../../components/ecommerce/home/Categories";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 /**
  * Screen de home pour afficher les boutiques, les categories et les produits recommande pour vous
@@ -26,8 +27,8 @@ export default function EcommerceHomeScreen() {
           const [products, setProducts] = useState([])
           const [productsCommande, setProductCommandes] = useState([])
 
-          const [loadingShops, shops] = useFetch('/partenaire/ecommerce')
-          const [loadingCategories, categories] = useFetch('/products/categories')
+          const [loadingShops, shops] = useFetch(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.ecommerce}`)
+          const [loadingCategories, categories] = useFetch('/ecommerce/ecommerce_produits/ecommerce_produit_categorie')
           const [IsLoadingMore, setIsLoadingMore] = useState(false)
           const [offset, setOffset] = useState(0)
           const navigation = useNavigation()
@@ -53,7 +54,7 @@ export default function EcommerceHomeScreen() {
           }
           const getProducts = useCallback(async (offset = 0) => {
                     try {
-                              var url = `/products?limit=${LIMIT}&offset=${offset}&`
+                              var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}&`
                               return await fetchApi(url)
                     }
                     catch (error) {

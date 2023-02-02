@@ -11,7 +11,7 @@ export default function AddCart({ menu, onClose, loadingForm }) {
           const [amount, setAmount] = useState(1)
           const [isFocused, setIsFocused] = useState(false)
           const dispatch = useDispatch()
-          const [loadingVariants, variants] = useFetch(`/resto/menu/variants/${menu.produit.ID_RESTAURANT_MENU}`)
+          const [loadingVariants, variants] = useFetch(`/resto/restaurant_menus/restaurant_menu_variants/${menu.produit.ID_RESTAURANT_MENU}`)
           const [selectedCombinaison, setSelectedCombinaison] = useState(null)
 
           /**

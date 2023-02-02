@@ -46,8 +46,8 @@ export default function ProductDetailsScreen() {
           const [userNote, SetuserNote] = useState([])
           const { product } = route.params
 
-          const [loadingShopProducts, shopProducts] = useFetch(`/products?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
-          const [loadingSimilarProducts, similarProducs] = useFetch(`/products?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
+          const [loadingShopProducts, shopProducts] = useFetch(`/ecommerce/ecommerce_produits?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
+          const [loadingSimilarProducts, similarProducs] = useFetch(`/ecommerce/ecommerce_produits?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
 
           const user = useSelector(userSelector)
           const modalizeRef = useRef(null)

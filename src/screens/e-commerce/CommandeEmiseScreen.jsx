@@ -9,6 +9,8 @@ import { COLORS } from "../../styles/COLORS";
 import CommandeSkeletons from "../../components/app/Skeletons";
 import { useCallback } from "react";
 import LottieView from 'lottie-react-native';
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/selectors/userSelector";
 
 /**
  * screen pour afficher tous les commandes faites par un utilisateur
@@ -21,6 +23,7 @@ export default function CommandeEmiseScreen() {
           const navigation = useNavigation()
           const [loading, setLoading] = useState(true)
           const [refreshing, setRefreshing] = useState(false)
+          const user = useSelector(userSelector)
 
           moment.updateLocale('fr', {
                     calendar: {
@@ -34,7 +37,7 @@ export default function CommandeEmiseScreen() {
 
           const getCommandes = async () => {
                     try {
-                              return await fetchApi(`/commandes`, {
+                              return await fetchApi(`/ecommerce/ecommerce_commandes?ID_USER=${user.ID_USER}`, {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })

@@ -23,7 +23,6 @@ export default function ProductsTabScreen({ shop }) {
                                         totalLength={products.length}
                                         key={index}
                                         fixMargins
-                              // IsLoadingMore={IsLoadingMore}
                               />
                     )
           }
@@ -31,7 +30,7 @@ export default function ProductsTabScreen({ shop }) {
           useFocusEffect(useCallback(() => {
                     (async () => {
                               try {
-                                        var url = `/products?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
+                                        var url = `/ecommerce/ecommerce_produits?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
                                         const produits = await fetchApi(url)
                                         setProducts(produits.result)
                               } catch (error) {
