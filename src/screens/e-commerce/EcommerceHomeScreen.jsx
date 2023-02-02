@@ -117,8 +117,7 @@ export default function EcommerceHomeScreen() {
                                         <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10 }}>
                                                   <View style={{ width: "84%" }}>
                                                             <TouchableNativeFeedback useForeground onPress={() => {
-                                                                                return false
-                                                                                navigation.navigate("ResearchTab")
+                                                                                navigation.navigate("RechercheScreen")
                                                             }}>
                                                                                 <View  style={styles.searchSection} >
                                                                                           <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />

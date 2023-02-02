@@ -15,6 +15,7 @@ import CategorieListeScreen from "../screens/liste_e-commerce/CategorieListeScre
 import PlusRecommandeScreen from "../screens/liste_e-commerce/PlusRecommandeListeScreen";
 import WishlistTab from "../screens/wishlist/WishlistTab";
 import EcommerceHeader from "../components/ecommerce/main/EcommerceHeader";
+import RechercheScreen from "../screens/restaurant/RechercheScreen";
 export default function EcommerceNavigator() { 
     
           const Stack = createStackNavigator()
@@ -30,6 +31,7 @@ export default function EcommerceNavigator() {
                                                   <Stack.Screen name="BoutiqueListeScreen" component={BoutiqueListeScreen}/>
                                                   <Stack.Screen name="CategorieListeScreen" component={CategorieListeScreen}/>
                                                   <Stack.Screen name="PlusRecommandeScreen" component={PlusRecommandeScreen}/>
+                                                  <Stack.Screen name="RechercheScreen" component={RechercheScreen}/>
                                         </Stack.Group>
                                         <Stack.Screen name="ShopScreen" component={ShopScreen} options={{ 
                                                   headerShown: true,
