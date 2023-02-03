@@ -32,6 +32,7 @@ export default function EcommerceHomeScreen() {
           const [IsLoadingMore, setIsLoadingMore] = useState(false)
           const [offset, setOffset] = useState(0)
           const navigation = useNavigation()
+         
 
           const LIMIT = 10
 

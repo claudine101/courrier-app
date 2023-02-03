@@ -130,7 +130,7 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                   </TouchableOpacity>
 
                                         </View>}
-                                        <TouchableNativeFeedback useForeground disabled background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('WishlistTab')}>
+                                        <TouchableNativeFeedback useForeground  background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('WishlistTab')}>
                                                   <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 3) && { backgroundColor: COLORS.handleColor }]}>
                                                             <View style={styles.drawerItem}>
                                                                       <AntDesign name="hearto" size={24} color="#777" />
