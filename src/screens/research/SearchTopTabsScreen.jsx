@@ -6,6 +6,10 @@ import BoutiqueResearchScreen from "./BoutiqueResearchScreen";
 import EcommerceResearchScreen from "./EcommerceResearchScreen";
 import MenusResearchScreen from "./MenusResearchScreen";
 import RestaurantResearchScreen from "./RestaurantResearchScreen";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
+
+console.log(IDS_SERVICE_CATEGORIES.ecommerce)
+
 
 /**
  * screen pour afficher les top tabs pour les recherche des produits, menu, boutique et restaurant
@@ -16,7 +20,9 @@ import RestaurantResearchScreen from "./RestaurantResearchScreen";
 
 const TopTab = createMaterialTopTabNavigator()
 
-export default function SearchTopTabsScreen({search}) {
+export default function SearchTopTabsScreen({search, service}) {
+        console.log(service)
+        
         return (
                 <TopTab.Navigator
                         screenOptions={{
@@ -37,10 +43,10 @@ export default function SearchTopTabsScreen({search}) {
                                 }
                         }}
                 >
-                        <TopTab.Screen name="EcommerceResearchScreen" component={EcommerceResearchScreen} initialParams={search} options={{ title: "Produits"}}/>
-                        <TopTab.Screen name="MenusResearchScreen" component={MenusResearchScreen} initialParams={search} options={{ title: "Menus"}}/>
-                        <TopTab.Screen name="BoutiqueResearchScreen" component={BoutiqueResearchScreen} initialParams={search} options={{ title: "Boutique"}}/>
-                        <TopTab.Screen name="RestaurantResearchScreen" component={RestaurantResearchScreen} initialParams={search} options={{ title: "Restaurant"}}/>
+                        <TopTab.Screen name="EcommerceResearchScreen" component={EcommerceResearchScreen} initialParams={{search}} options={{ title: "Produits"}}/>
+                        <TopTab.Screen name="MenusResearchScreen" component={MenusResearchScreen} initialParams={{search}} options={{ title: "Menus"}}/>
+                        <TopTab.Screen name="BoutiqueResearchScreen" component={BoutiqueResearchScreen} initialParams={{search}} options={{ title: "Boutique"}}/>
+                        <TopTab.Screen name="RestaurantResearchScreen" component={RestaurantResearchScreen} initialParams={{search}} options={{ title: "Restaurant"}}/>
 
                 </TopTab.Navigator>
         )

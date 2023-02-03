@@ -124,7 +124,7 @@ export default function RestaurantHomeScreen() {
                               >
                                         <Text style={styles.titlePrincipal}>Restauration</Text>
                                         <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10 }}>
-                                                  <TouchableOpacity onPress={() => navigation.navigate("RechercheScreen")} style={styles.searchSection} >
+                                                  <TouchableOpacity onPress={() => navigation.navigate("RechercheAllScreen",{service:2})} style={styles.searchSection} >
                                                             <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
                                                             <Text style={styles.input}>Rechercher...</Text>
                                                   </TouchableOpacity>

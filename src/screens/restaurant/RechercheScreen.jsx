@@ -5,12 +5,11 @@ import { COLORS } from "../../styles/COLORS";
 import { useNavigation } from "@react-navigation/native";
 export default function RechercheScreen() {
     const [search, SetSearch] = useState(null)
-    //console.log(search)
     const navigation = useNavigation()
    
     return (
 
-        <View style={{ flexDirection: "row", alignItems: "center",flex:0.14, alignContent: "center", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 5 }}>
+        <View style={{  }}>
             <View style={styles.searchSection}>
                 <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
                 <TextInput

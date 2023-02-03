@@ -29,14 +29,15 @@ export default function ResearchTab() {
 
     const route = useRoute()
     const {search}=route.params
-    const contextValues = {
-        products,
-        menus,
-        firstLoadingProducts,
-        loadingProducts,
-        firstLoadingMenus,
-        loadingMenus
-    }
+    console.log(search)
+    // const contextValues = {
+    //     products,
+    //     menus,
+    //     firstLoadingProducts,
+    //     loadingProducts,
+    //     firstLoadingMenus,
+    //     loadingMenus
+    // }
 
     useEffect(() => {
         (async () => {
@@ -90,7 +91,7 @@ export default function ResearchTab() {
     // }, [search])
 
     return (
-        <SearchContext.Provider value={contextValues}>
+        // <SearchContext.Provider value={contextValues}>
             <View style={styles.container}>
                 <View style={styles.cardHeader}>
                     <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
@@ -113,7 +114,7 @@ export default function ResearchTab() {
                 </View>
                 <SearchTopTabsScreen  search={search}/>
             </View>
-        </SearchContext.Provider>
+        // </SearchContext.Provider>
     )
 }
 const styles = StyleSheet.create({
