@@ -56,7 +56,7 @@ export default function RestaurantWishlistScreen() {
       if (firstLoadingProducts == false) {
         setLoadingProducts(true)
       }
-      var url = "/resto/menu/wishlist/all"
+      var url = "/resto/restaurant_menus/wishlistmenu"
       const menu = await fetchApi(url)
       setMenus(menu.result)
     }
@@ -71,45 +71,6 @@ export default function RestaurantWishlistScreen() {
     fecthMenus()
   }, []))
 
-  // return (
-  //   <View style={styles.container}>
-
-  //     {menus.length!=0 ?
-  //     <ScrollView style={styles.cardOrginal} stickyHeaderIndices={[2]}>
-
-  //     <TouchableNativeFeedback
-  //       accessibilityRole="button"
-  //       background={TouchableNativeFeedback.Ripple('#c9c5c5')}
-  //     >
-  //       <View style={styles.productsHeader}>
-  //      </View>
-  //     </TouchableNativeFeedback>
-  //     <View style={styles.products}>
-  //       {menus.map((menu, index) => {
-  //         return (
-  //           <Menu
-  //             menu={menu}
-  //             index={index}
-  //             totalLength={menus.length}
-  //             key={index}
-  //             fixMargins
-  //             onRemove={onRemove}
-  //           />
-  //         )
-  //       })}
-  //     </View>
-  //   </ScrollView>:
-  //   <>
-  //   <LottieView style={{ marginTop:40, width: 200, height: 200, alignSelf: "center" }} source={require('../../../assets/lotties/empty-cart.json')} autoPlay loop={false} />
-  //   <Text style={styles.emptyFeedback}>Votre liste des souhaits est vide</Text>
-
-  //   </>
-  //     }
-
-
-
-  //   </View>
-  // )
   return (
     <View style={styles.container}>
       {(firstLoadingProducts || loadingProducts) ?

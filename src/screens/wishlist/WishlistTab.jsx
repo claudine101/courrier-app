@@ -52,7 +52,7 @@ export default function WishlistTab() {
                     <EcommerceBadge />
                 </View>
                 <Text style={styles.titlePrincipal}>Souhaits</Text>
-                <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", paddingHorizontal: 10, marginBottom: 10 }}>
+                {/* <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", paddingHorizontal: 10, marginBottom: 10 }}>
                     <View style={styles.searchSection}>
                         <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
                         <TextInput
@@ -63,7 +63,7 @@ export default function WishlistTab() {
                     <View style={styles.cardRecherche}>
                         <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
                     </View>
-                </View>
+                </View> */}
                 <TopBar.Navigator
 
                     screenOptions={{
@@ -82,9 +82,9 @@ export default function WishlistTab() {
                         }
                     }}
                 >
-                    <TopBar.Screen name='EcommerceWishlistScreen' component={EcommerceWishlistScreen} options={{ title: "Shops" }} />
-                    <TopBar.Screen name='RestaurantWishlistScreen' component={RestaurantWishlistScreen} options={{ title: "Restaurant" }} />
-                    <TopBar.Screen name='EvenementWishlistScreen' component={EvenementWishlistScreen} options={{ title: "Evenement" }} />
+                    <TopBar.Screen name='EcommerceWishlistScreen' component={EcommerceWishlistScreen} options={{ title: "Produit" }} />
+                    <TopBar.Screen name='RestaurantWishlistScreen' component={RestaurantWishlistScreen} options={{ title: "Menu" }} />
+                    <TopBar.Screen name='EvenementWishlistScreen' component={EvenementWishlistScreen} options={{ title: "Boutique" }} />
 
                 </TopBar.Navigator>
             </View>
