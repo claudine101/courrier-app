@@ -16,47 +16,52 @@ import * as ExpoLinking from 'expo-linking';
 const Stack = createStackNavigator()
 
 export default function AppContainer() {
-        const dispatch = useDispatch()
-        const user = useSelector(userSelector)
-        const [userLoading, setUserLoading] = useState(true)
-        const [showOnBoarding, setShowOnBoarding] = useState(false)
-        useEffect(() => {
-                Notifications.setNotificationHandler({
-                        handleNotification: async () => ({
-                                shouldShowAlert: true,
-                                shouldPlaySound: true,
-                                shouldSetBadge: true,
-                        }),
-                });
-                (async function () {
-                        const token = await registerPushNotification()
-                        dispatch(setNotificationTokenAction(token.data))
-                        const user = await AsyncStorage.getItem("user")
-                        //       await AsyncStorage.removeItem('user')
-                        const onboarding = JSON.parse(await AsyncStorage.getItem('onboarding'))
-                        setShowOnBoarding(!onboarding || !onboarding.finished)
-                        dispatch(setUserAction(JSON.parse(user)))
-                        setUserLoading(false)
-                })()
-        }, [dispatch])
-        // const prefix = ExpoLinking.createURL('/')
-        if (userLoading) {
-                return (
-                        <View style={{ flex: 1, alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-                                <ActivityIndicator color="#007BFF" animating={userLoading} size='large' />
-                        </View>
-                )
-        }
+          const dispatch = useDispatch()
+          const user = useSelector(userSelector)
+          const [userLoading, setUserLoading] = useState(true)
+          const [showOnBoarding, setShowOnBoarding] = useState(false)
+          
+          const setToken = async () => {
+                    const token = await registerPushNotification();
+                    dispatch(setNotificationTokenAction(token.data));
+          }
+          
+          useEffect(() => {
+                    Notifications.setNotificationHandler({
+                              handleNotification: async () => ({
+                                        shouldShowAlert: true,
+                                        shouldPlaySound: true,
+                                        shouldSetBadge: true,
+                              }),
+                    });
+                    (async function () {
+                              setToken()
+                              const user = await AsyncStorage.getItem("user")
+                              //       await AsyncStorage.removeItem('user')
+                              const onboarding = JSON.parse(await AsyncStorage.getItem('onboarding'))
+                              setShowOnBoarding(!onboarding || !onboarding.finished)
+                              dispatch(setUserAction(JSON.parse(user)))
+                              setUserLoading(false)
+                    })()
+          }, [dispatch])
+          // const prefix = ExpoLinking.createURL('/')
+          if (userLoading) {
+                    return (
+                              <View style={{ flex: 1, alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+                                        <ActivityIndicator color="#007BFF" animating={userLoading} size='large' />
+                              </View>
+                    )
+          }
 
-        return (
-                // userLoading ?
-                //         <View style={{ flex: 1, alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-                //                 <ActivityIndicator color="#007BFF" animating={userLoading} size='large' />
-                //         </View> :
-                <>
-                        {!user ? <WelcomeNavigator showOnBoarding={showOnBoarding} /> :
-                                <RootNavigator />
-                        }
-                </>
-        )
+          return (
+                    // userLoading ?
+                    //         <View style={{ flex: 1, alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+                    //                 <ActivityIndicator color="#007BFF" animating={userLoading} size='large' />
+                    //         </View> :
+                    <>
+                              {!user ? <WelcomeNavigator showOnBoarding={showOnBoarding} /> :
+                                        <RootNavigator />
+                              }
+                    </>
+          )
 }
