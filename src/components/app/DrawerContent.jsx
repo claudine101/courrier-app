@@ -108,7 +108,7 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                         </TouchableNativeFeedback>
                                         {showServiceCommands && <View style={styles.services}>
 
-                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate("CommandeEmiseScreen")} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
+                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate('CommandeEmiseScreen', {serviceCategory:1})} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
                                                             <Text style={[styles.serviceName, (state.index == 4) && { color: '#000' }]}>
                                                                       Achats de produits
                                                             </Text>
