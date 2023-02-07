@@ -27,6 +27,7 @@ import moment from "moment/moment";
 import Loading from "../../components/app/Loading";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import useFetch from "../../hooks/useFetch";
+import NotesEcommerce from "../../components/ecommerce/home/NotesEcommerce";
 
 
 moment.updateLocale('fr', {
@@ -42,10 +43,10 @@ moment.updateLocale('fr', {
 export default function ProductDetailsScreen() {
     const navigation = useNavigation()
     const route = useRoute()
-    const [produitnote, Setproduitnote] = useState([])
-    const [userNote, SetuserNote] = useState([])
+    const [produitnoteuser, setProduitnoteUser] = useState(null)
+    const [userNote, setUserNote] = useState([])
     const { product } = route.params
-
+    console.log(produitnoteuser)
     const [loadingShopProducts, shopProducts] = useFetch(`/ecommerce/ecommerce_produits?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
     const [loadingSimilarProducts, similarProducs] = useFetch(`/ecommerce/ecommerce_produits?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
 
@@ -71,11 +72,13 @@ export default function ProductDetailsScreen() {
         product.produit_partenaire.IMAGE_2 ? product.produit_partenaire.IMAGE_2 : undefined,
         product.produit_partenaire.IMAGE_3 ? product.produit_partenaire.IMAGE_3 : undefined,
     ]
+    //console.log(product.produit.ID_PRODUIT)
     const [data, handleChange] = useForm({
 
         commentaire: "",
 
     })
+    //console.log(data.commentaire)
     useEffect(() => {
         if (isOpen) {
             const timer = setTimeout(() => {
@@ -90,10 +93,10 @@ export default function ProductDetailsScreen() {
     useEffect(() => {
         (async () => {
             try {
-                var url = `/products/note/liste/${product.produit.ID_PRODUIT_PARTENAIRE}`
+                var url = `/ecommerce/ecommerce_produits_notes/notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`
                 const produitsNotes = await fetchApi(url)
-                Setproduitnote(produitsNotes.result)
-               
+                setProduitnoteUser(produitsNotes.result)
+                
             } catch (error) {
                 console.log(error)
             }
@@ -104,10 +107,10 @@ export default function ProductDetailsScreen() {
     useEffect(() => {
         (async () => {
             try {
-                var url = `/products/note/${product.produit.ID_PRODUIT}`
-                const userNotes = await fetchApi(url)
-                SetuserNote(userNotes.result)
-                console.log(product)
+                var url = `/ecommerce/ecommerce_produits_notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`
+                const produtsNotes = await fetchApi(url)
+                setUserNote(produtsNotes.result)
+                console.log(produtsNotes)
             } catch (error) {
                 console.log(error)
             }
@@ -116,6 +119,7 @@ export default function ProductDetailsScreen() {
     const onSubmit = async () => {
 
         try {
+            setLoading(true)
 
             const form = new FormData()
 
@@ -123,13 +127,17 @@ export default function ProductDetailsScreen() {
             form.append("COMMENTAIRE", data.commentaire)
             form.append("ID_PRODUIT", product.produit.ID_PRODUIT)
             form.append("NOTE", note)
-            const Notes = await fetchApi('/products/note', {
+            const Notes = await fetchApi('/ecommerce/ecommerce_produits_notes', {
                 method: "POST",
                 body: form
             })
-            data.commentaire = ""
+            data.commentaire = " "
+            // console.log(form)
         } catch (error) {
             console.log(error)
+        }
+        finally {
+            setLoading(false)
         }
     }
 
@@ -207,22 +215,27 @@ export default function ProductDetailsScreen() {
                             </View>
                         </View>
 
-
-
                     </TouchableNativeFeedback>
-                    {/* <View>
-                                                            <Text style={styles.plusText}>Notes et Revus</Text>
-                                                  </View> */}
-                    {false && <View style={styles.notes}>
-                        {new Array(5).fill(0).map((_, index) => {
-                            return (
-                                <TouchableOpacity onPress={() => setNote(index + 1)} style={styles.etoiles} >
-                                    {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                        <AntDesign name="star" size={25} color="black" />}
-                                </TouchableOpacity>
-                            )
-                        })}
-                    </View>}
+                    {produitnoteuser ? <View>
+                        
+                        <NotesEcommerce allNotes={produitnoteuser}/>
+                        <View style={styles.container}>
+                        <TouchableOpacity><Text>EDITER NOTE </Text></TouchableOpacity> 
+                        </View>
+                        
+                        </View> :
+                    <>
+                        <View style={styles.notes}>
+                            {new Array(5).fill(0).map((_, index) => {
+                                return (
+                                    <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
+                                        {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
+                                            <AntDesign name="star" size={25} color="black" />}
+                                    </TouchableOpacity>
+                                )
+                            })}
+                        </View>
+
                     {note ?
                         <View>
                             <View style={styles.selectControl}>
@@ -249,8 +262,8 @@ export default function ProductDetailsScreen() {
                         </View>
                         : null
                     }
-
-
+                    </>}
+                    <NotesEcommerce allNotes={userNote}/>
 
                     {loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts
                         products={similarProducs.result}
@@ -362,10 +375,12 @@ const styles = StyleSheet.create({
     },
     notes: {
         flexDirection: 'row',
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingHorizontal: 10
         //marginTop: 7
 
     },
+   
     etoiles: {
         marginLeft: 5,
         display: "flex",
@@ -598,6 +613,13 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontWeight: "bold"
     },
+    container: {
+        flex: 1,
+        marginTop:5,
+        paddingHorizontal:65,
+        fontSize:30,
+       
+},
     plusText: {
         color: COLORS.ecommercePrimaryColor,
         fontSize: 17,

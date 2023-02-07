@@ -27,7 +27,7 @@ export default function NotesEcommerce({ allNotes }) {
                 <>
                         {allNotes.map((note, index) => {
                                 return (
-                                        <View style={styles.container} key={index}>
+                                        <View style={styles.container} key={index}> 
                                                 <View style={styles.cardPrincipal}>
                                                         <View style={styles.cardNotes}>
                                                                 <AntDesign name="user" size={24} color="black" />
@@ -50,17 +50,13 @@ export default function NotesEcommerce({ allNotes }) {
                                                                         <View style={styles.cardDescription}>
                                                                                 <View><Text>{note.COMMENTAIRE}</Text></View>
                                                                         </View>
-                                                                        <TouchableOpacity style={{ marginTop: 8 }}>
-                                                                                <Text style={styles.titleModifier}>Modifier votre avis</Text>
-                                                                        </TouchableOpacity>
+                                                                      
 
 
                                                                 </View>
                                                                 <View style={{justifyContent:"center", alignItems:"center"}}>
                                                                         <View><Text>{moment(note.DATE_INSERTION).format('HH:mm')} </Text></View>
-                                                                        <TouchableOpacity style={{marginTop:10}}>
-                                                                                <AntDesign name="delete" size={24} color="black" />
-                                                                        </TouchableOpacity>
+                                                                        
                                                                 </View>
 
                                                         </View>
@@ -79,7 +75,8 @@ export default function NotesEcommerce({ allNotes }) {
 const styles = StyleSheet.create({
         container: {
                 flex: 1,
-                marginTop: 10
+                marginTop: 10,
+                paddingHorizontal:10
         },
         cardNotes: {
                 width: 40,
