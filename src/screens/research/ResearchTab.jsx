@@ -1,20 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React, {  useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, useWindowDimensions, StatusBar, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import EcommerceBadge from '../../components/ecommerce/main/EcommerceBadge';
 import { COLORS } from '../../styles/COLORS';
-import {  FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
+import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import EcommerceResearchScreen from './EcommerceResearchScreen';
 import RestaurantResearchScreen from './RestaurantResearchScreen';
 import { useForm } from '../../hooks/useForm';
 import fetchApi from '../../helpers/fetchApi';
 import SearchContext from '../../context/searchContext';
+import SearchTopTabsScreen from './SearchTopTabsScreen';
 const TopBar = createMaterialTopTabNavigator()
 
 export default function ResearchTab() {
-    const navigation=useNavigation()
+    const navigation = useNavigation()
     const [products, setProducts] = useState([])
     const [menus, setMenus] = useState([])
 
@@ -26,74 +27,74 @@ export default function ResearchTab() {
     const { height } = useWindowDimensions()
     // const [search, SetSearch]=useState(null)
 
-    const route=useRoute()
+    const route = useRoute()
     const {search}=route.params
-    // console.log(search)
-    const  contextValues={
-        products,
-        menus,
-        firstLoadingProducts,
-        loadingProducts,
-        firstLoadingMenus,
-        loadingMenus
-    }
-   
+    console.log(search)
+    // const contextValues = {
+    //     products,
+    //     menus,
+    //     firstLoadingProducts,
+    //     loadingProducts,
+    //     firstLoadingMenus,
+    //     loadingMenus
+    // }
+
     useEffect(() => {
         (async () => {
             await AsyncStorage.setItem('onboarding', JSON.stringify({ finished: true }))
         })()
     }, [])
-     //POUR LES PRODUITS
-    useEffect(() => {
-        (async () => {
-            try {
-                if (firstLoadingProducts == false) {
-                    setLoadingProducts(true)
-                }
-                var url = `/products/research`
-                if (search) {
-                    url = `/products/research?q=${search}`
-                }
-                const produits = await fetchApi(url)
-                setProducts(produits.result)
-                console.log(products)
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setFirstLoadingProducts(false)
-                setLoadingProducts(false)
-            }
-        })()
-    }, [search])
- 
+    //POUR LES PRODUITS
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             if (firstLoadingProducts == false) {
+    //                 setLoadingProducts(true)
+    //             }
+    //             var url = `/products/research`
+    //             if (search) {
+    //                 url = `/products/research?q=${search}`
+    //             }
+    //             const produits = await fetchApi(url)
+    //             setProducts(produits.result)
+    //             console.log(products)
+    //         } catch (error) {
+    //             console.log(error)
+    //         } finally {
+    //             setFirstLoadingProducts(false)
+    //             setLoadingProducts(false)
+    //         }
+    //     })()
+    // }, [search])
+
 
     //POUR LES MENUS
-    useEffect(() => {
-        (async () => {
-            try {
-                if (firstLoadingMenus == false) {
-                    setLoadingMenus(true)
-                }
-                var url = "/resto/menu/menu/research"
-                if (search) {
-                    url = `/resto/menu/menu/research?q=${search}`
-                }
-                console.log(url)
-                const menus = await fetchApi(url)
-                setMenus(menus.result)
-                console.log(error)
-            } finally {
-                setFirstLoadingMenus(false)
-                setLoadingMenus(false)
-            }
-        })()
-    }, [search])
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             if (firstLoadingMenus == false) {
+    //                 setLoadingMenus(true)
+    //             }
+    //             var url = "/resto/menu/menu/research"
+    //             if (search) {
+    //                 url = `/resto/menu/menu/research?q=${search}`
+    //             }
+    //             console.log(url)
+    //             const menus = await fetchApi(url)
+    //             setMenus(menus.result)
+    //             console.log(error)
+    //         } finally {
+    //             setFirstLoadingMenus(false)
+    //             setLoadingMenus(false)
+    //         }
+    //     })()
+    // }, [search])
 
     return (
-        <SearchContext.Provider value={contextValues}>
+        // <SearchContext.Provider value={contextValues}>
             <View style={styles.container}>
                 <View style={styles.cardHeader}>
-                    <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch( DrawerActions.toggleDrawer())}>
+                    <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
                         <View style={styles.menuOpenerLine} />
                         <View style={[styles.menuOpenerLine, { width: 15 }]} />
                         <View style={[styles.menuOpenerLine, { width: 25 }]} />
@@ -101,36 +102,19 @@ export default function ResearchTab() {
                     {/* <EcommerceBadge /> */}
                 </View>
                 {/* <Text style={styles.titlePrincipal}>Liste des produits</Text> */}
-     
-      <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 5 }}>
-                <TouchableOpacity  style={styles.searchSection} >
-                    <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
-                    <Text style={styles.input}>{search?search:"Rechercher"}</Text>
-                </TouchableOpacity>
-                <View style={styles.cardRecherche}>
-                    <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
+
+                <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 5 }}>
+                    <TouchableOpacity style={styles.searchSection} >
+                        <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
+                       <Text style={styles.input}>{search? search : "Recherche"}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.cardRecherche}>
+                        <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
+                    </View>
                 </View>
+                <SearchTopTabsScreen  search={search}/>
             </View>
-                <TopBar.Navigator
-                   
-                    screenOptions={{
-                        tabBarStyle: styles.tabBar,
-                        tabBarLabelStyle: {
-                                  color: COLORS.ecommercePrimaryColor,
-                                  textTransform: 'none',
-                                  fontSize: 15
-                        },
-                        tabBarIndicatorStyle: {
-                                  height: 3,
-                                 backgroundColor: COLORS.ecommercePrimaryColor,
-                        }
-              }}
-                >
-                    <TopBar.Screen name='EcommerceResearchScreen' component={EcommerceResearchScreen}  initialParams={search} options={{ title: "E-commerce" }} />
-                    <TopBar.Screen name='RestaurantResearchScreen' component={RestaurantResearchScreen} initialParams={search} options={{ title: "Restauration" }} />
-                </TopBar.Navigator>
-            </View>
-            </SearchContext.Provider>
+        // </SearchContext.Provider>
     )
 }
 const styles = StyleSheet.create({
@@ -155,15 +139,15 @@ const styles = StyleSheet.create({
         width: "84%",
         height: 50,
         paddingHorizontal: 10
-      },
+    },
     cardOrginal: {
     },
     titlePrincipal: {
-      fontSize: 20,
-      fontWeight: "bold",
-      marginBottom: 12,
-      color: COLORS.ecommercePrimaryColor,
-      marginHorizontal: 10
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 12,
+        color: COLORS.ecommercePrimaryColor,
+        marginHorizontal: 10
     },
     menuOpener: {
     },
@@ -204,7 +188,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         elevation: 0,
         marginHorizontal: 20,
-},
+    },
     tabIndicator: {
         width: "90%",
         height: 5,
@@ -216,7 +200,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         marginLeft: 10
-      },
+    },
     cardRecherche: {
         width: 50,
         height: 50,
@@ -226,5 +210,5 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
         alignItems: "center"
-      },
+    },
 })
