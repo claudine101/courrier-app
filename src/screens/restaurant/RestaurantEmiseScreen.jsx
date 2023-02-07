@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import LottieView from 'lottie-react-native';
 import { useSelector } from "react-redux";
 import { userSelector } from "../../store/selectors/userSelector";
+import AppHeader from "../../components/app/AppHeader";
 
 export default function RestaurantEmiseScreen() {
           const [commandes, setCommandes] = useState([])
@@ -78,27 +79,10 @@ export default function RestaurantEmiseScreen() {
           }
           return (
                     <View style={styles.container}>
-                              <View style={styles.cardHeader}>
-                                        <TouchableNativeFeedback
-                                                  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-                                                  background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
-                                                  <View style={styles.menuOpener}>
-                                                            <View style={styles.menuOpenerLine} />
-                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                                  </View>
-                                        </TouchableNativeFeedback>
-                                        <View style={styles.imageContainer}>
-                                                  <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
-                                        </View>
-                                        <View style={{ marginTop: 25, padding: 10 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary}  />
-                                        </View>
-                              </View>
+                              <AppHeader />
                               <Text style={styles.title}>Commandes emises</Text>
                               {loading ? <CommandeSkeletons /> :
                                         <>
-
                                                   {commandes.length == 0 ?
                                                             <View style={{ marginTop: 30 }}>
                                                                       <LottieView style={{ width: 200, height: 200, alignSelf: "center" }} source={require('../../../assets/lotties/empty-cart.json')} autoPlay loop={false} />

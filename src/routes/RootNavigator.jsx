@@ -12,6 +12,9 @@ import DetailCommandeScreen from '../screens/e-commerce/DetailCommandeScreen';
 import DetailCommandeMenuScreen from '../screens/restaurant/DetailCommandeMenuScreen';
 import ProductDetailsScreen from '../screens/e-commerce/ProductDetailsScreen';
 import PlusRecommandeScreen from '../screens/liste_e-commerce/PlusRecommandeListeScreen';
+import SearchHistoryScreen from '../screens/search/SearchHistoryScreen';
+import SearchResultTabs from '../screens/search/SearchResultTabsScreen';
+import SearchResultTabsScreen from '../screens/search/SearchResultTabsScreen';
 
 
 export default function RootNavigator() {
@@ -41,7 +44,14 @@ export default function RootNavigator() {
                                         <Stack.Screen name="NoHeaderSearchLivreurScreen" component={SearchLivreurScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
                                         <Stack.Screen name='ProductDetailsScreen' component={ProductDetailsScreen} options={{headerShown: false}}/>
                                         <Stack.Screen name='PlusRecommandeScreen' component={PlusRecommandeScreen} options={{headerShown: false}}/>
-                                        
+                                        <Stack.Screen name="SearchHistoryScreen" component={SearchHistoryScreen} options={{
+                                                  headerShown: false,
+                                                  cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+                                        }} />
+                                        <Stack.Screen name="SearchResultTabsScreen" component={SearchResultTabsScreen} options={{
+                                                  headerShown: false,
+                                                  cardStyleInterpolator: CardStyleInterpolators.forNoAnimation
+                                        }} />
                               </Stack.Navigator>
                     </NavigationContainer>
           )

@@ -1,16 +1,14 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
-import { Text, View, ImageBackground, StatusBar, StyleSheet, Image, TouchableNativeFeedback, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, FlatList } from "react-native";
-import { EvilIcons, MaterialIcons, AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
+import React, { useCallback, useState } from "react";
+import { Text, View, StatusBar, StyleSheet, TouchableNativeFeedback, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import fetchApi from "../../helpers/fetchApi";
-import { DrawerActions, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
-import { CategoriesMenuSkeletons, CategoriesSkeletons, HomeMenuSkeletons, HomeProductsSkeletons, RestaurantSkeletons, restaurantSkeletons, SubCategoriesSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
+import { CategoriesSkeletons, RestaurantSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import Menu from "../../components/restaurants/main/Menu";
 import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
 import Restaurants from "../../components/restaurants/home/Restaurants";
 import { useForm } from "../../hooks/useForm";
-import LottieView from 'lottie-react-native';
-import * as Location from 'expo-location';
 import CategoriesResto from "../../components/restaurants/home/CategoriesResto";
 import useFetch from "../../hooks/useFetch";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
@@ -123,8 +121,8 @@ export default function RestaurantHomeScreen() {
                                         style={styles.cardOrginal}
                               >
                                         <Text style={styles.titlePrincipal}>Restauration</Text>
-                                        <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10 }}>
-                                                  <TouchableOpacity onPress={() => navigation.navigate("RechercheAllScreen",{service:2})} style={styles.searchSection} >
+                                        <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10, marginTop: 20 }}>
+                                                  <TouchableOpacity onPress={() => navigation.navigate("SearchHistoryScreen",{service:2})} style={styles.searchSection} >
                                                             <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
                                                             <Text style={styles.input}>Rechercher...</Text>
                                                   </TouchableOpacity>
@@ -197,7 +195,6 @@ const styles = StyleSheet.create({
           },
           searchSection: {
                     flexDirection: "row",
-                    marginTop: 20,
                     padding: 5,
                     borderRadius: 10,
                     borderWidth: 1,
@@ -218,7 +215,6 @@ const styles = StyleSheet.create({
                     height: 50,
                     borderRadius: 10,
                     backgroundColor: COLORS.ecommerceRed,
-                    marginTop: 8,
                     justifyContent: "center",
                     alignContent: "center",
                     alignItems: "center"

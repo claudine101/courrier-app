@@ -106,6 +106,7 @@ export default function MenuDetailScreen() {
                                                   </TouchableNativeFeedback>
                                                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                                                             <TouchableNativeFeedback
+                                                                      onPress={() => navigation.navigate("SearchHistoryScreen", {service:1})}
                                                                       style={{}}
                                                                       background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
                                                                       <View style={styles.headerBtn}>

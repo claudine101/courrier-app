@@ -96,8 +96,8 @@ export default function MenusResearchScreen() {
                                                                 })}
                                                         </> :
                                                         <View style={styles.cardImages}>
-                                                                <Image source={require("../../../assets/images/not-found.png")} style={styles.imagesNotFound} />
-                                                                <Text style={styles.emptyFeedback}>Aucun menus trouvez</Text>
+                                                                <Image source={require("../../../assets/images/no-result.png")} style={styles.imagesNotFound} />
+                                                                <Text style={styles.emptyFeedback}>Aucun résultat trouvé</Text>
                                                         </View>}
                                         </View>}
                                 <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10, opacity: IsLoadingMore ? 1 : 0 }}>
@@ -122,16 +122,16 @@ const styles = StyleSheet.create({
         emptyFeedback: {
                 textAlign: "center",
                 marginTop: 10,
-                color: COLORS.ecommercePrimaryColor,
+                color: '#777',
                 fontWeight: "bold",
                 opacity: 0.6,
                 fontSize: 16,
-                marginTop: 40,
+                marginTop: 20,
                 marginHorizontal: 50
         },
         imagesNotFound: {
-                width: 160,
-                height: 160,
+                width: 100,
+                height: 100,
                 marginTop: 40,
                 marginHorizontal: 110,
                 alignItems: "center",
@@ -141,5 +141,6 @@ const styles = StyleSheet.create({
                 flex: 1,
                 height: "100%",
                 justifyContent: "center",
+                alignItems: 'center'
         }
 })

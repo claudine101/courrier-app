@@ -9,6 +9,7 @@ import EcommerceWishlistScreen from './EcommerceWishlistScreen';
 import EvenementWishlistScreen from './EvenementWishlistScreen';
 import RestaurantWishlistScreen from './RestaurantWishlistScreen';
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import AppHeader from '../../components/app/AppHeader';
 const TopBar = createMaterialTopTabNavigator()
 
 export default function WishlistTab() {
@@ -39,14 +40,7 @@ export default function WishlistTab() {
           return (
                     <>
                               <View style={styles.container}>
-                                        <View style={styles.cardHeader}>
-                                                  <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-                                                            <View style={styles.menuOpenerLine} />
-                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                                  </TouchableOpacity>
-                                                  <EcommerceBadge />
-                                        </View>
+                                        <AppHeader />
                                         <Text style={styles.titlePrincipal}>Liste de souhaits</Text>
                                         <TopBar.Navigator
                                                   screenOptions={{

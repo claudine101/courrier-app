@@ -87,9 +87,9 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                         <TouchableNativeFeedback useForeground background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('HomeScreen')}>
                                                   <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 0 || state.index == 1 || state.index == 2) && { backgroundColor: COLORS.handleColor }]}>
                                                             <View style={styles.drawerItem}>
-                                                                      <AntDesign name="home" size={27} color="#000" />
-                                                                      <Text style={[styles.drawerItemLabel, (state.index == 0 || state.index == 1 || state.index == 2) && { color: '#000' }]}>
-                                                                                Services
+                                                                      <AntDesign name="home" size={27} color="#777" />
+                                                                      <Text style={[styles.drawerItemLabel]}>
+                                                                                Accueil
                                                                       </Text>
                                                             </View>
                                                   </View>
@@ -109,7 +109,7 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                         {showServiceCommands && <View style={styles.services}>
 
                                                   <TouchableOpacity index={1} onPress={() => navigation.navigate("CommandeEmiseScreen")} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
-                                                            <Text style={[styles.serviceName, (state.index == 4) && { color: '#000' }]}>
+                                                            <Text style={[styles.serviceName]}>
                                                                       Achats de produits
                                                             </Text>
                                                             {counts.ecommerce && counts.ecommerce > 0 ? <View style={styles.actionBadge}>
@@ -119,8 +119,8 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                             </View> : null}
                                                   </TouchableOpacity>
                                                   <TouchableOpacity index={2} onPress={() => navigation.navigate("RestaurantEmiseScreen")} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
-                                                            <Text style={[styles.serviceName, (state.index == 5) && { color: '#000' }]}>
-                                                                      Restaurant
+                                                            <Text style={[styles.serviceName]}>
+                                                                      Restauration
                                                             </Text>
                                                             {counts.resto && counts.resto > 0 ? <View style={styles.actionBadge}>
                                                                       <Text style={styles.actionBadgeText}>
@@ -131,10 +131,12 @@ export default function DrawerContent({ state, navigation, descriptors }) {
 
                                         </View>}
                                         <TouchableNativeFeedback useForeground  background={TouchableNativeFeedback.Ripple(COLORS.handleColor)} onPress={() => handlePress('WishlistTab')}>
-                                                  <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 3) && { backgroundColor: COLORS.handleColor }]}>
+                                                  <View style={[{ borderRadius: 10, overflow: "hidden" }, (state.index == 6) && { backgroundColor: COLORS.handleColor }]}>
                                                             <View style={styles.drawerItem}>
                                                                       <AntDesign name="hearto" size={24} color="#777" />
-                                                                      <Text style={styles.drawerItemLabel}>Wishlist</Text>
+                                                                      <Text style={[styles.drawerItemLabel, (state.index == 6) && { color: '#777' }]}>
+                                                                                Wishlist
+                                                                      </Text>
                                                             </View>
                                                   </View>
                                         </TouchableNativeFeedback>

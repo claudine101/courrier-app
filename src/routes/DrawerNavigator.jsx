@@ -7,7 +7,6 @@ import EcommerceWishlistScreen from "../screens/e-commerce/EcommerceWishlistScre
 import HomeScreen from "../screens/home/HomeScreen";
 import RestaurantEmiseScreen from "../screens/restaurant/RestaurantEmiseScreen";
 import WishlistTab from "../screens/wishlist/WishlistTab";
-import ResearchTab from "../screens/research/ResearchTab";
 import EcommerceNavigator from "./EcommerceNavigator";
 import RestaurantNavigator from "./RestaurantNavigator";
 
@@ -23,8 +22,6 @@ export default function DrawerNavigator() {
                               <Drawer.Screen name='CommandeEmiseScreen' component={CommandeEmiseScreen} />
                               <Drawer.Screen name='RestaurantEmiseScreen' component={RestaurantEmiseScreen} />
                               <Drawer.Screen name="WishlistTab" component={WishlistTab}/>
-                              <Drawer.Screen name="ResearchTab" component={ResearchTab}/>
-
                     </Drawer.Navigator>
           )
 }

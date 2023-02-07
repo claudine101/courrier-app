@@ -158,7 +158,7 @@ export default function AllProductsScreen() {
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                                                   <TouchableNativeFeedback
                                                             style={{}}
-                                                            onPress={() => navigation.goBack()}
+                                                            onPress={() => navigation.navigate("SearchHistoryScreen", {service:1})}
                                                             background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
                                                             <View style={styles.headerBtn}>
                                                                       <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />

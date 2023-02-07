@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import LottieView from 'lottie-react-native';
 import { useSelector } from "react-redux";
 import { userSelector } from "../../store/selectors/userSelector";
+import AppHeader from "../../components/app/AppHeader";
 
 /**
  * screen pour afficher tous les commandes faites par un utilisateur
@@ -84,23 +85,7 @@ export default function CommandeEmiseScreen() {
           }
           return (
                     <View style={styles.container}>
-                              <View style={styles.cardHeader}>
-                                        <TouchableNativeFeedback
-                                                  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-                                                  background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
-                                                  <View style={styles.menuOpener}>
-                                                            <View style={styles.menuOpenerLine} />
-                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                                  </View>
-                                        </TouchableNativeFeedback>
-                                        <View style={styles.imageContainer}>
-                                                  <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
-                                        </View>
-                                        <View style={{ marginTop: 25, padding: 10 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary}  />
-                                        </View>
-                              </View>
+                              <AppHeader />
                               <Text style={styles.title}>Commandes emises</Text>
                               {loading ? <CommandeSkeletons /> :
                                         <>
@@ -163,32 +148,6 @@ const styles = StyleSheet.create({
           container: {
                     // paddingBottom: 230,
                     flex: 1
-          },
-          cardHeader: {
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingHorizontal: 10,
-                    height: 88,
-          },
-          menuOpener: {
-                    marginTop: 25,
-                    padding: 10
-          },
-          menuOpenerLine: {
-                    height: 3,
-                    width: 30,
-                    backgroundColor: COLORS.primary,
-                    marginTop: 5,
-                    borderRadius: 10
-          },
-          imgBackground: {
-                    flex: 1,
-                    width: '100%',
-                    height: "100%"
-          },
-          image: {
-                    marginTop: -30
           },
           title: {
                     fontWeight: "bold",
@@ -257,18 +216,6 @@ const styles = StyleSheet.create({
                     borderTopWidth: 1,
                     marginTop: 10,
                     borderTopColor: '#B9BDCA',
-          },
-          imageContainer: {
-                    height: "100%",
-                    width: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-          },
-          logo: {
-                    resizeMode: 'center',
-                    height: "50%",
-                    width: "50%",
-                    marginTop: 25
           },
           emptyFeedback: {
                     textAlign: "center",

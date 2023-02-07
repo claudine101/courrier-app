@@ -14,29 +14,14 @@ import Carousel from "../../components/app/Carousel";
 import ServicesCategories from "../../components/app/ServicesCategories";
 import { COLORS } from "../../styles/COLORS";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import AppHeader from "../../components/app/AppHeader";
 
 export default function HomeScreen() {
           const navigation = useNavigation()
           return (
                     <>
                     <View style={styles.imgBackground}>
-                              <View style={styles.cardHeader}>
-                                        <TouchableNativeFeedback
-                                                  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-                                                  background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
-                                                  <View style={styles.menuOpener}>
-                                                            <View style={styles.menuOpenerLine} />
-                                                            <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                            <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                                  </View>
-                                        </TouchableNativeFeedback>
-                                        <View style={styles.imageContainer}>
-                                                  <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
-                                        </View>
-                                        <View style={{ marginTop: 25, padding: 10 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary}  />
-                                        </View>
-                              </View>
+                              <AppHeader />
                               <Carousel />
                               <ServicesCategories />
                     </View>

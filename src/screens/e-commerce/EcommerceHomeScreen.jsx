@@ -1,16 +1,14 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
-import { Text, View, useWindowDimensions, ImageBackground, StatusBar, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, FlatList, TouchableNativeFeedback } from "react-native";
-import { EvilIcons, MaterialIcons, AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
+import React, { useCallback, useState } from "react";
+import { Text, View, StatusBar, StyleSheet, ScrollView, ActivityIndicator, TouchableNativeFeedback } from "react-native";
+import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import fetchApi from "../../helpers/fetchApi";
 import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
-import SubCategories from "../../components/ecommerce/home/SubCategories";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import Shops from "../../components/ecommerce/home/Shops";
 import Product from "../../components/ecommerce/main/Product";
-import { CategoriesSkeletons, HomeProductsSkeletons, SubCategoriesSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
+import { CategoriesSkeletons, HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
-import * as Location from 'expo-location';
 import useFetch from "../../hooks/useFetch";
 import Categories from "../../components/ecommerce/home/Categories";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
@@ -118,7 +116,7 @@ export default function EcommerceHomeScreen() {
                                         <View style={{ flexDirection: "row", alignItems: "center", alignContent: "center", justifyContent: "space-between", marginBottom: 12, paddingHorizontal: 10 }}>
                                                   <View style={{ width: "84%" }}>
                                                             <TouchableNativeFeedback useForeground onPress={() => {
-                                                                                navigation.navigate("RechercheAllScreen", {service:1})
+                                                                                navigation.navigate("SearchHistoryScreen", {service:1})
                                                             }}>
                                                                                 <View  style={styles.searchSection} >
                                                                                           <FontAwesome name="search" size={24} color={COLORS.ecommercePrimaryColor} />
