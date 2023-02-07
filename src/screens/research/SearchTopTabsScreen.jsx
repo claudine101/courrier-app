@@ -21,7 +21,6 @@ console.log(IDS_SERVICE_CATEGORIES.ecommerce)
 const TopTab = createMaterialTopTabNavigator()
 
 export default function SearchTopTabsScreen({search, service}) {
-        console.log(service)
         
         return (
                 <TopTab.Navigator
