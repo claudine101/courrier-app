@@ -19,21 +19,15 @@ export default function EcommerceWishlistScreen() {
   const [loadingCategories, setLoadingCatagories] = useState(true)
   const [categories, setCategories] = useState([])
   const [selectedCategorie, setSelectedCategorie] = useState(null)
-
-
   const [loadingSubCategories, setLoadingSubCategories] = useState(false)
   const [sousCategories, SetSousCategories] = useState([])
   const [selectedsousCategories, setSelectedsousCategories] = useState(null)
-
   const [firstLoadingProducts, setFirstLoadingProducts] = useState(true)
   const [loadingProducts, setLoadingProducts] = useState(false)
   const [products, setProducts] = useState([])
   const [shops, setShops] = useState([])
 
   const navigation = useNavigation()
-
-  
-
   const onCategoryPress = (categorie) => {
     if (loadingSubCategories || loadingProducts) return false
     if (categorie.ID_CATEGORIE_PRODUIT == selectedCategorie?.ID_CATEGORIE_PRODUIT) {
@@ -48,8 +42,7 @@ export default function EcommerceWishlistScreen() {
   }
 
   const onRemove = useCallback((ID_PRODUIT_PARTENAIRE) => {
-   
-    const newProducts = products.filter(p => p.produit.ID_PRODUIT_PARTENAIRE != ID_PRODUIT_PARTENAIRE)
+  const newProducts = products.filter(p => p.produit.ID_PRODUIT_PARTENAIRE != ID_PRODUIT_PARTENAIRE)
     setProducts(newProducts)
   }, [products])
 
@@ -57,77 +50,77 @@ export default function EcommerceWishlistScreen() {
     try {
       if (firstLoadingProducts == false) {
         setLoadingProducts(true)
-    }
-              const produits = await fetchApi("/products/wishlist", {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" },
-              })
-              
-              setProducts(produits.result)
+      }
+      const produits = await fetchApi("/ecommerce/ecommerce_produits/ecommerce_wishlist_produit", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+
+      })
+      setProducts(produits.result)
 
     }
     catch (error) {
-              console.log(error)
+      console.log(error)
     } finally {
       setFirstLoadingProducts(false)
       setLoadingProducts(false)
+    }
   }
-}
-useFocusEffect(useCallback(() => {
+  useFocusEffect(useCallback(() => {
     fecthProduits()
-}, []))
-  
+  }, []))
+
   return (
     <View style={styles.container}>
-      {(firstLoadingProducts || loadingProducts) ? 
-      <View style={{marginTop:20}}>
-         <HomeProductsSkeletons />
-         <HomeProductsSkeletons />
-      </View>
-      :
-                   
-   
-                   products.length!=0 ?
-                    <ScrollView style={styles.cardOrginal} stickyHeaderIndices={[2]}>
-                    <TouchableNativeFeedback
-                      accessibilityRole="button"
-                      background={TouchableNativeFeedback.Ripple('#c9c5c5')}
-                    >
-                      <View style={styles.productsHeader}>
-                     </View>
-                    </TouchableNativeFeedback>
-                    <View style={styles.products}>
-                           
-                      {products.map((product, index) => {
-                        return (
-                          <Product
-                            product={product}
-                            index={index}
-                            totalLength={products.length}
-                            key={index}
-                            fixMargins
-                            onRemove={onRemove}
-                          />
-                        )
-                      })}
-                    </View>
-                  </ScrollView>:
-                  <>
-                  <LottieView style={{ marginTop:40,width: 200, height: 200, alignSelf: "center" }} source={require('../../../assets/lotties/empty-cart.json')} autoPlay loop={false} />
-                  <Text style={styles.emptyFeedback}>Votre liste des souhaits est vide</Text>
-                  
-                  </>
-                    }
+      {(firstLoadingProducts || loadingProducts) ?
+        <View style={{ marginTop: 20 }}>
+          <HomeProductsSkeletons />
+          <HomeProductsSkeletons />
+        </View>
+        :
 
-      
-      
+
+        products.length != 0 ?
+          <ScrollView style={styles.cardOrginal} stickyHeaderIndices={[2]}>
+            <TouchableNativeFeedback
+              accessibilityRole="button"
+              background={TouchableNativeFeedback.Ripple('#c9c5c5')}
+            >
+              <View style={styles.productsHeader}>
+              </View>
+            </TouchableNativeFeedback>
+            <View style={styles.products}>
+
+              {products.map((product, index) => {
+                return (
+                  <Product
+                    product={product}
+                    index={index}
+                    totalLength={products.length}
+                    key={index}
+                    fixMargins
+                    onRemove={onRemove}
+                  />
+                )
+              })}
+            </View>
+          </ScrollView> :
+          <>
+            <LottieView style={{ marginTop: 40, width: 200, height: 200, alignSelf: "center" }} source={require('../../../assets/lotties/empty-cart.json')} autoPlay loop={false} />
+            <Text style={styles.emptyFeedback}>Votre liste des souhaits est vide</Text>
+
+          </>
+      }
+
+
+
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,marginTop:-30
+    flex: 1, marginTop: -30
   },
   emptyFeedback: {
     textAlign: "center",
@@ -136,8 +129,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     opacity: 0.6,
     fontSize: 16,
-    marginTop:40
-},
+    marginTop: 40
+  },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
