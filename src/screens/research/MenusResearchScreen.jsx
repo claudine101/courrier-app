@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Image } from "react-native";
 import { RestaurantSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import Menu from "../../components/restaurants/main/Menu";
 import fetchApi from "../../helpers/fetchApi";
@@ -78,27 +78,28 @@ export default function MenusResearchScreen() {
                                         }
                                 }}
                         >
-                               {firstLoadingMenus ? <RestaurantSkeletons/>:
-                                <View style={styles.products}>
-                                        {menus.length > 0 ?
-                                                <>
-                                                        {menus.map((menu, index) => {
-                                                                return (
-                                                                        <Menu
-                                                                                menu={menu}
-                                                                                index={index}
-                                                                                totalLength={menus.length}
-                                                                                key={index}
-                                                                                fixMargins
+                                {firstLoadingMenus ? <RestaurantSkeletons /> :
+                                        <View style={styles.products}>
+                                                {menus.length > 0 ?
+                                                        <>
+                                                                {menus.map((menu, index) => {
+                                                                        return (
+                                                                                <Menu
+                                                                                        menu={menu}
+                                                                                        index={index}
+                                                                                        totalLength={menus.length}
+                                                                                        key={index}
+                                                                                        fixMargins
 
-                                                                        />
-                                                                )
-                                                        })}
-                                                </> :
-                                                <View>
-                                                        <Text style={styles.emptyFeedback}>Votre liste des menus est vide</Text>
-                                                </View>}
-                                </View>}
+                                                                                />
+                                                                        )
+                                                                })}
+                                                        </> :
+                                                        <View style={styles.cardImages}>
+                                                                <Image source={require("../../../assets/images/not-found.png")} style={styles.imagesNotFound} />
+                                                                <Text style={styles.emptyFeedback}>Aucun menus trouvez</Text>
+                                                        </View>}
+                                        </View>}
                                 <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10, opacity: IsLoadingMore ? 1 : 0 }}>
                                         <ActivityIndicator animating={true} size="large" color={"#000"} />
                                 </View>
@@ -128,4 +129,17 @@ const styles = StyleSheet.create({
                 marginTop: 40,
                 marginHorizontal: 50
         },
+        imagesNotFound: {
+                width: 160,
+                height: 160,
+                marginTop: 40,
+                marginHorizontal: 110,
+                alignItems: "center",
+                justifyContent: "center"
+        },
+        cardImages: {
+                flex: 1,
+                height: "100%",
+                justifyContent: "center",
+        }
 })

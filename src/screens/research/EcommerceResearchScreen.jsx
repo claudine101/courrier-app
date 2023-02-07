@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Text, View, useWindowDimensions, StatusBar, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import { Text, View, useWindowDimensions, StatusBar, StyleSheet, ScrollView, ActivityIndicator, Image } from "react-native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
 import Product from "../../components/ecommerce/main/Product";
@@ -102,8 +102,9 @@ export default function EcommerceResearchScreen() {
                                 )
                             })}
                         </> :
-                        <View>
-                            <Text style={styles.emptyFeedback}>Votre liste des produits est vide</Text>
+                        <View style={styles.cardImages}>
+                            <Image source={require("../../../assets/images/not-found.png")} style={styles.imagesNotFound}/>
+                            <Text style={styles.emptyFeedback}>Aucun produits trouvez</Text>
                         </View>}
 
                 </View>}
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
         opacity: 0.6,
         fontSize: 16,
         marginTop: 40,
-        marginHorizontal: 50
+        marginHorizontal: 40
     },
     cardOrginal: {
         marginBottom: "1%"
@@ -136,4 +137,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
+    imagesNotFound:{
+        width: 160,
+        height: 160,
+        marginTop: 40,
+        marginHorizontal: 110,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    cardImages:{
+        flex:1,
+        height:"100%",
+        justifyContent:"center",
+    }
 })

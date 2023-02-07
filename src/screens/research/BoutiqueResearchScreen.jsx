@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { useForm } from "../../hooks/useForm";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
 import { useFocusEffect, useRoute } from "@react-navigation/native";
@@ -19,7 +19,7 @@ export default function BoutiqueResearchScreen() {
         const [shops, setShops] = useState([])
         const [loadingShops, setLoadingShops] = useState(true)
         const route = useRoute()
-        const {search} = route.params
+        const { search } = route.params
 
         useFocusEffect(useCallback(() => {
                 (async () => {
@@ -38,25 +38,26 @@ export default function BoutiqueResearchScreen() {
         return (
                 <View style={styles.container}>
                         <ScrollView>
-                               {loadingShops ?  <HomeProductsSkeletons /> :
-                                <View style={styles.products}>
-                                        {shops.length > 0 ?
-                                                <>
-                                                        {shops.map((shop, index) => {
-                                                                return (
-                                                                        <Shop
-                                                                                shop={shop}
-                                                                                index={index}
-                                                                                totalLength={shops.length}
-                                                                                key={index}
-                                                                        />
-                                                                )
-                                                        })}
-                                                </>:
-                                        <View>
-                                                <Text style={styles.emptyFeedback}>Votre liste des boutiques est vide</Text>
+                                {loadingShops ? <HomeProductsSkeletons /> :
+                                        <View style={styles.products}>
+                                                {shops.length > 0 ?
+                                                        <>
+                                                                {shops.map((shop, index) => {
+                                                                        return (
+                                                                                <Shop
+                                                                                        shop={shop}
+                                                                                        index={index}
+                                                                                        totalLength={shops.length}
+                                                                                        key={index}
+                                                                                />
+                                                                        )
+                                                                })}
+                                                        </> :
+                                                        <View style={styles.cardImages}>
+                                                                <Image source={require("../../../assets/images/not-found.png")} style={styles.imagesNotFound} />
+                                                                <Text style={styles.emptyFeedback}>Aucun boutiques trouvez</Text>
+                                                        </View>}
                                         </View>}
-                                </View>}
                         </ScrollView>
                 </View>
         )
@@ -80,4 +81,17 @@ const styles = StyleSheet.create({
                 marginTop: 40,
                 marginHorizontal: 50
         },
+        imagesNotFound: {
+                width: 160,
+                height: 160,
+                marginTop: 40,
+                marginHorizontal: 110,
+                alignItems: "center",
+                justifyContent: "center"
+        },
+        cardImages: {
+                flex: 1,
+                height: "100%",
+                justifyContent: "center",
+        }
 })

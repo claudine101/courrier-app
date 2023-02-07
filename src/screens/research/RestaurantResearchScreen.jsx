@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, StatusBar, StyleSheet, ScrollView, TouchableOpacity, FlatList, TouchableNativeFeedback } from "react-native";
+import { View, Text, StatusBar, StyleSheet, ScrollView, TouchableOpacity, FlatList, TouchableNativeFeedback, Image } from "react-native";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 import fetchApi from "../../helpers/fetchApi";
@@ -37,24 +37,25 @@ export default function RestaurantResearchScreen() {
     return (
         <View style={styles.container}>
             <ScrollView >
-                { loadingResto ? <RestaurantSkeletons/> :
-                <View style={styles.products}>
-                   {restaurants.length > 0 ? <>
-                        {restaurants.map((restaurant, index) => {
-                            return (
-                                <Restaurant
-                                    restaurant={restaurant}
-                                    index={index}
-                                    totalLength={restaurants.length}
-                                    key={index}
-                                />
-                            )
-                        })}
-                    </>:
-                    <View>
-                        <Text style={styles.emptyFeedback}>Votre liste des restaurants est vide</Text>
+                {loadingResto ? <RestaurantSkeletons /> :
+                    <View style={styles.products}>
+                        {restaurants.length > 0 ? <>
+                            {restaurants.map((restaurant, index) => {
+                                return (
+                                    <Restaurant
+                                        restaurant={restaurant}
+                                        index={index}
+                                        totalLength={restaurants.length}
+                                        key={index}
+                                    />
+                                )
+                            })}
+                        </> :
+                            <View style={styles.cardImages}>
+                                <Image source={require("../../../assets/images/not-found.png")} style={styles.imagesNotFound} />
+                                <Text style={styles.emptyFeedback}>Aucun restaurants trouvez</Text>
+                            </View>}
                     </View>}
-                </View>}
             </ScrollView>
         </View>
     )
@@ -78,4 +79,17 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginHorizontal: 50
     },
+    imagesNotFound: {
+        width: 160,
+        height: 160,
+        marginTop: 40,
+        marginHorizontal: 110,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    cardImages: {
+        flex: 1,
+        height: "100%",
+        justifyContent: "center",
+    }
 })
