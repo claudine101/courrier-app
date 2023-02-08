@@ -9,8 +9,16 @@ import useFetch from "../../hooks/useFetch";
 export default function CommandeTabScreen() {
         const modalizeRef = useRef(null)
         const route = useRoute()
-        const { commande } = route.params
-        const [loadingDetails, details] = useFetch(`/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`)
+        const { commande, serviceCategory } = route.params
+        var url
+
+        if(serviceCategory==1){
+                url=`/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`
+        }else if(serviceCategory==2){
+                url=`/resto/restaurant_commandes/livraison/${commande.ID_COMMANDE}`
+        }
+
+        const [loadingDetails, details] = useFetch(url)
 
         const getPieceTotal = useCallback(() => {
                 var PIECES_TOTAL = 0
@@ -89,12 +97,12 @@ export default function CommandeTabScreen() {
                                                                                 {commande.TOTAL.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
                                                                         </Text>
                                                                         <Text style={styles.mainDetailLabel}>
-                                                                                à distance
+                                                                                TOTAL
                                                                         </Text>
-                                                                        <Text style={styles.mainDetailLabel}>
+                                                                        {/* <Text style={styles.mainDetailLabel}>
                                                                                 Livraison
-                                                                        </Text>
-                                                                </View>          TOTAL
+                                                                        </Text> */}
+                                                                </View>          
                                                         </Text>
                                                 </View>
                                         </View>

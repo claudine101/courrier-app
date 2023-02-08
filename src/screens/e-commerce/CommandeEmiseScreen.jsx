@@ -49,8 +49,8 @@ export default function CommandeEmiseScreen() {
           }
 
           const handleCommandePress = (commande, index) => {
-                    navigation.push('NoHeaderSearchLivreurScreen', { commande:commande, index:index, serviceCategory:serviceCategory })
-          }
+                navigation.push('SearchAllLivreurScreen', { commande:commande, index:index, serviceCategory:serviceCategory })
+        }
           useFocusEffect(useCallback(() => {
                     (async () => {
                               try {

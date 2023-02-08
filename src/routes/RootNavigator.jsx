@@ -12,6 +12,7 @@ import DetailCommandeScreen from '../screens/e-commerce/DetailCommandeScreen';
 import DetailCommandeMenuScreen from '../screens/restaurant/DetailCommandeMenuScreen';
 import ProductDetailsScreen from '../screens/e-commerce/ProductDetailsScreen';
 import PlusRecommandeScreen from '../screens/liste_e-commerce/PlusRecommandeListeScreen';
+import SearchAllLivreurScreen from '../screens/e-commerce/SearchAllLivreurScreen';
 
 
 export default function RootNavigator() {
@@ -39,6 +40,7 @@ export default function RootNavigator() {
                                         <Stack.Screen name="DetailCommandeScreen" component={DetailCommandeScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
                                         <Stack.Screen name="DetailCommandeMenuScreen" component={DetailCommandeMenuScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
                                         <Stack.Screen name="NoHeaderSearchLivreurScreen" component={SearchLivreurScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
+                                        <Stack.Screen name='SearchAllLivreurScreen' component={SearchAllLivreurScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}/>
                                         <Stack.Screen name='ProductDetailsScreen' component={ProductDetailsScreen} options={{headerShown: false}}/>
                                         <Stack.Screen name='PlusRecommandeScreen' component={PlusRecommandeScreen} options={{headerShown: false}}/>
                                         

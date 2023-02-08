@@ -118,7 +118,7 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                                       </Text>
                                                             </View> : null}
                                                   </TouchableOpacity>
-                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate("RestaurantEmiseScreen")} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
+                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate('RestaurantEmiseScreen', {serviceCategory:2})} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
                                                             <Text style={[styles.serviceName, (state.index == 5) && { color: '#000' }]}>
                                                                       Restaurant
                                                             </Text>

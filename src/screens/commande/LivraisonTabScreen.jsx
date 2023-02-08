@@ -3,11 +3,18 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRoute } from "@react-navigation/native";
 import useFetch from "../../hooks/useFetch";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
 
 export default function LivraisonTabScreen() {
         const route = useRoute()
-        const { commande } = route.params
-        const [loadingDetails, details] = useFetch(`/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`)
+        const { commande, serviceCategory } = route.params
+        var url
+        if(serviceCategory==1){
+                url=`/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`
+        }else if(serviceCategory==2)(
+                url=`/resto/restaurant_commandes/livraison/${commande.ID_COMMANDE}`
+        )
+        const [loadingDetails, details] = useFetch(url)
         return (
                 <View style={styles.container}>
                         <ScrollView showsVerticalScrollIndicator={false}>
