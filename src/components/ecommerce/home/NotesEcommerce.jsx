@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AntDesign, MaterialCommunityIcons   } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from "moment/moment";
 import { COLORS } from "../../../styles/COLORS"
 
@@ -27,7 +27,7 @@ export default function NotesEcommerce({ allNotes }) {
                 <>
                         {allNotes.map((note, index) => {
                                 return (
-                                        <View style={styles.container} key={index}> 
+                                        <View style={styles.container} key={index}>
                                                 <View style={styles.cardPrincipal}>
                                                         <View style={styles.cardNotes}>
                                                                 <AntDesign name="user" size={24} color="black" />
@@ -50,13 +50,13 @@ export default function NotesEcommerce({ allNotes }) {
                                                                         <View style={styles.cardDescription}>
                                                                                 <View><Text>{note.COMMENTAIRE}</Text></View>
                                                                         </View>
-                                                                      
+
 
 
                                                                 </View>
-                                                                <View style={{justifyContent:"center", alignItems:"center"}}>
+                                                                <View style={{ justifyContent: "center", alignItems: "center" }}>
                                                                         <View><Text>{moment(note.DATE_INSERTION).format('HH:mm')} </Text></View>
-                                                                        
+
                                                                 </View>
 
                                                         </View>
@@ -75,8 +75,8 @@ export default function NotesEcommerce({ allNotes }) {
 const styles = StyleSheet.create({
         container: {
                 flex: 1,
-                marginTop: 10,
-                paddingHorizontal:10
+                marginTop: 35,
+                paddingHorizontal: 10
         },
         cardNotes: {
                 width: 40,

@@ -17,6 +17,8 @@ import WishlistTab from "../screens/wishlist/WishlistTab";
 import EcommerceHeader from "../components/ecommerce/main/EcommerceHeader";
 import RechercheScreen from "../screens/restaurant/RechercheScreen";
 import RechercheAllScreen from "../screens/research/RechercheAllScreen";
+import EditRatingScreen from  "../screens/e-commerce/EditRatingScreen"
+import AllNotesScreen from    "../screens/e-commerce/AllNotesScreen"
 export default function EcommerceNavigator() { 
     
           const Stack = createStackNavigator()
@@ -34,6 +36,8 @@ export default function EcommerceNavigator() {
                                                   <Stack.Screen name="PlusRecommandeScreen" component={PlusRecommandeScreen}/>
                                                   <Stack.Screen name="RechercheScreen" component={RechercheScreen}/>
                                                   <Stack.Screen name="RechercheAllScreen" component={RechercheAllScreen}/>
+                                                  <Stack.Screen name="EditRatingScreen" component={EditRatingScreen}/>
+                                                  <Stack.Screen name="AllNotesScreen" component={AllNotesScreen}/>
                                         </Stack.Group>
                                         <Stack.Screen name="ShopScreen" component={ShopScreen} options={{ 
                                                   headerShown: true,

@@ -23,13 +23,11 @@ import { ecommerceProductSelector } from "../../store/selectors/ecommerceCartSel
 import { HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import ProductImages from "../../components/ecommerce/details/ProductImages";
 import moment from "moment/moment";
-
 import Loading from "../../components/app/Loading";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import useFetch from "../../hooks/useFetch";
 import NotesEcommerce from "../../components/ecommerce/home/NotesEcommerce";
-
-
+import NotesUseEcommerceScreen from "../../components/ecommerce/home/NotesUseEcommerceScreen";
 moment.updateLocale('fr', {
     calendar: {
         sameDay: "[Aujourd'hui]",
@@ -46,19 +44,18 @@ export default function ProductDetailsScreen() {
     const [produitnoteuser, setProduitnoteUser] = useState(null)
     const [userNote, setUserNote] = useState([])
     const { product } = route.params
-    console.log(produitnoteuser)
     const [loadingShopProducts, shopProducts] = useFetch(`/ecommerce/ecommerce_produits?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
     const [loadingSimilarProducts, similarProducs] = useFetch(`/ecommerce/ecommerce_produits?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
-
     const user = useSelector(userSelector)
+    const [loadingRevuesNotes, produtsNotes] = useFetch(`/ecommerce/ecommerce_produits_notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`)
     const modalizeRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
+    const [loadingetoiles, setLoadingetoiles] = useState(true)
     const [note, setNote] = useState(null)
     const [commentaire, Setcommentaire] = useState(null)
     const productInCart = useSelector(ecommerceProductSelector(product.produit_partenaire.ID_PARTENAIRE_SERVICE))
-
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
@@ -66,19 +63,16 @@ export default function ProductDetailsScreen() {
     const onCloseAddToCart = () => {
         modalizeRef.current?.close()
     }
-
     var IMAGES = [
         product.produit_partenaire.IMAGE_1 ? product.produit_partenaire.IMAGE_1 : undefined,
         product.produit_partenaire.IMAGE_2 ? product.produit_partenaire.IMAGE_2 : undefined,
         product.produit_partenaire.IMAGE_3 ? product.produit_partenaire.IMAGE_3 : undefined,
     ]
-    //console.log(product.produit.ID_PRODUIT)
     const [data, handleChange] = useForm({
 
         commentaire: "",
 
     })
-    //console.log(data.commentaire)
     useEffect(() => {
         if (isOpen) {
             const timer = setTimeout(() => {
@@ -89,41 +83,42 @@ export default function ProductDetailsScreen() {
             }
         }
     }, [isOpen])
-
+    //Fetch les notes du produit par utilisateur
     useEffect(() => {
+
         (async () => {
             try {
                 var url = `/ecommerce/ecommerce_produits_notes/notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`
                 const produitsNotes = await fetchApi(url)
                 setProduitnoteUser(produitsNotes.result)
-                
+
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoadingetoiles(false)
             }
         })()
     }, [])
-
-
+    //Fetch notes d'un produit
     useEffect(() => {
         (async () => {
             try {
                 var url = `/ecommerce/ecommerce_produits_notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`
                 const produtsNotes = await fetchApi(url)
                 setUserNote(produtsNotes.result)
-                console.log(produtsNotes)
+
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoadingetoiles(false)
             }
         })()
     }, [])
+    //Fetch pour enregistrer une note du produit
     const onSubmit = async () => {
-
         try {
             setLoading(true)
-
             const form = new FormData()
-
-
             form.append("COMMENTAIRE", data.commentaire)
             form.append("ID_PRODUIT", product.produit.ID_PRODUIT)
             form.append("NOTE", note)
@@ -131,8 +126,8 @@ export default function ProductDetailsScreen() {
                 method: "POST",
                 body: form
             })
-            data.commentaire = " "
-            // console.log(form)
+            navigation.navigate('EcommerceHomeScreen')
+
         } catch (error) {
             console.log(error)
         }
@@ -140,14 +135,27 @@ export default function ProductDetailsScreen() {
             setLoading(false)
         }
     }
-
     useEffect(() => {
 
     }, [])
+    //Fetch pour supprimer une note
+    const onclick = async () => {
+        try {
+            setLoading(true)
+            const Notes = await fetchApi(`/ecommerce/ecommerce_produits_notes/${produitnoteuser.ID_NOTE}`, {
+                method: "DELETE",
+            })
+            navigation.navigate('EcommerceHomeScreen')
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <>
-            {loading && <Loading />}
+
             <View style={{ marginTop: 0, flex: 1 }}>
                 <View style={styles.cardHeader}>
                     <TouchableNativeFeedback
@@ -190,6 +198,7 @@ export default function ProductDetailsScreen() {
                     <View style={{ paddingHorizontal: 10, marginTop: 5 }}>
                         <Text style={styles.productDescription}>{product.produit_partenaire.DESCRIPTION}</Text>
                     </View>
+
                     <TouchableNativeFeedback onPress={() => navigation.push('ShopScreen', {
                         id: product.partenaire.ID_PARTENAIRE_SERVICE,
                         shop: {
@@ -197,6 +206,7 @@ export default function ProductDetailsScreen() {
                             categories: [product.categorie]
                         }
                     })}>
+
                         <View style={styles.shop}>
                             <View style={styles.shopLeft}>
                                 <View style={styles.shopIcon}>
@@ -206,64 +216,96 @@ export default function ProductDetailsScreen() {
                                 <View style={styles.shopOwner}>
                                     <Text style={styles.productSeller}>
                                         {product.partenaire.NOM_ORGANISATION ? product.partenaire.NOM_ORGANISATION : `${product.partenaire.NOM} ${product.partenaire.PRENOM}`}
-                                        {/* <FontAwesome5 name="building" size={10} color={COLORS.primary} style={{ marginLeft: 10 }} /> */}
+
                                     </Text>
                                     <Text style={styles.shopAdress}>
                                         {product.partenaire.ADRESSE_COMPLETE ? product.partenaire.ADRESSE_COMPLETE : "Particulier"}
                                     </Text>
                                 </View>
                             </View>
+
                         </View>
 
                     </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        accessibilityRole="button"
+                        background={TouchableNativeFeedback.Ripple('#c9c5c5')}
+                        onPress={() => navigation.navigate('AllNotesScreen', {
+                            product
+                        })}
+                    >
+                        <View style={styles.productsHeader}>
+                            <Text style={styles.title}>Notes et revues</Text>
+                            <MaterialIcons name="navigate-next" size={24} color="black" />
+                        </View>
+                    </TouchableNativeFeedback>
+
+                    {loadingetoiles && <Loading />}
                     {produitnoteuser ? <View>
-                        
-                        <NotesEcommerce allNotes={produitnoteuser}/>
-                        <View style={styles.container}>
-                        <TouchableOpacity><Text>EDITER NOTE </Text></TouchableOpacity> 
-                        </View>
-                        
-                        </View> :
-                    <>
-                        <View style={styles.notes}>
-                            {new Array(5).fill(0).map((_, index) => {
-                                return (
-                                    <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
-                                        {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                            <AntDesign name="star" size={25} color="black" />}
-                                    </TouchableOpacity>
-                                )
-                            })}
-                        </View>
 
-                    {note ?
-                        <View>
-                            <View style={styles.selectControl}>
-                                <OutlinedTextField
-                                    label={"Commentaire"}
-                                    fontSize={13}
-                                    value={data.commentaire}
-                                    onChangeText={e => handleChange("commentaire", e)}
-
-                                    lineWidth={0.5}
-                                    activeLineWidth={0.5}
-                                    baseColor={COLORS.smallBrown}
-                                    tintColor={COLORS.primary}
-                                    containerStyle={{ flex: 1, marginTop: 15, }}
-                                    inputContainerStyle={{ borderRadius: 10 }}
-                                    multiline
-                                />
+                        <NotesUseEcommerceScreen note={produitnoteuser}/>
+                        <View style={styles.commentaire}>
+                            <View>
+                                <TouchableOpacity onPress={() => navigation.navigate('EditRatingScreen', { produitnoteuser })}>
+                                    <Text style={styles.editText}>Modifier</Text>
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.actionContainer}>
-                                <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
-                                    <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
+
+                            <View>
+                                <TouchableOpacity onPress={onclick}>
+                                    <Text style={styles.editText1}>Supprimer</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        : null
-                    }
-                    </>}
-                    <NotesEcommerce allNotes={userNote}/>
+
+                    </View> :
+                        /**
+                         * un  Ajouter une note et commentaires sur un produits
+                         * @author Innocent <ndayikengurukiye.innocent@mediabox.bi>
+                         * @date 7/2/2023
+                         * @param {*} param0 
+                         * @returns 
+                         */
+                        <>
+                            <View style={styles.notes}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
+                                            {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
+                                                <AntDesign name="star" size={25} color="black" />}
+                                        </TouchableOpacity>
+                                    )
+                                })}
+                            </View>
+
+                            {note ?
+                                <View>
+                                    <View style={styles.selectControl}>
+                                        <OutlinedTextField
+                                            label={"Commentaire"}
+                                            fontSize={13}
+                                            value={data.commentaire}
+                                            onChangeText={e => handleChange("commentaire", e)}
+                                            lineWidth={0.5}
+                                            activeLineWidth={0.5}
+                                            baseColor={COLORS.smallBrown}
+                                            tintColor={COLORS.primary}
+                                            containerStyle={{ flex: 1, marginTop: 15, }}
+                                            inputContainerStyle={{ borderRadius: 10 }}
+                                            multiline
+                                        />
+                                    </View>
+                                    <View style={styles.actionContainer}>
+                                        <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
+                                            <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                : null
+                            }
+                        </>}
+
+                    <NotesEcommerce allNotes={userNote} />
 
                     {loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts
                         products={similarProducs.result}
@@ -345,8 +387,7 @@ const styles = StyleSheet.create({
         width: "120%",
         height: "120%",
         borderRadius: 50,
-        // alignItems:"center",
-        // justifyContent:"center"
+
     },
     Cardnote: {
         padding: 15,
@@ -377,10 +418,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         paddingHorizontal: 10
-        //marginTop: 7
+
 
     },
-   
+
     etoiles: {
         marginLeft: 5,
         display: "flex",
@@ -445,6 +486,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: COLORS.ecommercePrimaryColor,
         fontSize: 14,
+    },
+    commentaire: {
+        flexDirection: "row",
+
+
     },
     shopAdress: {
         color: '#777',
@@ -615,11 +661,30 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop:5,
-        paddingHorizontal:65,
-        fontSize:30,
-       
-},
+        paddingHorizontal: 65,
+
+    },
+    editText: {
+        marginTop: 5,
+        paddingHorizontal: 65,
+        fontSize: 16,
+        color: "green"
+    },
+    editText1: {
+        marginTop: 5,
+        paddingHorizontal: 65,
+        fontSize: 16,
+        color: "green",
+        marginLeft: -80
+    },
+    productsHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10
+    },
     plusText: {
         color: COLORS.ecommercePrimaryColor,
         fontSize: 17,
@@ -627,6 +692,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginTop: 5,
 
+
+    },
+    title: {
+        color: COLORS.ecommercePrimaryColor,
+        fontSize: 17,
+        fontWeight: "bold"
+    },
+    revues: {
+        color: COLORS.ecommercePrimaryColor,
+        fontSize: 17,
+        fontWeight: "bold",
+        paddingHorizontal: 15,
+        marginTop: 5,
 
     },
     headerBtn: {
