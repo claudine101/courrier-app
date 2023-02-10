@@ -225,42 +225,42 @@ export default function ProductDetailsScreen() {
                         </View>
 
                     </TouchableNativeFeedback>
-                    {loadingetoiles ? <View></View> : 
-                    <View style={styles.moyen}>
-                        <View style={styles.revue}>
-                            <Text style={styles.moyenne}>{produitnoteuser.avg}</Text>
-                            <Text style={styles.total}> / 5</Text>
-                        </View>
-                        <View style={styles.etoileNote}>
-                            {new Array(5).fill(0).map((_, index) => {
-                                return (
-                                    <View key={index}  >
-                                        {
-                                            <AntDesign name="star" size={12} color="black" />}
-                                    </View>
-                                )
-                            })}
-                        </View>
-
-                        <View>
-                            <Text style={styles.moyenn}>({produitnoteuser.total})</Text>
-                        </View>
-                        <View style={styles.noteDetails}>
-                            {new Array(5).fill(0).map((_, index) => {
-                                return (
-                                    <View key={index} style={styles.noteDetail}>
-                                        <Text>{5 - index}</Text>
-                                        <View style={styles.noteDetailLigne}>
-                                            <View style={[styles.detailProgression,{width:`${produitnoteuser.noteGroup[5 - index].pourcentage}%`}]} />
+                    {loadingetoiles ? <View></View> :
+                        <View style={styles.moyen}>
+                            <View style={styles.revue}>
+                                <Text style={styles.moyenne}>{produitnoteuser.avg}</Text>
+                                <Text style={styles.total}> / 5</Text>
+                            </View>
+                            <View style={styles.etoileNote}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <View key={index}  >
+                                            {
+                                                <AntDesign name="star" size={12} color="black" />}
                                         </View>
-                                        <Text>
-                                            {produitnoteuser.noteGroup[5 - index].nombre}
-                                        </Text>
-                                    </View>
-                                )
-                            })}
-                        </View>
-                    </View>}
+                                    )
+                                })}
+                            </View>
+
+                            <View>
+                                <Text style={styles.moyenn}>({produitnoteuser.total})</Text>
+                            </View>
+                            <View style={styles.noteDetails}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <View key={index} style={styles.noteDetail}>
+                                            <Text>{5 - index}</Text>
+                                            <View style={styles.noteDetailLigne}>
+                                                <View style={[styles.detailProgression, { width: `${produitnoteuser.noteGroup[5 - index].pourcentage}%` }]} />
+                                            </View>
+                                            <Text>
+                                                {produitnoteuser.noteGroup[5 - index].nombre}
+                                            </Text>
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </View>}
 
 
                     <TouchableNativeFeedback
@@ -436,8 +436,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         fontSize: 60,
         paddingHorizontal: 10,
-
-
     },
     inputCard: {
         marginHorizontal: 20,
@@ -472,29 +470,29 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10
     },
-    noteDetails:{
-        width:"100%",
-        paddingHorizontal:40
+    noteDetails: {
+        width: "100%",
+        paddingHorizontal: 40
     },
-    noteDetail:{
-        width:"100%",
-        flexDirection:"row",
-        alignItems:"center",
-        
+    noteDetail: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+
     },
-    noteDetailLigne:{
-        height:10,
-        width:"100%",
-        backgroundColor:"#f1f1f1",
-        marginHorizontal:10,
-        borderRadius:5
+    noteDetailLigne: {
+        height: 10,
+        width: "100%",
+        backgroundColor: "#f1f1f1",
+        marginHorizontal: 10,
+        borderRadius: 5
     },
-    detailProgression:{
-        height:"100%",
-        width:"0%",
-        backgroundColor:"red",
-        
-        borderRadius:5
+    detailProgression: {
+        height: "100%",
+        width: "0%",
+        backgroundColor: "red",
+
+        borderRadius: 5
     },
     addBtnText: {
         color: '#FFF',
