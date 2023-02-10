@@ -18,6 +18,7 @@ import { Modalize } from "react-native-modalize";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useRef } from "react";
 import AddCart from "../../components/restaurants/main/AddCart";
+import { MaterialIcons } from '@expo/vector-icons';
 import useFetch from "../../hooks/useFetch"
 import { useForm } from "../../hooks/useForm"
 import Loading from "../../components/app/Loading";
@@ -25,14 +26,16 @@ import HomeMenus from "../../components/restaurants/home/HomeMenus";
 import { HomeMenuSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import { TextField, FilledTextField, InputAdornment, OutlinedTextField } from 'rn-material-ui-textfield'
 import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
+import NotesEcommerce from "../../components/ecommerce/home/NotesEcommerce";
+import NotesUseEcommerceScreen from "../../components/ecommerce/home/NotesUseEcommerceScreen";
 
 export default function MenuDetailScreen() {
-
     const route = useRoute()
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [imageIndex, setImageIndex] = useState(0)
     const [showImageModal, setShowImageModal] = useState(false)
+    const [loadingetoiles, setLoadingetoiles] = useState(true)
     const { product, menus } = route.params
     const [note, setNote] = useState(null)
     const [selectedRestaurant, setselectedRestaurant] = useState([])
@@ -44,6 +47,8 @@ export default function MenuDetailScreen() {
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
+    const [menunote, setMenuNote] = useState([])
+    const [menunoteUser, setMnunoteUser] = useState([])
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
@@ -74,7 +79,52 @@ export default function MenuDetailScreen() {
         }
 
     }
+    //Fetch note du menu
+    useEffect(() => {
+        (async () => {
+            try {
+                var url = `/resto/restaurant_menus_notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
+                const menusNotes = await fetchApi(url)
+                setMenuNote(menusNotes.result)
 
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoadingetoiles(false)
+            }
+        })()
+    }, [])
+    //Fetch note menu par utilisateur
+    useEffect(() => {
+
+        (async () => {
+            try {
+                var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
+                const userNotes = await fetchApi(url)
+                setMnunoteUser(userNotes.result)
+
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoadingetoiles(false)
+            }
+        })()
+    }, [])
+
+    //Fetch pour supprimer une note
+    const onclick = async () => {
+        try {
+            setLoading(true)
+            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.ID_NOTE}`, {
+                method: "DELETE",
+            })
+            navigation.goBack()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
     const onCloseAddToCart = () => {
         modalizeRef.current?.close()
     }
@@ -98,6 +148,7 @@ export default function MenuDetailScreen() {
     }, [isOpen])
     return (
         <>
+            {loading && <Loading />}
             <View style={{ marginTop: 0, flex: 1 }}>
                 <View style={styles.cardHeader}>
                     <TouchableNativeFeedback
@@ -159,50 +210,85 @@ export default function MenuDetailScreen() {
                             </View>
                         </View>
                     </TouchableNativeFeedback>
-                    <View>
-                        <Text style={styles.plusText}>Notes et Revus</Text>
-                    </View>
-
-                    <View style={styles.notes}>
-                        {new Array(5).fill(0).map((_, index) => {
-                            return (
-
-                                <TouchableOpacity onPress={() => setNote(index + 1)} style={styles.etoiles} >
-                                    {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                        <AntDesign name="star" size={25} color="black" />}
-                                </TouchableOpacity>
-                            )
+                    <TouchableNativeFeedback
+                        accessibilityRole="button"
+                        background={TouchableNativeFeedback.Ripple('#c9c5c5')}
+                        onPress={() => navigation.navigate('AllNotesMenusScreen', {
+                            product
                         })}
-                    </View>
-                    {loading && <Loading />}
-                    {note ?
-                        <View>
-                            <View style={styles.selectControl}>
-                                <OutlinedTextField
-                                    label={"Commentaire"}
-                                    fontSize={13}
-                                    value={data.commentaire}
-                                    onChangeText={e => handleChange("commentaire", e)}
-                                    lineWidth={0.5}
-                                    activeLineWidth={0.5}
-                                    baseColor={COLORS.smallBrown}
-                                    tintColor={COLORS.primary}
-                                    containerStyle={{ flex: 1, marginTop: 15, }}
-                                    inputContainerStyle={{ borderRadius: 10 }}
-                                    multiline
-                                />
+                    >
+                        <View style={styles.productsHeader}>
+                            <Text style={styles.title}>Notes et revues</Text>
+                            <MaterialIcons name="navigate-next" size={24} color="black" />
+                        </View>
+                    </TouchableNativeFeedback>
+
+                    {/* {loadingetoiles && <Loading />} */}
+                    {menunoteUser ? <View>
+                        <NotesUseEcommerceScreen note={menunoteUser} />
+                        <View style={styles.commentaire}>
+                            <View>
+                                <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', { menunoteUser })}>
+                                    <Text style={styles.editText}>Modifier</Text>
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.actionContainer}>
-                                <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
-                                    <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
+
+                            <View>
+                                <TouchableOpacity onPress={onclick}>
+                                    <Text style={styles.editText1}>Supprimer</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        : null
-                    }
 
+                    </View> :
+                        /**
+                         * un  Ajouter une note et commentaires sur un menus
+                         * @author Innocent <ndayikengurukiye.innocent@mediabox.bi>
+                         * @date 7/2/2023
+                         * @param {*} param0 
+                         * @returns 
+                         */
+                        <>
+                            <View style={styles.notes}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
+                                            {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
+                                                <AntDesign name="star" size={25} color="black" />}
+                                        </TouchableOpacity>
+                                    )
+                                })}
+                            </View>
 
-                    
+                            {note ?
+                                <View>
+                                    <View style={styles.selectControl}>
+                                        <OutlinedTextField
+                                            label={"Commentaire"}
+                                            fontSize={13}
+                                            value={data.commentaire}
+                                            onChangeText={e => handleChange("commentaire", e)}
+                                            lineWidth={0.5}
+                                            activeLineWidth={0.5}
+                                            baseColor={COLORS.smallBrown}
+                                            tintColor={COLORS.primary}
+                                            containerStyle={{ flex: 1, marginTop: 15, }}
+                                            inputContainerStyle={{ borderRadius: 10 }}
+                                            multiline
+                                        />
+                                    </View>
+                                    <View style={styles.actionContainer}>
+                                        <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
+                                            <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                : null
+                            }
+                        </>}
+
+                    <NotesEcommerce allNotes={menunote} />
+
                     {loadingSimilarProducts ? <HomeMenuSkeletons /> : <HomeMenus
                         menus={similarProducs.result}
                         title="Similaires"
@@ -290,6 +376,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 15,
     },
+    selectControl: {
+        flex: 1,
+        paddingHorizontal: 10
+    },
     points: {
         marginTop: 25,
         marginLeft: 10
@@ -298,8 +388,7 @@ const styles = StyleSheet.create({
         width: "120%",
         height: "120%",
         borderRadius: 50,
-        // alignItems:"center",
-        // justifyContent:"center"
+
     },
     Cardnote: {
         padding: 15,
@@ -335,7 +424,13 @@ const styles = StyleSheet.create({
     etoiles: {
         marginLeft: 5,
         display: "flex",
+        paddingHorizontal:15
 
+    },
+    title: {
+        color: COLORS.ecommercePrimaryColor,
+        fontSize: 17,
+        fontWeight: "bold"
     },
     actionContainer: {
         paddingHorizontal: 10
@@ -368,6 +463,24 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
         color: COLORS.ecommercePrimaryColor
+    },
+    commentaire: {
+        flexDirection: "row",
+        paddingHorizontal:15
+
+    },
+    editText: {
+        marginTop: 5,
+        paddingHorizontal: 65,
+        fontSize: 16,
+        color: "green"
+    },
+    editText1: {
+        marginTop: 5,
+        paddingHorizontal: 65,
+        fontSize: 16,
+        color: "green",
+        marginLeft: -80
     },
     shop: {
         flexDirection: "row",
@@ -404,6 +517,10 @@ const styles = StyleSheet.create({
     text: {
         color: '#646B95',
         fontSize: 20
+    },
+    selectControl: {
+        flex: 1,
+        paddingHorizontal: 10
     },
     carre1: {
         padding: 15,
@@ -457,16 +574,19 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         resizeMode: 'contain'
     },
+
     productsHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginTop: 10,
         paddingVertical: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     },
     title: {
         color: COLORS.ecommercePrimaryColor,
-        fontSize: 14,
+        fontSize: 17,
+        fontWeight: "bold"
     },
     productImage: {
         width: "100%",
