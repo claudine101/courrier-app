@@ -34,7 +34,7 @@ export default function EditRatingMenuScreen() {
             const form = new FormData()
             form.append("COMMENTAIRE", data.commentaire)
             form.append("NOTE", note)
-            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.ID_NOTE}`, {
+            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.userNote.ID_NOTE}`, {
                 method: "PUT",
                 body: form
                 

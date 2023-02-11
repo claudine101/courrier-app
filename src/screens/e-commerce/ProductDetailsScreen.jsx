@@ -140,7 +140,7 @@ export default function ProductDetailsScreen() {
     const onclick = async () => {
         try {
             setLoading(true)
-            const Notes = await fetchApi(`/ecommerce/ecommerce_produits_notes/${produitnoteuser.ID_NOTE}`, {
+            const Notes = await fetchApi(`/ecommerce/ecommerce_produits_notes/${produitnoteuser.userNote.ID_NOTE}`, {
                 method: "DELETE",
             })
             navigation.navigate('EcommerceHomeScreen')
@@ -333,9 +333,7 @@ export default function ProductDetailsScreen() {
                                 }
                             </>}
                     <NotesEcommerce allNotes={userNote} />
-
-
-                    {loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts
+{loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts
                         products={similarProducs.result}
                         title="Similaires"
                         category={product.categorie}

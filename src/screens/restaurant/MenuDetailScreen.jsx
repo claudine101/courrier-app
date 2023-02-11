@@ -40,7 +40,6 @@ export default function MenuDetailScreen() {
     const [note, setNote] = useState(null)
     const [selectedRestaurant, setselectedRestaurant] = useState([])
     const MenuInCart = useSelector(restaurantProductSelector(product.ID_RESTAURANT_MENU))
-
     const [loadingShopProducts, shopProducts] = useFetch(`/resto/restaurant_menus?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
     const [loadingSimilarProducts, similarProducs] = useFetch(`/resto/restaurant_menus?category=${product.categorie.ID_CATEGORIE_MENU}`)
     const modalizeRef = useRef(null)
@@ -48,7 +47,7 @@ export default function MenuDetailScreen() {
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
     const [menunote, setMenuNote] = useState([])
-    const [menunoteUser, setMnunoteUser] = useState([])
+    const [menunoteUser, setMnunoteUser] = useState({})
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
@@ -94,7 +93,8 @@ export default function MenuDetailScreen() {
             }
         })()
     }, [])
-    //Fetch note menu par utilisateur
+
+
     useEffect(() => {
 
         (async () => {
@@ -102,7 +102,7 @@ export default function MenuDetailScreen() {
                 var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
                 const userNotes = await fetchApi(url)
                 setMnunoteUser(userNotes.result)
-
+                //console.log(menunoteUser)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -110,12 +110,12 @@ export default function MenuDetailScreen() {
             }
         })()
     }, [])
-
+ //console.log(menunoteUser.userNote.ID_NOTE)
     //Fetch pour supprimer une note
     const onclick = async () => {
         try {
             setLoading(true)
-            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.ID_NOTE}`, {
+            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.userNote.ID_NOTE}`, {
                 method: "DELETE",
             })
             navigation.goBack()
@@ -209,7 +209,45 @@ export default function MenuDetailScreen() {
                                 </View>
                             </View>
                         </View>
+
+
                     </TouchableNativeFeedback>
+                    {loadingetoiles ? <View></View> :
+                        <View style={styles.moyen}>
+                            <View style={styles.revue}>
+                                <Text style={styles.moyenne}>{menunoteUser.avg}</Text>
+                                <Text style={styles.total}> / 5</Text>
+                            </View>
+                            <View style={styles.etoileNote}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <View key={index}  >
+                                            {
+                                                <AntDesign name="star" size={12} color="black" />}
+                                        </View>
+                                    )
+                                })}
+                            </View>
+
+                            <View>
+                                <Text style={styles.moyenn}>({menunoteUser.total})</Text>
+                            </View>
+                            <View style={styles.noteDetails}>
+                                {new Array(5).fill(0).map((_, index) => {
+                                    return (
+                                        <View key={index} style={styles.noteDetail}>
+                                            <Text>{5 - index}</Text>
+                                            <View style={styles.noteDetailLigne}>
+                                                <View style={[styles.detailProgression, { width: `${menunoteUser.noteGroup[5 - index].pourcentage}%` }]} />
+                                            </View>
+                                            <Text>
+                                                {menunoteUser.noteGroup[5 - index].nombre}
+                                            </Text>
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </View>}
                     <TouchableNativeFeedback
                         accessibilityRole="button"
                         background={TouchableNativeFeedback.Ripple('#c9c5c5')}
@@ -223,69 +261,64 @@ export default function MenuDetailScreen() {
                         </View>
                     </TouchableNativeFeedback>
 
-                    {/* {loadingetoiles && <Loading />} */}
-                    {menunoteUser ? <View>
-                        <NotesUseEcommerceScreen note={menunoteUser} />
-                        <View style={styles.commentaire}>
-                            <View>
-                                <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', { menunoteUser })}>
-                                    <Text style={styles.editText}>Modifier</Text>
-                                </TouchableOpacity>
-                            </View>
 
-                            <View>
-                                <TouchableOpacity onPress={onclick}>
-                                    <Text style={styles.editText1}>Supprimer</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
 
-                    </View> :
-                        /**
-                         * un  Ajouter une note et commentaires sur un menus
-                         * @author Innocent <ndayikengurukiye.innocent@mediabox.bi>
-                         * @date 7/2/2023
-                         * @param {*} param0 
-                         * @returns 
-                         */
-                        <>
-                            <View style={styles.notes}>
-                                {new Array(5).fill(0).map((_, index) => {
-                                    return (
-                                        <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
-                                            {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                                <AntDesign name="star" size={25} color="black" />}
-                                        </TouchableOpacity>
-                                    )
-                                })}
-                            </View>
-
-                            {note ?
+                    {loadingetoiles ? <View></View> :
+                        menunoteUser.userNote ? <View>
+                            <NotesUseEcommerceScreen note={menunoteUser} />
+                            <View style={styles.commentaire}>
                                 <View>
-                                    <View style={styles.selectControl}>
-                                        <OutlinedTextField
-                                            label={"Commentaire"}
-                                            fontSize={13}
-                                            value={data.commentaire}
-                                            onChangeText={e => handleChange("commentaire", e)}
-                                            lineWidth={0.5}
-                                            activeLineWidth={0.5}
-                                            baseColor={COLORS.smallBrown}
-                                            tintColor={COLORS.primary}
-                                            containerStyle={{ flex: 1, marginTop: 15, }}
-                                            inputContainerStyle={{ borderRadius: 10 }}
-                                            multiline
-                                        />
-                                    </View>
-                                    <View style={styles.actionContainer}>
-                                        <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
-                                            <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
-                                        </TouchableOpacity>
-                                    </View>
+                                    <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', {menunoteUser })}>
+                                        <Text style={styles.editText}>Modifier</Text>
+                                    </TouchableOpacity>
                                 </View>
-                                : null
-                            }
-                        </>}
+
+                                <View>
+                                    <TouchableOpacity onPress={onclick}>
+                                        <Text style={styles.editText1}>Supprimer</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                        </View> :
+                            <>
+                                <View style={styles.notes}>
+                                    {new Array(5).fill(0).map((_, index) => {
+                                        return (
+                                            <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
+                                                {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
+                                                    <AntDesign name="star" size={25} color="black" />}
+                                            </TouchableOpacity>
+                                        )
+                                    })}
+                                </View>
+
+                                {note ?
+                                    <View>
+                                        <View style={styles.selectControl}>
+                                            <OutlinedTextField
+                                                label={"Commentaire"}
+                                                fontSize={13}
+                                                value={data.commentaire}
+                                                onChangeText={e => handleChange("commentaire", e)}
+                                                lineWidth={0.5}
+                                                activeLineWidth={0.5}
+                                                baseColor={COLORS.smallBrown}
+                                                tintColor={COLORS.primary}
+                                                containerStyle={{ flex: 1, marginTop: 15, }}
+                                                inputContainerStyle={{ borderRadius: 10 }}
+                                                multiline
+                                            />
+                                        </View>
+                                        <View style={styles.actionContainer}>
+                                            <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
+                                                <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    : null
+                                }
+                            </>}
 
                     <NotesEcommerce allNotes={menunote} />
 
@@ -371,6 +404,11 @@ const styles = StyleSheet.create({
         height: 60,
         backgroundColor: '#F1F1F1',
     },
+    etoileNote: {
+
+        flexDirection: "row"
+
+    },
     category: {
         flexDirection: "row",
         alignItems: "center",
@@ -399,6 +437,57 @@ const styles = StyleSheet.create({
         borderRadius: 50,
 
     },
+    noteDetails: {
+        width: "100%",
+        paddingHorizontal: 40
+    },
+    noteDetail: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+
+    },
+    moyenne: {
+
+        fontSize: 45,
+        marginHorizontal: 10
+
+    },
+    revue: {
+        flexDirection: "row",
+        alignItems: "flex-end"
+    },
+    moyen: {
+
+        justifyContent: 'center',
+        alignItems: "center"
+    },
+    moyenn: {
+
+        color: "#7777",
+        justifyContent: "center",
+        paddingHorizontal: 20
+
+    },
+
+    total: {
+
+        fontSize: 20,
+    },
+    noteDetailLigne: {
+        height: 10,
+        width: "100%",
+        backgroundColor: "#f1f1f1",
+        marginHorizontal: 10,
+        borderRadius: 5
+    },
+    detailProgression: {
+        height: "100%",
+        width: "0%",
+        backgroundColor: "red",
+
+        borderRadius: 5
+    },
     etoiles: {
 
         flexDirection: 'row',
@@ -424,7 +513,7 @@ const styles = StyleSheet.create({
     etoiles: {
         marginLeft: 5,
         display: "flex",
-        paddingHorizontal:15
+        paddingHorizontal: 15
 
     },
     title: {
@@ -466,7 +555,7 @@ const styles = StyleSheet.create({
     },
     commentaire: {
         flexDirection: "row",
-        paddingHorizontal:15
+        paddingHorizontal: 15
 
     },
     editText: {

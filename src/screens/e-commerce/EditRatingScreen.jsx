@@ -34,7 +34,7 @@ export default function EditRatingScreen() {
             const form = new FormData()
             form.append("COMMENTAIRE", data.commentaire)
             form.append("NOTE", note)
-            const Notes = await fetchApi(`/ecommerce/ecommerce_produits_notes/${produitnoteuser.ID_NOTE}`, {
+            const Notes = await fetchApi(`/ecommerce/ecommerce_produits_notes/${produitnoteuser.userNote.ID_NOTE}`, {
                 method: "PUT",
                 body: form
             })
