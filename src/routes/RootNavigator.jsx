@@ -1,7 +1,5 @@
-import { DrawerActions, NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
-import HomeScreen from '../screens/home/HomeScreen'
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import DrawerNavigator from './DrawerNavigator';
 import PaginationHeader from '../components/ecommerce/main/PaginationHeader';
@@ -13,8 +11,8 @@ import DetailCommandeMenuScreen from '../screens/restaurant/DetailCommandeMenuSc
 import ProductDetailsScreen from '../screens/e-commerce/ProductDetailsScreen';
 import PlusRecommandeScreen from '../screens/liste_e-commerce/PlusRecommandeListeScreen';
 import SearchHistoryScreen from '../screens/search/SearchHistoryScreen';
-import SearchResultTabs from '../screens/search/SearchResultTabsScreen';
 import SearchResultTabsScreen from '../screens/search/SearchResultTabsScreen';
+import SearchAllLivreurScreen from '../screens/e-commerce/SearchAllLivreurScreen';
 
 
 export default function RootNavigator() {
@@ -42,6 +40,7 @@ export default function RootNavigator() {
                                         <Stack.Screen name="DetailCommandeScreen" component={DetailCommandeScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
                                         <Stack.Screen name="DetailCommandeMenuScreen" component={DetailCommandeMenuScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
                                         <Stack.Screen name="NoHeaderSearchLivreurScreen" component={SearchLivreurScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}  />
+                                        <Stack.Screen name='SearchAllLivreurScreen' component={SearchAllLivreurScreen} options={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}/>
                                         <Stack.Screen name='ProductDetailsScreen' component={ProductDetailsScreen} options={{headerShown: false}}/>
                                         <Stack.Screen name='PlusRecommandeScreen' component={PlusRecommandeScreen} options={{headerShown: false}}/>
                                         <Stack.Screen name="SearchHistoryScreen" component={SearchHistoryScreen} options={{

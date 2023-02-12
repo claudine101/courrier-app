@@ -108,8 +108,8 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                         </TouchableNativeFeedback>
                                         {showServiceCommands && <View style={styles.services}>
 
-                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate("CommandeEmiseScreen")} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
-                                                            <Text style={[styles.serviceName]}>
+                                                  <TouchableOpacity index={1} onPress={() => navigation.navigate('CommandeEmiseScreen', {serviceCategory:1})} style={[styles.service, (state.index == 4) && { backgroundColor: COLORS.handleColor }]}>
+                                                            <Text style={[styles.serviceName, (state.index == 4) && { color: '#000' }]}>
                                                                       Achats de produits
                                                             </Text>
                                                             {counts.ecommerce && counts.ecommerce > 0 ? <View style={styles.actionBadge}>
@@ -118,9 +118,9 @@ export default function DrawerContent({ state, navigation, descriptors }) {
                                                                       </Text>
                                                             </View> : null}
                                                   </TouchableOpacity>
-                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate("RestaurantEmiseScreen")} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
-                                                            <Text style={[styles.serviceName]}>
-                                                                      Restauration
+                                                  <TouchableOpacity index={2} onPress={() => navigation.navigate('RestaurantEmiseScreen', {serviceCategory:2})} style={[styles.service, (state.index == 5) && { backgroundColor: COLORS.handleColor }]}>
+                                                            <Text style={[styles.serviceName, (state.index == 5) && { color: '#000' }]}>
+                                                                      Restaurant
                                                             </Text>
                                                             {counts.resto && counts.resto > 0 ? <View style={styles.actionBadge}>
                                                                       <Text style={styles.actionBadgeText}>

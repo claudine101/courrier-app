@@ -4,7 +4,7 @@ import { Feather, Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from "react";
 import fetchApi from "../../helpers/fetchApi";
 import moment from "moment/moment";
-import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
 import CommandeSkeletons from "../../components/app/Skeletons";
 import { useCallback } from "react";
@@ -14,6 +14,8 @@ import { userSelector } from "../../store/selectors/userSelector";
 import AppHeader from "../../components/app/AppHeader";
 
 export default function RestaurantEmiseScreen() {
+        const route = useRoute()
+        const {serviceCategory} = route.params
           const [commandes, setCommandes] = useState([])
           const navigation = useNavigation()
           const [loading, setLoading] = useState(true)
@@ -39,9 +41,9 @@ export default function RestaurantEmiseScreen() {
                     }
           }
 
-          const handleCommandePress = commande => {
-                    // navigation.navigate('DetailCommandeMenuscreen', { commande })
-                    navigation.navigate('NoHeaderSearchLivreurScreen', { commande })
+          
+          const handleCommandePress = (commande, index) => {
+            navigation.push('SearchAllLivreurScreen', { commande:commande, serviceCategory:serviceCategory, index:index })
           }
           useFocusEffect(useCallback(() => {
                     (async () => {
@@ -101,7 +103,7 @@ export default function RestaurantEmiseScreen() {
                                                                                 }
                                                                                 renderItem={(({ item: commande, index }) => {
                                                                                           return (
-                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande)} disabled>
+                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande, index)}>
                                                                                                               <View style={styles.commande} key={index}>
                                                                                                                         <View style={styles.cardAchat}>
                                                                                                                                   <Image source={{ uri: commande.details[0]?.IMAGE_1 }} style={styles.productImage} />

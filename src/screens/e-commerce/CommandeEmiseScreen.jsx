@@ -25,6 +25,8 @@ export default function CommandeEmiseScreen() {
           const [loading, setLoading] = useState(true)
           const [refreshing, setRefreshing] = useState(false)
           const user = useSelector(userSelector)
+          const route = useRoute()
+          const {serviceCategory} = route.params
 
           moment.updateLocale('fr', {
                     calendar: {
@@ -47,9 +49,9 @@ export default function CommandeEmiseScreen() {
                     }
           }
 
-          const handleCommandePress = commande => {
-                    navigation.navigate('NoHeaderSearchLivreurScreen', { commande })
-          }
+          const handleCommandePress = (commande, index) => {
+                navigation.push('SearchAllLivreurScreen', { commande:commande, index:index, serviceCategory:serviceCategory })
+        }
           useFocusEffect(useCallback(() => {
                     (async () => {
                               try {
@@ -105,7 +107,7 @@ export default function CommandeEmiseScreen() {
                                                                                           onRefresh={onRefresh} />}
                                                                                 renderItem={(({ item: commande, index }) => {
                                                                                           return (
-                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande)}>
+                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande, index)}>
                                                                                                               <View style={styles.commande} key={index}>
                                                                                                                         <View style={styles.cardAchat}>
                                                                                                                                   <Image source={{ uri: commande.details[0]?.IMAGE_1 }} style={styles.productImage} />
