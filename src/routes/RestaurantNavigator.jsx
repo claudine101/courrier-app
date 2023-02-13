@@ -11,14 +11,12 @@ import RestaurantProcheScreen from "../screens/liste_restaurant/RestaurantProche
 import RechercheAllScreen from "../screens/research/RechercheAllScreen";
 
 import AllMenuScreen from "../screens/restaurant/AllMenuScreen";
-import EditRatingMenuScreen from "../screens/restaurant/EditRatingMenuScreen";
 import MenuDetailScreen from "../screens/restaurant/MenuDetailScreen";
 import MenusRestaurantScreen from "../screens/restaurant/MenusRestaurantScreen";
 import RechercheScreen from "../screens/restaurant/RechercheScreen";
 import RestaurantCartScreen from "../screens/restaurant/RestaurantCartScreen";
 import RestaurantHomeScreen from "../screens/restaurant/RestaurantHomeScreen";
 import RestaurantScreen from "../screens/restaurant/RestaurantScreen";
-import AllNotesMenusScreen from "../screens/restaurant/tabs/AllNotesMenusScreen";
 
 
 export default function RestaurantNavigator() {
@@ -40,8 +38,6 @@ export default function RestaurantNavigator() {
                 <Stack.Screen name="MenuScreenCategorie" component={MenuScreenCategorie} />
                 <Stack.Screen name="RechercheScreen" component={RechercheScreen} />
                 <Stack.Screen name="RechercheAllScreen" component={RechercheAllScreen} />
-                <Stack.Screen name="EditRatingMenuScreen" component={EditRatingMenuScreen} />
-                <Stack.Screen name="AllNotesScreen" component={AllNotesScreen}/>
 
             </Stack.Group>
             <Stack.Screen name="ShopScreen" component={ShopScreen} options={{
