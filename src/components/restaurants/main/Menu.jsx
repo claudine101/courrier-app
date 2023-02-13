@@ -72,7 +72,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
         }
     }, [isOpen])
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.push('MenuDetailScreen', { product: menu })}>
+        <TouchableWithoutFeedback onPress={() => navigation.push('MenuDetailScreen', { product: menu, SERVICE:2 })}>
             <View key={index} style={[styles.product, additionStyles]}>
                 <View style={styles.imageCard}>
                     <Image source={{ uri: menu.produit.IMAGE }} style={styles.image} />

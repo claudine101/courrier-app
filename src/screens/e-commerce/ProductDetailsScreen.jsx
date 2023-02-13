@@ -36,7 +36,7 @@ moment.updateLocale('fr', {
 export default function ProductDetailsScreen() {
           const navigation = useNavigation()
           const route = useRoute()
-          const { product } = route.params
+          const { product, SERVICE } = route.params
           const [loadingShopProducts, shopProducts] = useFetch(`/ecommerce/ecommerce_produits?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
           const [loadingSimilarProducts, similarProducs] = useFetch(`/ecommerce/ecommerce_produits?category=${product.categorie.ID_CATEGORIE_PRODUIT}`)
           const [loadingRatingsOverview, ratingsOverview] = useFetch(`/ecommerce/ecommerce_produits_notes/notes?ID_PRODUIT=${product.produit.ID_PRODUIT}`)
@@ -147,7 +147,7 @@ export default function ProductDetailsScreen() {
                                                             <>
                                                             {ratingsOverview.result.hasCommande ? 
                                                                       <UserProductRating userRating={ratingsOverview.result.userNote} productId={product.produit.ID_PRODUIT} scrollRef={scrollRef} /> : null}
-                                                            <ProductRatings userRating={ratingsOverview.result} productId={product.produit.ID_PRODUIT} />
+                                                            <ProductRatings userRating={ratingsOverview.result} productId={product.produit.ID_PRODUIT} SERVICE={SERVICE}/>
                                                             </>}
 
                                                   {loadingSimilarProducts ? <HomeProductsSkeletons /> : <HomeProducts

@@ -23,10 +23,12 @@ import useFetch from "../../hooks/useFetch"
 import { useForm } from "../../hooks/useForm"
 import Loading from "../../components/app/Loading";
 import HomeMenus from "../../components/restaurants/home/HomeMenus";
-import { HomeMenuSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
+import { HomeMenuSkeletons, HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import { TextField, FilledTextField, InputAdornment, OutlinedTextField } from 'rn-material-ui-textfield'
 import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
 import Rating from "../../components/ecommerce/details/Rating";
+import UserProductRating from "../../components/ecommerce/details/UserProductRating";
+import ProductRatings from "../../components/ecommerce/details/ProductRatings";
 
 export default function MenuDetailScreen() {
     const route = useRoute()
@@ -36,13 +38,15 @@ export default function MenuDetailScreen() {
     const [showImageModal, setShowImageModal] = useState(false)
     const [loadingetoiles, setLoadingetoiles] = useState(true)
 
-    const { product, menus } = route.params
+    const { product, menus, SERVICE } = route.params
     const [note, setNote] = useState(null)
     const [selectedRestaurant, setselectedRestaurant] = useState([])
     const MenuInCart = useSelector(restaurantProductSelector(product.ID_RESTAURANT_MENU))
     const [loadingShopProducts, shopProducts] = useFetch(`/resto/restaurant_menus?partenaireService=${product.produit_partenaire.ID_PARTENAIRE_SERVICE}`)
     const [loadingSimilarProducts, similarProducs] = useFetch(`/resto/restaurant_menus?category=${product.categorie.ID_CATEGORIE_MENU}`)
+    const [loadingRatingsOverview, ratingsOverview] = useFetch(`/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`)
     const modalizeRef = useRef(null)
+    
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -79,37 +83,37 @@ export default function MenuDetailScreen() {
 
     }
     //Fetch note du menu
-    useEffect(() => {
-        (async () => {
-            try {
-                var url = `/resto/restaurant_menus_notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
-                const menusNotes = await fetchApi(url)
-                setMenuNote(menusNotes.result)
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             var url = `/resto/restaurant_menus_notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
+    //             const menusNotes = await fetchApi(url)
+    //             setMenuNote(menusNotes.result)
 
-            } catch (error) {
-                console.log(error)
-            } finally {
-                // setLoadingetoiles(false)
-            }
-        })()
-    }, [])
+    //         } catch (error) {
+    //             console.log(error)
+    //         } finally {
+    //             // setLoadingetoiles(false)
+    //         }
+    //     })()
+    // }, [])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        (async () => {
-            try {
-                var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
-                const userNotes = await fetchApi(url)
-                setMnunoteUser(userNotes.result)
+    //     (async () => {
+    //         try {
+    //             var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
+    //             const userNotes = await fetchApi(url)
+    //             setMnunoteUser(userNotes.result)
 
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoadingetoiles(false)
-            }
-        })()
-    }, [])
+    //         } catch (error) {
+    //             console.log(error)
+    //         } finally {
+    //             setLoadingetoiles(false)
+    //         }
+    //     })()
+    // }, [])
 
     const onclick = async () => {
         try {
@@ -209,44 +213,16 @@ export default function MenuDetailScreen() {
                             </View>
                         </View>
 
-
                     </TouchableNativeFeedback>
-                    {loadingetoiles ? <View></View> :
-                        <View style={styles.moyen}>
-                            <View style={styles.revue}>
-                                <Text style={styles.moyenne}>{menunoteUser.avg}</Text>
-                                <Text style={styles.total}> / 5</Text>
-                            </View>
-                            <View style={styles.etoileNote}>
-                                {new Array(5).fill(0).map((_, index) => {
-                                    return (
-                                        <View key={index}  >
-                                            {
-                                                <AntDesign name="star" size={12} color="black" />}
-                                        </View>
-                                    )
-                                })}
-                            </View>
+                    {loadingRatingsOverview ? <HomeProductsSkeletons /> :
+                        <>
+                            {ratingsOverview.result.hasCommande ?
+                                <UserProductRating userRating={ratingsOverview.result.userNote} productId={product.produit.ID_RESTAURANT_MENU} scrollRef={scrollRef} /> : null}
+                            <ProductRatings userRating={ratingsOverview.result} productId={product.produit.ID_RESTAURANT_MENU} SERVICE={SERVICE} />
+                    </>}
 
-                            <View>
-                                <Text style={styles.moyenn}>({menunoteUser.total})</Text>
-                            </View>
-                            <View style={styles.noteDetails}>
-                                {new Array(5).fill(0).map((_, index) => {
-                                    return (
-                                        <View key={index} style={styles.noteDetail}>
-                                            <Text>{5 - index}</Text>
-                                            <View style={styles.noteDetailLigne}>
-                                                <View style={[styles.detailProgression, { width: `${menunoteUser.noteGroup[5 - index].pourcentage}%` }]} />
-                                            </View>
-                                            <Text>
-                                                {menunoteUser.noteGroup[5 - index].nombre}
-                                            </Text>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>}
+
+
                     <TouchableNativeFeedback
                         accessibilityRole="button"
                         background={TouchableNativeFeedback.Ripple('#c9c5c5')}
@@ -259,65 +235,6 @@ export default function MenuDetailScreen() {
                             <MaterialIcons name="navigate-next" size={24} color="black" />
                         </View>
                     </TouchableNativeFeedback>
-
-
-
-                    {loadingetoiles ? <View></View> :
-                        menunoteUser.userNote ? <View>
-                            <Rating note={menunoteUser} />
-                            <View style={styles.commentaire}>
-                                <View>
-                                    <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', { menunoteUser })}>
-                                        <Text style={styles.editText}>Modifier</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View>
-                                    <TouchableOpacity onPress={onclick}>
-                                        <Text style={styles.editText1}>Supprimer</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                        </View> :
-                            <>
-                                <View style={styles.notes}>
-                                    {new Array(5).fill(0).map((_, index) => {
-                                        return (
-                                            <TouchableOpacity key={index} onPress={() => setNote(index + 1)} style={styles.etoiles}>
-                                                {note < index + 1 ? <AntDesign name="staro" size={25} color="black" /> :
-                                                    <AntDesign name="star" size={25} color="black" />}
-                                            </TouchableOpacity>
-                                        )
-                                    })}
-                                </View>
-
-                                {note ?
-                                    <View>
-                                        <View style={styles.selectControl}>
-                                            <OutlinedTextField
-                                                label={"Commentaire"}
-                                                fontSize={13}
-                                                value={data.commentaire}
-                                                onChangeText={e => handleChange("commentaire", e)}
-                                                lineWidth={0.5}
-                                                activeLineWidth={0.5}
-                                                baseColor={COLORS.smallBrown}
-                                                tintColor={COLORS.primary}
-                                                containerStyle={{ flex: 1, marginTop: 15, }}
-                                                inputContainerStyle={{ borderRadius: 10 }}
-                                                multiline
-                                            />
-                                        </View>
-                                        <View style={styles.actionContainer}>
-                                            <TouchableOpacity onPress={onSubmit} style={[styles.addBtn]}>
-                                                <Text style={[styles.addBtnText]}>Enregister Commentaire</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                    : null
-                                }
-                            </>}
 
                     {loadingSimilarProducts ? <HomeMenuSkeletons /> : <HomeMenus
                         menus={similarProducs.result}
