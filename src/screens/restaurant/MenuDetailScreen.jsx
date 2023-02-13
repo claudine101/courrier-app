@@ -26,8 +26,7 @@ import HomeMenus from "../../components/restaurants/home/HomeMenus";
 import { HomeMenuSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import { TextField, FilledTextField, InputAdornment, OutlinedTextField } from 'rn-material-ui-textfield'
 import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
-import NotesEcommerce from "../../components/ecommerce/home/NotesEcommerce";
-import NotesUseEcommerceScreen from "../../components/ecommerce/home/NotesUseEcommerceScreen";
+import Rating from "../../components/ecommerce/details/Rating";
 
 export default function MenuDetailScreen() {
     const route = useRoute()
@@ -265,7 +264,7 @@ export default function MenuDetailScreen() {
 
                     {loadingetoiles ? <View></View> :
                         menunoteUser.userNote ? <View>
-                            <NotesUseEcommerceScreen note={menunoteUser.userNote}/>
+                            <Rating note={menunoteUser} />
                             <View style={styles.commentaire}>
                                 <View>
                                     <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', { menunoteUser })}>
@@ -319,8 +318,6 @@ export default function MenuDetailScreen() {
                                     : null
                                 }
                             </>}
-
-                    <NotesEcommerce allNotes={menunote} />
 
                     {loadingSimilarProducts ? <HomeMenuSkeletons /> : <HomeMenus
                         menus={similarProducs.result}
