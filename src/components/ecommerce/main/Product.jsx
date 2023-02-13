@@ -66,7 +66,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
     }, [isOpen])
 
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product })}>
+        <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product, SERVICE:1 })}>
             <View key={index} style={[styles.product, additionStyles]}>
                 <View style={styles.imageCard}>
                     <Image source={{ uri: product.produit.IMAGE }} style={styles.image} />
