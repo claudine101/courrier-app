@@ -31,7 +31,7 @@ export default function ProductRatings({ userRating, productId, SERVICE }) {
             <TouchableNativeFeedback
                 accessibilityRole="button"
                 background={TouchableNativeFeedback.Ripple('#c9c5c5')}
-                onPress={() => navigation.navigate('AllNotesScreen', { productId })}
+                onPress={() => navigation.navigate('AllNotesScreen', { productId,SERVICE })}
             >
                 <View style={styles.productsHeader}>
                     <Text style={styles.title}>Notes et avis</Text>

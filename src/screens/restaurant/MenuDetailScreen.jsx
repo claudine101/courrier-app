@@ -46,7 +46,7 @@ export default function MenuDetailScreen() {
     const [loadingSimilarProducts, similarProducs] = useFetch(`/resto/restaurant_menus?category=${product.categorie.ID_CATEGORIE_MENU}`)
     const [loadingRatingsOverview, ratingsOverview] = useFetch(`/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`)
     const modalizeRef = useRef(null)
-    
+    const scrollRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -58,76 +58,6 @@ export default function MenuDetailScreen() {
     }
     const [amount, setAmount] = useState(1)
 
-    const [data, handleChange] = useForm({
-        commentaire: "",
-    })
-
-    const onSubmit = async () => {
-        setLoading(true)
-        try {
-
-            const form = new FormData()
-            form.append("COMMENTAIRE", data.commentaire)
-            form.append("ID_RESTAURANT_MENU", product.produit.ID_RESTAURANT_MENU)
-            form.append("NOTE", note)
-            const Notes = await fetchApi('/resto/restaurant_menus_notes', {
-                method: "POST",
-                body: form
-            })
-            navigation.navigate("RestaurantHomeScreen")
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
-
-    }
-    //Fetch note du menu
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             var url = `/resto/restaurant_menus_notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
-    //             const menusNotes = await fetchApi(url)
-    //             setMenuNote(menusNotes.result)
-
-    //         } catch (error) {
-    //             console.log(error)
-    //         } finally {
-    //             // setLoadingetoiles(false)
-    //         }
-    //     })()
-    // }, [])
-
-
-    // useEffect(() => {
-
-    //     (async () => {
-    //         try {
-    //             var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
-    //             const userNotes = await fetchApi(url)
-    //             setMnunoteUser(userNotes.result)
-
-    //         } catch (error) {
-    //             console.log(error)
-    //         } finally {
-    //             setLoadingetoiles(false)
-    //         }
-    //     })()
-    // }, [])
-
-    const onclick = async () => {
-        try {
-            setLoading(true)
-            const Notes = await fetchApi(`/resto/restaurant_menus_notes/${menunoteUser.userNote.ID_NOTE}`, {
-                method: "DELETE",
-            })
-            navigation.goBack()
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
-    }
     const onCloseAddToCart = () => {
         modalizeRef.current?.close()
     }
@@ -173,7 +103,7 @@ export default function MenuDetailScreen() {
                         <RestaurantBadge />
                     </View>
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
+                <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled ref={scrollRef} keyboardShouldPersistTaps='always'>
                     <ProductImages images={IMAGES} />
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 10 }}>
                         <View>
@@ -217,24 +147,9 @@ export default function MenuDetailScreen() {
                     {loadingRatingsOverview ? <HomeProductsSkeletons /> :
                         <>
                             {ratingsOverview.result.hasCommande ?
-                                <UserProductRating userRating={ratingsOverview.result.userNote} productId={product.produit.ID_RESTAURANT_MENU} scrollRef={scrollRef} /> : null}
+                                <UserProductRating userRating={ratingsOverview.result.userNote} productId={product.produit.ID_RESTAURANT_MENU} scrollRef={scrollRef} SERVICE={SERVICE} /> : null}
                             <ProductRatings userRating={ratingsOverview.result} productId={product.produit.ID_RESTAURANT_MENU} SERVICE={SERVICE} />
-                    </>}
-
-
-
-                    <TouchableNativeFeedback
-                        accessibilityRole="button"
-                        background={TouchableNativeFeedback.Ripple('#c9c5c5')}
-                        onPress={() => navigation.navigate('AllNotesMenusScreen', {
-                            product
-                        })}
-                    >
-                        <View style={styles.productsHeader}>
-                            <Text style={styles.title}>Notes et revues</Text>
-                            <MaterialIcons name="navigate-next" size={24} color="black" />
-                        </View>
-                    </TouchableNativeFeedback>
+                        </>}
 
                     {loadingSimilarProducts ? <HomeMenuSkeletons /> : <HomeMenus
                         menus={similarProducs.result}

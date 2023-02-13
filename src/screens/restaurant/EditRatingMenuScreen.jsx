@@ -20,6 +20,7 @@ export default function EditRatingMenuScreen() {
     const route = useRoute()
     const navigation = useNavigation()
     const { menunoteUser } = route.params
+    
     const [note, setNote] = useState(menunoteUser.NOTE)
     const [loading, setLoading] = useState(false)
     const [data, handleChange] = useForm({

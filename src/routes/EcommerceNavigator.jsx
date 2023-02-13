@@ -36,7 +36,6 @@ export default function EcommerceNavigator() {
                                                   <Stack.Screen name="PlusRecommandeScreen" component={PlusRecommandeScreen}/>
                                                   <Stack.Screen name="RechercheScreen" component={RechercheScreen}/>
                                                   <Stack.Screen name="RechercheAllScreen" component={RechercheAllScreen}/>
-                                                  <Stack.Screen name="EditRatingScreen" component={EditRatingScreen}/>
                                                   <Stack.Screen name="AllNotesScreen" component={AllNotesScreen}/>
                                         </Stack.Group>
                                         <Stack.Screen name="ShopScreen" component={ShopScreen} options={{ 

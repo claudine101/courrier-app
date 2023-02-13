@@ -1,6 +1,7 @@
 import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 import React from "react";
 import RestaurantHeader from "../components/restaurants/main/RestaurantHeader";
+import AllNotesScreen from "../screens/e-commerce/AllNotesScreen";
 import ShopScreen from "../screens/e-commerce/ShopScreen";
 
 import CategorieMenuScreen from "../screens/liste_restaurant/CategorieMenuScreen";
@@ -40,7 +41,7 @@ export default function RestaurantNavigator() {
                 <Stack.Screen name="RechercheScreen" component={RechercheScreen} />
                 <Stack.Screen name="RechercheAllScreen" component={RechercheAllScreen} />
                 <Stack.Screen name="EditRatingMenuScreen" component={EditRatingMenuScreen} />
-                <Stack.Screen name="AllNotesMenusScreen" component={AllNotesMenusScreen} />
+                <Stack.Screen name="AllNotesScreen" component={AllNotesScreen}/>
 
             </Stack.Group>
             <Stack.Screen name="ShopScreen" component={ShopScreen} options={{
