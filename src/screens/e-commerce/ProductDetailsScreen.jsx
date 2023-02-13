@@ -53,6 +53,7 @@ export default function ProductDetailsScreen() {
     const [loadingForm, setLoadingForm] = useState(true)
     const [loading, setLoading] = useState(false)
     const [loadingetoiles, setLoadingetoiles] = useState(true)
+    const [loadingnote, setLoadingnote] = useState(true)
     const [note, setNote] = useState(null)
     const [commentaire, Setcommentaire] = useState(null)
     const productInCart = useSelector(ecommerceProductSelector(product.produit_partenaire.ID_PARTENAIRE_SERVICE))
@@ -109,6 +110,7 @@ export default function ProductDetailsScreen() {
             } catch (error) {
                 console.log(error)
             } finally {
+
             }
         })()
     }, [])
@@ -278,7 +280,7 @@ export default function ProductDetailsScreen() {
 
                     {loadingetoiles ? <View></View> :
                         produitnoteuser.userNote ? <View>
-                            <NotesUseEcommerceScreen note={produitnoteuser} />
+                            <NotesUseEcommerceScreen note={produitnoteuser.userNote}/>
                             <View style={styles.commentaire}>
                                 <View>
                                     <TouchableOpacity onPress={() => navigation.navigate('EditRatingScreen', { produitnoteuser })}>

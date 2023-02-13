@@ -36,6 +36,7 @@ export default function MenuDetailScreen() {
     const [imageIndex, setImageIndex] = useState(0)
     const [showImageModal, setShowImageModal] = useState(false)
     const [loadingetoiles, setLoadingetoiles] = useState(true)
+
     const { product, menus } = route.params
     const [note, setNote] = useState(null)
     const [selectedRestaurant, setselectedRestaurant] = useState([])
@@ -89,7 +90,7 @@ export default function MenuDetailScreen() {
             } catch (error) {
                 console.log(error)
             } finally {
-                setLoadingetoiles(false)
+                // setLoadingetoiles(false)
             }
         })()
     }, [])
@@ -102,7 +103,7 @@ export default function MenuDetailScreen() {
                 var url = `/resto/restaurant_menus_notes/notes?ID_RESTAURANT_MENU=${product.produit.ID_RESTAURANT_MENU}`
                 const userNotes = await fetchApi(url)
                 setMnunoteUser(userNotes.result)
-                //console.log(menunoteUser)
+
             } catch (error) {
                 console.log(error)
             } finally {
@@ -110,8 +111,7 @@ export default function MenuDetailScreen() {
             }
         })()
     }, [])
- //console.log(menunoteUser.userNote.ID_NOTE)
-    //Fetch pour supprimer une note
+
     const onclick = async () => {
         try {
             setLoading(true)
@@ -265,10 +265,10 @@ export default function MenuDetailScreen() {
 
                     {loadingetoiles ? <View></View> :
                         menunoteUser.userNote ? <View>
-                            <NotesUseEcommerceScreen note={menunoteUser} />
+                            <NotesUseEcommerceScreen note={menunoteUser.userNote}/>
                             <View style={styles.commentaire}>
                                 <View>
-                                    <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', {menunoteUser })}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('EditRatingMenuScreen', { menunoteUser })}>
                                         <Text style={styles.editText}>Modifier</Text>
                                     </TouchableOpacity>
                                 </View>
