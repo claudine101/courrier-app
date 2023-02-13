@@ -10,12 +10,7 @@ import BoutiqueListeScreen from "../screens/liste_e-commerce/BoutiqueListeScreen
 import CategorieListeScreen from "../screens/liste_e-commerce/CategorieListeScreen";
 import PlusRecommandeScreen from "../screens/liste_e-commerce/PlusRecommandeListeScreen";
 import EcommerceHeader from "../components/ecommerce/main/EcommerceHeader";
-<<<<<<< HEAD
-=======
-import RechercheScreen from "../screens/restaurant/RechercheScreen";
-import RechercheAllScreen from "../screens/research/RechercheAllScreen";
-import AllNotesScreen from    "../screens/e-commerce/AllNotesScreen"
->>>>>>> feat/ratings
+
 export default function EcommerceNavigator() { 
     
           const Stack = createStackNavigator()
