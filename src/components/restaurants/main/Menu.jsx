@@ -32,13 +32,13 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [wishlist, setWishlist] = useState(false)
- 
+    console.log(menu.produit.AVG)
 
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
     }
-   
+
     const addwishlist = async () => {
         try {
             const form = new FormData()
@@ -56,7 +56,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
             setWishlist(true)
         }
     }, [])
-  
+
     const onCloseAddToCart = () => {
         modalizeRef.current?.close()
     }
@@ -72,7 +72,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
         }
     }, [isOpen])
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.push('MenuDetailScreen', { product: menu, SERVICE:2 })}>
+        <TouchableWithoutFeedback onPress={() => navigation.push('MenuDetailScreen', { product: menu, SERVICE: 2 })}>
             <View key={index} style={[styles.product, additionStyles]}>
                 <View style={styles.imageCard}>
                     <Image source={{ uri: menu.produit.IMAGE }} style={styles.image} />
@@ -81,7 +81,7 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
                     <TouchableOpacity
                         onPress={() => {
                             addwishlist()
-                            setWishlist(b =>!b)
+                            setWishlist(b => !b)
                         }}
                     >
                         <View style={styles.cardLike}>
@@ -97,6 +97,8 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
                         </>
                     </TouchableOpacity>
                 </View>
+
+
                 <View style={styles.productNames}>
                     <Text numberOfLines={2} style={styles.productName}>
                         <Text numberOfLines={2} style={styles.productName}>
@@ -104,9 +106,30 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
                         </Text>
                     </Text>
                 </View>
-                {menu.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
-                    {menu.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
-                </Text> : null}
+                <View style={styles.productNames}>
+                    <Text numberOfLines={2} style={styles.productName}>
+                        <Text numberOfLines={2} style={styles.productorganisation}>
+                            {menu.partenaire.NOM_ORGANISATION}
+                        </Text>
+                    </Text>
+                </View>
+
+                <View style={styles.avg}>
+
+                    {menu.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
+                        {menu.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
+                    </Text> : null}
+
+                    <View style={styles.producmoyenne}>
+                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                        <Text numberOfLines={2} style={styles.productName}>
+                            <Text numberOfLines={2} style={styles.productnotes} >
+                                {menu.produit.AVG}
+                            </Text>
+                        </Text>
+                    </View>
+                </View>
+
                 <Portal>
                     <GestureHandlerRootView style={{ height: isOpen ? '100%' : 0, opacity: isOpen ? 1 : 0, backgroundColor: 'rgba(0, 0, 0, 0)', position: 'absolute', width: '100%', zIndex: 1 }}>
                         <Modalize
@@ -146,12 +169,33 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15
     },
+    productorganisation: {
+        fontSize:12,
+        color: COLORS.primary,
+    },
+    avg: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+
+    },
+    producmoyenne: {
+        flexDirection: "row"
+    },
+    productnotes:{
+        color:COLORS.primary,
+        fontSize:12
+    },
     serviceBackgound: {
         width: "100%",
         height: "100%",
         justifyContent: 'center',
 
     },
+    footerBlock: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
     product: {
         maxWidth: 240,
         backgroundColor: 'white',

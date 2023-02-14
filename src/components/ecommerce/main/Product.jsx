@@ -48,7 +48,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
         modalizeRef.current?.close()
     }
     const productInCart = useSelector(ecommerceProductSelector(product.produit.ID_PRODUIT))
-    
+
     useEffect(() => {
         if (product.produit.ID_WISHLIST) {
             setWishlist(true)
@@ -66,7 +66,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
     }, [isOpen])
 
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product, SERVICE:1 })}>
+        <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product, SERVICE: 1 })}>
             <View key={index} style={[styles.product, additionStyles]}>
                 <View style={styles.imageCard}>
                     <Image source={{ uri: product.produit.IMAGE }} style={styles.image} />
@@ -92,12 +92,46 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                         </>
                     </TouchableOpacity>
                 </View>
+
                 <View style={styles.productNames}>
-                    <Text numberOfLines={2} style={styles.productName}>
+                    <Text numberOfLines={2} style={styles.productNom}>
                         <Text numberOfLines={2} style={styles.productName}> {product.produit.NOM}</Text>
                     </Text>
                 </View>
-                {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold", position: 'absolute', bottom: 0, padding: 10 }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
+                <View style={styles.productNames}>
+                    <Text numberOfLines={2} style={styles.productName}>
+                        <Text numberOfLines={2} style={styles.productNom}> {product.partenaire.NOM_ORGANISATION}</Text>
+                    </Text>
+                </View>
+{/* 
+                <View style={styles.avg}>
+                    {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold", bottom: 0, padding: 10 }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
+
+                    <View style={styles.producmoyenne}>
+                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                        <Text numberOfLines={2} style={styles.productName}>
+                            <Text numberOfLines={2} style={styles.productnotes} >
+                                {product.produit.AVG}
+                            </Text>
+                        </Text>
+                    </View>
+                </View> */}
+                <View style={styles.avg}>
+
+                {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
+                        {product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
+                    </Text> : null}
+
+                    <View style={styles.producmoyenne}>
+                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                        <Text numberOfLines={2} style={styles.productName}>
+                            <Text numberOfLines={2} style={styles.productnotes} >
+                                {product.produit.AVG}
+                            </Text>
+                        </Text>
+                    </View>
+                </View>
+
                 <Portal>
                     <GestureHandlerRootView style={{ height: isOpen ? '100%' : 0, opacity: isOpen ? 1 : 0, backgroundColor: 'rgba(0, 0, 0, 0)', position: 'absolute', width: '100%', zIndex: 1 }}>
                         <Modalize
@@ -140,6 +174,22 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 5,
         marginTop: 10
+    },
+    producmoyenne: {
+        flexDirection: "row"
+    },
+    productnotes:{
+        color: COLORS.primary,
+        fontSize:12
+    },
+    productNom: {
+        fontSize: 12,
+        color: COLORS.primary,
+    },
+    avg: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+
     },
     imageCard: {
         borderRadius: 8,
