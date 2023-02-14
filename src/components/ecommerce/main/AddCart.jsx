@@ -41,14 +41,14 @@ export default function AddCart({ product, loadingForm, onClose }) {
                     setAmount(l => parseInt(l) + 1)
           }
           const checkAmount = useCallback(() => {
-                    setAmount(parseInt(amount) ? (parseInt(amount) >= selectedCombinaison.QUANTITE ? selectedCombinaison.QUANTITE : parseInt(amount)) : 1)
-          }, [selectedCombinaison])
+                    setAmount(parseInt(amount) ? (parseInt(amount) >= getQuantite() ? getQuantite() : parseInt(amount)) : 1)
+          }, [ getQuantite])
 
           let isnum = /^\d+$/.test(amount);
 
           const isValid = useCallback(() => {
-                    return isnum ? (parseInt(amount) > 0 && parseInt(amount) <= selectedCombinaison.QUANTITE) : false
-          }, [selectedCombinaison, amount])
+                    return isnum ? (parseInt(amount) > 0 && parseInt(amount) <= getQuantite()) : false
+          }, [getQuantite, amount])
 
           const isValueSelected = useCallback(idValue => {
                     if(selectedValues.length > 0) {
@@ -76,10 +76,17 @@ export default function AddCart({ product, loadingForm, onClose }) {
                     return product.produit_partenaire.PRIX
           }, [selectedCombinaison])
 
+          const getQuantite = useCallback(() => {
+                if(selectedCombinaison) {
+                          return selectedCombinaison.QUANTITE
+                }
+                return product.stock.QUANTITE_TOTAL
+      }, [selectedCombinaison])
+
           useEffect(() => {
                     if(!loadingVariants) {
                               const combinaisons = variants.result.combinaisons
-                              if(combinaisons) {
+                              if(combinaisons && combinaisons.length > 0) {
                                         const defaultCombinaison = combinaisons[0]
                                         if(defaultCombinaison.values && defaultCombinaison.values.length > 0) {
                                                   const variantsValues = [].concat(...variants.result.variants.map(variant => variant.values));
@@ -105,7 +112,16 @@ export default function AddCart({ product, loadingForm, onClose }) {
                                                   const selectedValuesIds =selectedValues.map(value => value.ID_VALUE)
                                                   return valueIds.sort().toString() === selectedValuesIds.sort().toString();
                                         })
-                                        setSelectedCombinaison(combinaison || null)
+                                        const variantsValues = [].concat(...variants.result.variants.map(variant => variant.values));
+                                        const newValues = combinaison.values.map(value => {
+                                                const fullValue = variantsValues.find(v => v.ID_VALUE == value.ID_VALUE)
+                                                return {
+                                                        ...value,
+                                                        ...fullValue,
+                                                }
+                                        })
+                                        const newCombinaison = combinaison ? {...combinaison,values:newValues}: null
+                                        setSelectedCombinaison(newCombinaison || null)
                               }
                     }
           }, [loadingVariants, variants, selectedValues])
@@ -162,12 +178,12 @@ export default function AddCart({ product, loadingForm, onClose }) {
                                                             })}
                                                   </View> : null}
                                         </View>
-                                        {(!selectedCombinaison || selectedCombinaison && selectedCombinaison.QUANTITE <= 0) ? <Text style={styles.noProductFeeback}>
+                                        {(getQuantite() <= 0) ? <Text style={styles.noProductFeeback}>
                                                   Produit non disponible en stock pour le moment
                                         </Text>  :
                                         <View style={styles.moreDetails}>
                                                   <Text style={styles.avalaibleFeedback}>
-                                                            Disponible en stock: {selectedCombinaison.QUANTITE} pièce{selectedCombinaison.QUANTITE > 1 && 's'}
+                                                            Disponible en stock: {getQuantite()} pièce{getQuantite() > 1 && 's'}
                                                   </Text>
                                                   <View style={styles.amountContainer}>
                                                             <TouchableOpacity style={[styles.amountChanger, (amount <= 1 || !/^\d+$/.test(amount)) && { opacity: 0.5 }]} onPress={onDecrementOther} disabled={amount <= 1 || !/^\d+$/.test(amount)}>
@@ -185,9 +201,9 @@ export default function AddCart({ product, loadingForm, onClose }) {
                                                                       keyboardType="decimal-pad"
                                                             />
                                                             <TouchableOpacity
-                                                                      style={[styles.amountChanger, (!/^\d+$/.test(amount) || amount >= selectedCombinaison.QUANTITE) && { opacity: 0.5 }]}
+                                                                      style={[styles.amountChanger, (!/^\d+$/.test(amount) || amount >= getQuantite()) && { opacity: 0.5 }]}
                                                                       onPress={onIncrementOther}
-                                                                      disabled={(!/^\d+$/.test(amount) || amount >= selectedCombinaison.QUANTITE)
+                                                                      disabled={(!/^\d+$/.test(amount) || amount >= getQuantite())
                                                                       }>
                                                                       <Text style={styles.amountChangerText}>+</Text>
                                                             </TouchableOpacity>

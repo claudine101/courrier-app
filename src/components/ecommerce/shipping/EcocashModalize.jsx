@@ -63,8 +63,8 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                         const orders = products.map(product => {
                                                   return {
                                                             QUANTITE: product.QUANTITE,
-                                                            PRIX: product.combinaison.PRIX,
-                                                            ID_COMBINATION: product.combinaison.ID_COMBINATION,
+                                                            PRIX: product.combinaison ? product.combinaison.PRIX : product.produit_partenaire.PRIX,
+                                                            ID_COMBINATION: product.combinaison ? product.combinaison.ID_COMBINATION:null,
                                                             ID_PRODUIT: product.produit.ID_PRODUIT,
                                                             ID_PARTENAIRE_SERVICE: product.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                   }
@@ -89,8 +89,8 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                         const orders = restaurants.map(restaurant => {
                                                 return {
                                                         QUANTITE: restaurant.QUANTITE,
-                                                        PRIX: restaurant.combinaison.PRIX,
-                                                        ID_COMBINATION: restaurant.combinaison.ID_COMBINATION,
+                                                        PRIX: restaurant.combinaison ? restaurant.combinaison.PRIX : product.produit_partenaire.PRIX,
+                                                        ID_COMBINATION: restaurant.combinaison ? restaurant.combinaison.ID_COMBINATION : null,
                                                         ID_RESTAURANT_MENU: restaurant.produit.ID_RESTAURANT_MENU,
                                                         ID_PARTENAIRE_SERVICE: restaurant.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                 }

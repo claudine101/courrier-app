@@ -10,6 +10,7 @@ export default function CommandeTabScreen() {
         const modalizeRef = useRef(null)
         const route = useRoute()
         const { commande, serviceCategory } = route.params
+        console.log(commande)
         var url
 
         if(serviceCategory==1){
