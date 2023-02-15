@@ -12,8 +12,15 @@ import { COLORS } from "../../../styles/COLORS"
  * @returns 
  */
 
-export default function CommandesDetails({ item, index }) {
-        const [loadingVariants, variants] = useFetch(`/ecommerce/ecommerce_produits/ecommerce_produit_variants/${item.ID_PRODUIT}`)
+export default function CommandesDetails({ item, index, serviceCategory }) {
+        var url 
+        if(serviceCategory==1){
+                url = `/ecommerce/ecommerce_produits/ecommerce_produit_variants/${item.ID_PRODUIT}`
+        }else if(serviceCategory==2){
+                url=`/resto/restaurant_menus/restaurant_menu_variants/${item.ID_RESTAURANT_MENU}`
+        }
+        const [loadingVariants, variants] = useFetch(url)
+
         const [selectedCombinaison, setSelectedCombinaison] = useState([])
 
         useEffect(() => {

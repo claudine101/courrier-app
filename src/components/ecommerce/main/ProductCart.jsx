@@ -111,8 +111,6 @@ export default function ProductCart({ product, index }) {
 
                                                 </View>
                                                 : null}
-
-
                                 </View>
                                 <View style={styles.detailsFooter}>
                                         {totalPrice ? <Text numberOfLines={1} style={styles.productPrice}>{totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}

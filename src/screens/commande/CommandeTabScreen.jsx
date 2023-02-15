@@ -38,6 +38,7 @@ export default function CommandeTabScreen() {
                                                         item={item}
                                                         index={index}
                                                         key={index}
+                                                        serviceCategory={serviceCategory}
                                                 />
                                         )
                                 })}
