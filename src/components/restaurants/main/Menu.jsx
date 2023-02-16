@@ -32,8 +32,10 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
     const [isOpen, setIsOpen] = useState(false)
     const [loadingForm, setLoadingForm] = useState(true)
     const [wishlist, setWishlist] = useState(false)
-    console.log(menu.produit.AVG)
-
+    // var moyenne = menu.produit.AVG
+    // var x = moyenne
+    //  x.toFixed(1)
+    // console.log(x)
     const onCartPress = () => {
         setIsOpen(true)
         modalizeRef.current?.open()
@@ -120,12 +122,14 @@ export default function Menu({ menu, index, totalLength, fixMargins = false, onR
                         {menu.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
                     </Text> : null}
 
-                    <View style={styles.producmoyenne}>
-                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                    <View style={styles.productmoyenne}>
+                        {menu.produit.AVG ? <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} /> : null}
+
                         <Text numberOfLines={2} style={styles.productName}>
-                            <Text numberOfLines={2} style={styles.productnotes} >
-                                {menu.produit.AVG}
-                            </Text>
+                            {menu.produit.AVG ? <Text numberOfLines={2} style={styles.productnotes}>
+                                {parseFloat(menu.produit.AVG).toFixed(1)}
+                            </Text> : null}
+
                         </Text>
                     </View>
                 </View>
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     productorganisation: {
-        fontSize:12,
+        fontSize: 12,
         color: COLORS.primary,
     },
     avg: {
@@ -178,12 +182,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
 
     },
-    producmoyenne: {
+    productmoyenne: {
         flexDirection: "row"
     },
-    productnotes:{
-        color:COLORS.primary,
-        fontSize:12
+    productnotes: {
+        color: COLORS.primary,
+        fontSize: 12
     },
     serviceBackgound: {
         width: "100%",

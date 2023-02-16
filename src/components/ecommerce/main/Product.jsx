@@ -103,32 +103,21 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                         <Text numberOfLines={2} style={styles.productNom}> {product.partenaire.NOM_ORGANISATION}</Text>
                     </Text>
                 </View>
-{/* 
-                <View style={styles.avg}>
-                    {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold", bottom: 0, padding: 10 }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text> : null}
-
-                    <View style={styles.producmoyenne}>
-                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
-                        <Text numberOfLines={2} style={styles.productName}>
-                            <Text numberOfLines={2} style={styles.productnotes} >
-                                {product.produit.AVG}
-                            </Text>
-                        </Text>
-                    </View>
-                </View> */}
                 <View style={styles.avg}>
 
-                {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
+                    {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
                         {product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
                     </Text> : null}
 
                     <View style={styles.producmoyenne}>
-                        <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
-                        <Text numberOfLines={2} style={styles.productName}>
+                        {product.produit.AVG ? <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} /> : null}
+
+                        {product.produit.AVG ? <Text numberOfLines={2} style={styles.productName}>
                             <Text numberOfLines={2} style={styles.productnotes} >
-                                {product.produit.AVG}
+                                {parseFloat(product.produit.AVG).toFixed(1)}
                             </Text>
-                        </Text>
+                        </Text> : null}
+
                     </View>
                 </View>
 
@@ -178,9 +167,9 @@ const styles = StyleSheet.create({
     producmoyenne: {
         flexDirection: "row"
     },
-    productnotes:{
+    productnotes: {
         color: COLORS.primary,
-        fontSize:12
+        fontSize: 12
     },
     productNom: {
         fontSize: 12,

@@ -44,8 +44,7 @@ export default function Restaurants({ lat, long, restaurants }) {
                                                                       index={index}
                                                                       totalLength={restaurants.length}
                                                                       key={index}
-                                                            // lat={lat} 
-                                                            // long={long} 
+                                                           
                                                             />
                                                   )
                                         })}
