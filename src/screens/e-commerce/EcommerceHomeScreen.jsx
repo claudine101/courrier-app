@@ -126,11 +126,11 @@ export default function EcommerceHomeScreen() {
                     </View>
 
 
-                    <TouchableOpacity >
+                   
                         <View style={styles.cardRecherche}>
                             <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
                         </View>
-                    </TouchableOpacity>
+                   
 
                 </View>
                 {loadingShops ? <HomeProductsSkeletons /> : <Shops shops={shops.result} />}
