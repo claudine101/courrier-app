@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TouchableNativ
 import { COLORS } from '../../../styles/COLORS'
 import { EvilIcons } from '@expo/vector-icons';
 import { Portal } from "react-native-portalize";
+import ImageView from "react-native-image-viewing";
 
 export const HEADER_HEIGHT = 262;
 /**
@@ -14,11 +15,11 @@ export const HEADER_HEIGHT = 262;
  */
 export default function ShopCollapsableHeader({ shop }) {
         const optionModalizeRef = useRef()
+        const [showImageModal, setShowImageModal] = useState(false)
         return (
                 <>
                         <View style={styles.header}>
                                 <TouchableWithoutFeedback key={1} onPress={() => {
-                                        setImageIndex(1)
                                         setShowImageModal(true)
                                 }}>
                                         <View style={styles.coverImageContainer}>
@@ -56,8 +57,8 @@ export default function ShopCollapsableHeader({ shop }) {
                                                         {shop.NOM_ORGANISATION}
                                                 </Text>
                                                 <Text style={styles.topCategory}>
-                                                            {shop.categories ? shop.categories[0].NOM : 'Restaurant'}
-                                                  </Text>
+                                                        {shop.categories ? shop.categories[0].NOM : 'Restaurant'}
+                                                </Text>
                                         </View>
                                         <TouchableWithoutFeedback>
                                                 <View style={styles.topFollowers}>
@@ -78,6 +79,16 @@ export default function ShopCollapsableHeader({ shop }) {
                                                 </View>
                                         </TouchableWithoutFeedback>
                                 </View>
+                                {showImageModal &&
+                                        <ImageView
+                                                images={[{ uri: shop.BACKGROUND_IMAGE }]}
+                                                imageIndex={0}
+                                                visible={showImageModal}
+                                                onRequestClose={() => setShowImageModal(false)}
+                                                swipeToCloseEnabled
+                                                keyExtractor={(_, index) => index.toString()}
+                                        />
+                                }
                         </View>
                 </>
         )
