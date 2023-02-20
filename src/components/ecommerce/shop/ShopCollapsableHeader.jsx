@@ -3,9 +3,12 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TouchableNativ
 import { COLORS } from '../../../styles/COLORS'
 import { EvilIcons } from '@expo/vector-icons';
 import { Portal } from "react-native-portalize";
+import { Entypo, MaterialIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { useSelector } from "react-redux";
+import fetchApi from "../../../helpers/fetchApi";
 import ImageView from "react-native-image-viewing";
 
-export const HEADER_HEIGHT = 262;
+export const HEADER_HEIGHT = 305;
 /**
  * composant pour afficher les produits par rapport de la boutique
  * @author Vanny Boy <vanny@mediabox.bi>
@@ -14,7 +17,25 @@ export const HEADER_HEIGHT = 262;
  * @returns 
  */
 export default function ShopCollapsableHeader({ shop }) {
+        const [suivis, setSuivis] = useState(false)
         const optionModalizeRef = useRef()
+        const addBoutiqueSuivis = async () =>{
+                try{
+                        const suivis = await fetchApi(`/partenaires/ecommerce_boutique_suivis/${shop.ID_PARTENAIRE_SERVICE}`,{
+                                method: 'PUT',
+                        })
+                }
+                catch(error){
+                        console.log(error)
+                }
+        }
+
+        useEffect(()=>{
+                if(shop.ID_BOUTIQUE_SUIVIS){
+                        setSuivis(true)
+                }
+        },[])
+
         const [showImageModal, setShowImageModal] = useState(false)
         return (
                 <>
@@ -31,13 +52,21 @@ export default function ShopCollapsableHeader({ shop }) {
                                                 <Image source={{ uri: shop.LOGO }} style={styles.logo} />
                                         </View>
                                         <View style={styles.shopActions}>
-                                                <TouchableNativeFeedback>
-                                                        <View style={styles.mainActionBtn}>
+                                                <TouchableOpacity onPress={()=>{
+                                                        addBoutiqueSuivis()
+                                                        setSuivis(b => !b)
+                                                }}>
+                                                        {suivis ? <View style={styles.mainActionBtn}>
                                                                 <Text style={styles.mainActionText}>
-                                                                        Promote
+                                                                       + S'abonner
                                                                 </Text>
-                                                        </View>
-                                                </TouchableNativeFeedback>
+                                                        </View> :
+                                                        <View style={styles.mainActiondesBtn}>
+                                                                <Text style={styles.mainActionTextDesabon}>
+                                                                       - se desabonner
+                                                                </Text>
+                                                        </View>}
+                                                </TouchableOpacity>
                                                 <TouchableNativeFeedback
                                                         accessibilityRole="button"
                                                         background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}
@@ -56,9 +85,27 @@ export default function ShopCollapsableHeader({ shop }) {
                                                 <Text style={styles.shopName}>
                                                         {shop.NOM_ORGANISATION}
                                                 </Text>
-                                                <Text style={styles.topCategory}>
-                                                        {shop.categories ? shop.categories[0].NOM : 'Restaurant'}
-                                                </Text>
+                                                <View style={styles.cardDescription}>
+                                                        <View style={styles.cardIcon}>
+                                                                <Entypo name="location" size={20} color="#777" />
+                                                        </View>
+                                                        <Text style={styles.emailText}>{shop.ADRESSE_COMPLETE}</Text>
+                                                </View>
+                                                <View style={styles.cardDescription}>
+                                                        <View style={styles.cardIcon}>
+                                                                <MaterialIcons name="email" size={20} color="#777" />
+                                                        </View>
+                                                        <Text style={styles.emailText}>{shop.EMAIL}</Text>
+                                                </View>
+                                                <View style={styles.cardDescription}>
+                                                        <View style={styles.cardIcon}>
+                                                                <FontAwesome name="phone" size={20} color="#777" />
+                                                        </View>
+                                                        <Text style={styles.emailText}>{shop.TELEPHONE}</Text>
+                                                </View>
+                                                {/* <Text style={styles.topCategory}>
+                                                            {shop.categories ? shop.categories[0].NOM : 'Restaurant'}
+                                                  </Text> */}
                                         </View>
                                         <TouchableWithoutFeedback>
                                                 <View style={styles.topFollowers}>
@@ -138,11 +185,26 @@ const styles = StyleSheet.create({
                 backgroundColor: COLORS.ecommercePrimaryColor,
                 minWidth: 120,
                 height: '100%',
-                justifyContent: "center"
+                flexDirection:"row",
+                justifyContent:"center",
+                alignItems:"center"
+        },
+        mainActiondesBtn:{
+                borderRadius: 8,
+                backgroundColor:"#F1F1F1",
+                minWidth: 120,
+                height: '100%',
+                flexDirection:"row",
+                justifyContent:"center",
+                alignItems:"center"
         },
         mainActionText: {
                 textAlign: 'center',
                 color: '#fff',
+                fontWeight: "bold"
+        },
+        mainActionTextDesabon:{
+                textAlign: 'center',
                 fontWeight: "bold"
         },
         headerActionBtn: {
@@ -196,5 +258,22 @@ const styles = StyleSheet.create({
         followerCount: {
                 textAlign: "center",
                 fontWeight: "bold"
+        },
+        emailText: {
+                color: '#777',
+                marginLeft: 10
+        },
+        cardDescription: {
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                marginVertical: 3
+        },
+        cardIcon: {
+                width: 20,
+                height: 20,
+                // backgroundColor:"#ddd",
+                alignItems: "center",
+                alignContent: "center"
         }
 })
