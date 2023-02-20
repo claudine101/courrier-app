@@ -16,6 +16,7 @@ import AvisDetailsTabScreen from "./tabs/AvisDetailsTabScreen";
 import useFetch from "../../hooks/useFetch";
 import { HomeProductsSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import Rating from "../../components/ecommerce/details/Rating";
+import Loading from "../../components/app/Loading";
 
 const TopTab = createMaterialTopTabNavigator()
 
@@ -115,7 +116,8 @@ export default function ShopScreen() {
                                                 <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
                                                         <ActivityIndicator animating={true} size="large" color={"#000"} />
                                                 </View> :
-
+                                                <>
+                                                loading && <Loading />
                                                 <View style={styles.reviews}>
                                                         {partenaireNotes.result.map((review, index) => {
                                                                 return (
@@ -131,10 +133,8 @@ export default function ShopScreen() {
                                                                         </TouchableOpacity>
                                                                 )
                                                         })}
-                                                </View>}
-                                        {loading && <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                                                <ActivityIndicator animating={true} size="large" color={"#000"} />
-                                        </View>}
+                                                </View>
+                                                </>}
                                 </Tabs.ScrollView>
                         </Tabs.Tab>
                         <Tabs.Tab name="supp" label={<View style={{ flexDirection: 'row', alignItems: "center" }}>
