@@ -131,9 +131,8 @@ export default function RestaurantHomeScreen() {
                                                   </View>
                                         </View>
 
-                                        {loadingResto ? <RestaurantSkeletons /> : <Restaurants restaurants={restaurants.result} />}
                                         {loadingCategories ? <CategoriesSkeletons /> : <CategoriesResto categories={categories} />}
-
+                                        {loadingResto ? <RestaurantSkeletons /> : <Restaurants restaurants={restaurants.result} />}
                                         {firstLoadingMenus ? <RestaurantSkeletons /> :
                                                   <>
                                                   <View style={styles.section}>

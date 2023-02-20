@@ -27,7 +27,12 @@ export default function Restaurants({ lat, long, restaurants }) {
                               >
                                         <View style={styles.shopsHeader}>
                                                   <Text style={styles.title}>Les restaurants proches</Text>
-                                                  <MaterialIcons name="navigate-next" size={24} color="black" />
+                                                  <View style={styles.moreIndicator}>
+                                                            <Text style={styles.showMore}>
+                                                                      Voir plus
+                                                            </Text>
+                                                            <MaterialIcons name="navigate-next" size={13} color={COLORS.primary} />
+                                                  </View>
                                         </View>
 
                               </TouchableNativeFeedback>
@@ -36,6 +41,7 @@ export default function Restaurants({ lat, long, restaurants }) {
                                         style={styles.shops}
                                         horizontal
                                         showsHorizontalScrollIndicator={false}
+                                        pagingEnabled
                               >
                                         {restaurants.map((restaurant, index) => {
                                                   return (
@@ -44,7 +50,7 @@ export default function Restaurants({ lat, long, restaurants }) {
                                                                       index={index}
                                                                       totalLength={restaurants.length}
                                                                       key={index}
-                                                           
+                                                                      isMore={false}
                                                             />
                                                   )
                                         })}
@@ -63,7 +69,8 @@ const styles = StyleSheet.create({
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     paddingVertical: 10,
-                    paddingHorizontal: 10
+                    paddingHorizontal: 10,
+                    marginTop: 10
           },
           title: {
                     color: COLORS.ecommercePrimaryColor,
@@ -72,5 +79,15 @@ const styles = StyleSheet.create({
           },
           shops: {
                     paddingHorizontal: 10,
+          },
+          showMore: {
+                    fontSize: 12,
+                    color: COLORS.primary,
+                    fontWeight: 'bold',
+                    marginRight: 5
+          },
+          moreIndicator: {
+                    flexDirection: 'row',
+                    alignItems: 'center'
           }
 })

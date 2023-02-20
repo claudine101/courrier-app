@@ -22,7 +22,12 @@ export default function CategoriesResto({ categories }) {
                               >
                                         <View style={styles.header}>
                                                   <Text style={styles.title}>Les catégories</Text>
-                                                  <MaterialIcons name="navigate-next" size={24} color="black" />
+                                                  <View style={styles.moreIndicator}>
+                                                            <Text style={styles.showMore}>
+                                                                      Voir plus
+                                                            </Text>
+                                                            <MaterialIcons name="navigate-next" size={13} color={COLORS.primary} />
+                                                  </View>
                                         </View>
                               </TouchableNativeFeedback>
                               <ScrollView
@@ -57,7 +62,6 @@ const styles = StyleSheet.create({
                     alignItems: 'center',
                     paddingVertical: 10,
                     paddingHorizontal: 10,
-                    marginTop: 10
           },
           title: {
                     color: COLORS.ecommercePrimaryColor,
@@ -82,5 +86,15 @@ const styles = StyleSheet.create({
           },
           categoryName: {
                     marginTop: 2
+          },
+          showMore: {
+                    fontSize: 12,
+                    color: COLORS.primary,
+                    fontWeight: 'bold',
+                    marginRight: 5
+          },
+          moreIndicator: {
+                    flexDirection: 'row',
+                    alignItems: 'center'
           }
 })

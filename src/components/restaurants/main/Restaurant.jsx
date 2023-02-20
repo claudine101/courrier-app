@@ -12,106 +12,139 @@ import { useNavigation } from '@react-navigation/native';
  * @returns 
  */
 
-export default function Restaurant({ note, restaurant, restaurants, index, totalLength }) {
-    const navigation = useNavigation()
-    const { width } = useWindowDimensions()
-    const MAX_WIDTH = 200
-    const PRODUCT_MARGIN = 10
-    const PRODUCT_WIDTH = (width / 2) - PRODUCT_MARGIN - 10
-    const PRODUCT_HEIGHT = 200
-    const additionStyles = {
-        width: PRODUCT_WIDTH,
-        height: PRODUCT_HEIGHT,
-        marginLeft: index > 0 ? PRODUCT_MARGIN : 0,
-        marginRight: index == totalLength - 1 ? PRODUCT_MARGIN : 0
-    }
-    function strUcFirst(a) {
-        return (a + '').charAt(0).toUpperCase() + a.substr(1);
-    }
-    return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('ShopScreen', { id: restaurant.ID_PARTENAIRE_SERVICE, shop: restaurant })}>
-            <View key={index} style={[styles.shop, additionStyles]}>
-                <View style={styles.imageCard}>
-                    <Image source={{ uri: restaurant.LOGO }} style={styles.image} />
-                </View>
-                <View style={styles.shopDetail}>
-                    <Text style={styles.shopName} numberOfLines={2}>
-                        {strUcFirst(restaurant.NOM_ORGANISATION.toLowerCase())}
-                    </Text>
-                </View>
-                <View style={styles.shopDetail}>
-                    <View style={styles.shopFooter}>
-                        <View style={styles.footerBlock}>
-                            <Entypo name="location-pin" size={16} color={COLORS.ecommerceOrange} style={{ marginRight: 2 }} />
-                            <Text style={styles.footerText}>
-                                1.2km
-                            </Text>
-                        </View>
-                        <View style={styles.footerBlock}>
-                            {restaurant.MOYENNE ? <AntDesign name="star" size={15} color={COLORS.ecommerceOrange} style={{ marginRight: 2 }} />
-                                : null}
-                            {restaurant.MOYENNE ? <Text style={styles.footerText}>{parseFloat(restaurant.MOYENNE).toFixed(1)}</Text> : null}
-
-
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
-    )
+export default function Restaurant({ note, restaurant, restaurants, index, totalLength, isMore = true }) {
+          const navigation = useNavigation()
+          const { width } = useWindowDimensions()
+          const MAX_WIDTH = 200
+          const PRODUCT_MARGIN = 20
+          const PRODUCT_WIDTH = (width) - PRODUCT_MARGIN
+          const PRODUCT_HEIGHT = 200
+          const additionStyles = {
+                    width: PRODUCT_WIDTH,
+                    // height: PRODUCT_HEIGHT,
+                    marginLeft: index == 0 ? 0 : PRODUCT_MARGIN,
+                    marginRight: index == totalLength - 1 ? PRODUCT_MARGIN : 0,
+                    marginTop: isMore ? 10 : 0
+          }
+          function strUcFirst(a) {
+                    return (a + '').charAt(0).toUpperCase() + a.substr(1);
+          }
+          return (
+                    <TouchableNativeFeedback onPress={() => navigation.navigate('ShopScreen', { id: restaurant.ID_PARTENAIRE_SERVICE, shop: restaurant })} useForeground background={TouchableNativeFeedback.Ripple('#ddd')}>
+                              <View key={index} style={[styles.shop, additionStyles]}>
+                                        <View style={styles.imageCard}>
+                                                  <Image source={{ uri: restaurant.BACKGROUND_IMAGE }} style={styles.image} />
+                                                  <Image source={{ uri: restaurant.LOGO }} style={styles.logo} />
+                                        </View>
+                                        <View style={styles.shopDetail}>
+                                                  <Text style={styles.shopName} numberOfLines={2}>
+                                                            {strUcFirst(restaurant.NOM_ORGANISATION.toLowerCase())}
+                                                  </Text>
+                                                  <Text style={styles.shopAddress} numberOfLines={2}>
+                                                            { restaurant.ADRESSE_COMPLETE }
+                                                  </Text>
+                                        </View>
+                                        <View style={styles.shopFooter}>
+                                                  <View style={styles.footerLeft}>
+                                                            <View style={styles.footerBlock}>
+                                                                      <Entypo name="location-pin" size={16} color={COLORS.primary} style={{ marginRight: 2 }} />
+                                                                      <Text style={styles.footerText}>
+                                                                                1.2km
+                                                                      </Text>
+                                                            </View>
+                                                            {restaurant.MOYENNE ? <View style={[styles.footerBlock, { marginLeft: 10 }]}>
+                                                                      <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                                                                      <Text style={styles.footerText}>{parseFloat(restaurant.MOYENNE).toFixed(1)}</Text>
+                                                            </View> : null}
+                                                  </View>
+                                                            <View>
+                                                  <TouchableNativeFeedback useForeground background={TouchableNativeFeedback.Ripple('#C4C4C4')}>
+                                                                      <View style={styles.followBtn}>
+                                                                                <Text style={styles.followBtnText}>+ S'abonner</Text>
+                                                                      </View>
+                                                  </TouchableNativeFeedback>
+                                                            </View>
+                                        </View>
+                              </View>
+                    </TouchableNativeFeedback>
+          )
 }
 const styles = StyleSheet.create({
-    shop: {
-        maxWidth: 160,
-        marginHorizontal: 5,
-        backgroundColor: '#F5F4F1',
-        borderRadius: 10,
-        padding: 10
-
-    },
-    imageCard: {
-        height: "55%",
-        width: "100%",
-        borderRadius: 10,
-        backgroundColor: '#FFF',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    image: {
-        height: "100%",
-        width: "100%",
-        borderRadius: 10,
-        resizeMode: 'contain',
-
-
-    },
-    shopName: {
-        color: COLORS.ecommercePrimaryColor,
-        fontWeight: "bold",
-        fontSize: 13,
-        textAlign: 'center'
-    },
-    shopCategory: {
-        textAlign: 'center',
-        color: '#777',
-        fontSize: 12
-    },
-    shopFooter: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: "flex-end",
-        flex: 1,
-    },
-    footerBlock: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    footerText: {
-        color: '#777'
-    },
-    shopDetail: {
-        flex: 1,
-        justifyContent: "center"
-    }
+          shop: {
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    borderRadius: 10,
+                    paddingBottom: 5
+          },
+          imageCard: {
+                    height: 200,
+                    width: "100%",
+                    borderRadius: 10,
+                    backgroundColor: '#FFF',
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+          },
+          image: {
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: 10,
+                    resizeMode: 'contain',
+          },
+          logo: {
+                    width: 60,
+                    height: 60,
+                    borderRadius: 50,
+                    position: 'absolute',
+                    bottom: 10,
+                    left: 10
+          },
+          shopName: {
+                    color: '#333',
+                    fontWeight: "bold",
+                    fontSize: 15,
+          },
+          shopAddress: {
+                    color: COLORS.smallBrown,
+                    fontSize: 12
+          },
+          shopCategory: {
+                    textAlign: 'center',
+                    color: '#777',
+                    fontSize: 12
+          },
+          shopFooter: {
+                    flexDirection: 'row',
+                    alignItems: "center",
+                    justifyContent: 'space-between',
+                    flex: 1,
+          },
+          footerLeft: {
+                    flexDirection: 'row',
+                    alignItems: "center",
+          },
+          footerBlock: {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+          },
+          footerText: {
+                    color: COLORS.primary
+          },
+          shopDetail: {
+                    flex: 1,
+                    justifyContent: "center",
+                    marginTop: 5
+          },
+          followBtn: {
+                    backgroundColor: COLORS.ecommercePrimaryColor,
+                    borderRadius: 30,
+                    paddingVertical: 8,
+                    paddingHorizontal: 15,
+                    overflow: 'hidden'
+          },
+          followBtnText: {
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                    opacity: 0.8
+          }
 })
