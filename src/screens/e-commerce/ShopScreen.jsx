@@ -23,7 +23,7 @@ export default function ShopScreen() {
         const [activeIndex, setActiveIndex] = useState(0)
         const route = useRoute()
         const [products, setProducts] = useState([])
-        const [loadingShopProducts, setLoadingShopProducts] = useState(true)
+        const [loading, setLoading] = useState(false)
         const { shop } = route.params
         const navigation = useNavigation()
 
@@ -39,18 +39,25 @@ export default function ShopScreen() {
         const [loadingPartenaireNotes, partenaireNotes] = useFetch(url)
 
         const checkProduct = async (id, SERVICE) => {
-                try{
+                try {
+                        setLoading(true)
                         var url
-                        if(SERVICE == IDS_SERVICE_CATEGORIES.ecommerce){
-                                url=`/ecommerce/ecommerce_produits/one/${id}`
-                        }else if(shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto){
-                                url=`/resto/restaurant_menus/one/${id}`
+                        if (SERVICE == IDS_SERVICE_CATEGORIES.ecommerce) {
+                                url = `/ecommerce/ecommerce_produits/one/${id}`
+                        } else if (shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto) {
+                                url = `/resto/restaurant_menus/one/${id}`
                         }
                         const response = await fetchApi(url)
-                        navigation.navigate("ProductDetailsScreen",{product:response.result, SERVICE:SERVICE })
+                        if (SERVICE == IDS_SERVICE_CATEGORIES.ecommerce){
+                                navigation.navigate("ProductDetailsScreen", { product: response.result, SERVICE: SERVICE })
+                        }else if(shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto){
+                                navigation.navigate("MenuDetailScreen", { product: response.result, SERVICE: SERVICE })
+                        }
                 }
-                catch(error){
+                catch (error) {
                         console.log(error)
+                } finally {
+                        setLoading(false)
                 }
 
         }
@@ -112,19 +119,22 @@ export default function ShopScreen() {
                                                 <View style={styles.reviews}>
                                                         {partenaireNotes.result.map((review, index) => {
                                                                 return (
-                                                                        <TouchableOpacity key={index} onPress={()=>{
-                                                                                if(shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.ecommerce){
-                                                                                        checkProduct(review.ID_PRODUIT, shop.ID_SERVICE )
-                                                                                } else if(shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto){
+                                                                        <TouchableOpacity key={index} onPress={() => {
+                                                                                if (shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.ecommerce) {
+                                                                                        checkProduct(review.ID_PRODUIT, shop.ID_SERVICE)
+                                                                                } else if (shop.ID_SERVICE == IDS_SERVICE_CATEGORIES.resto) {
                                                                                         checkProduct(review.ID_RESTAURANT_MENU, shop.ID_SERVICE)
                                                                                 }
                                                                         }}
-                                                                                >
-                                                                                <Rating rating={review}  index={index} />
+                                                                        >
+                                                                                <Rating rating={review} index={index} />
                                                                         </TouchableOpacity>
                                                                 )
                                                         })}
                                                 </View>}
+                                        {loading && <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
+                                                <ActivityIndicator animating={true} size="large" color={"#000"} />
+                                        </View>}
                                 </Tabs.ScrollView>
                         </Tabs.Tab>
                         <Tabs.Tab name="supp" label={<View style={{ flexDirection: 'row', alignItems: "center" }}>
