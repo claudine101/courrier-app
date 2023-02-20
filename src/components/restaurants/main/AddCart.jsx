@@ -95,7 +95,7 @@ export default function AddCart({ menu, onClose, loadingForm }) {
           useEffect(() => {
                     if (!loadingVariants) {
                               const combinaisons = variants.result.combinaisons
-                              if (combinaisons) {
+                              if (combinaisons && combinaisons.length > 0) {
                                         const defaultCombinaison = combinaisons[0]
                                         if (defaultCombinaison.values && defaultCombinaison.values.length > 0) {
                                                   const variantsValues = [].concat(...variants.result.variants.map(variant => variant.values));

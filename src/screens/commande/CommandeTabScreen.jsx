@@ -5,6 +5,7 @@ import { Modalize } from "react-native-modalize";
 import { COLORS } from "../../styles/COLORS"
 import { useRoute } from "@react-navigation/native";
 import useFetch from "../../hooks/useFetch";
+import CommandesDetails from "../../components/ecommerce/details/CommandesDetails";
 
 export default function CommandeTabScreen() {
         const modalizeRef = useRef(null)
@@ -12,10 +13,10 @@ export default function CommandeTabScreen() {
         const { commande, serviceCategory } = route.params
         var url
 
-        if(serviceCategory==1){
-                url=`/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`
-        }else if(serviceCategory==2){
-                url=`/resto/restaurant_commandes/livraison/${commande.ID_COMMANDE}`
+        if (serviceCategory == 1) {
+                url = `/ecommerce/ecommerce_commandes/livraison/${commande.ID_COMMANDE}`
+        } else if (serviceCategory == 2) {
+                url = `/resto/restaurant_commandes/livraison/${commande.ID_COMMANDE}`
         }
 
         const [loadingDetails, details] = useFetch(url)
@@ -33,42 +34,16 @@ export default function CommandeTabScreen() {
                         <ScrollView>
                                 {commande.details.map((item, index) => {
                                         return (
-                                                <TouchableWithoutFeedback key={index}>
-                                                        <View style={styles.product}>
-                                                                <View style={styles.productImage}>
-                                                                        <Image source={{ uri: item.IMAGE_1 }} style={styles.image} />
-                                                                </View>
-                                                                <View style={styles.productDetails}>
-                                                                        <View style={styles.detailsHeader}>
-                                                                                <View style={styles.productNames}>
-                                                                                        <Text numberOfLines={2} style={styles.productName}>
-                                                                                                {item.NOM}
-                                                                                        </Text>
-                                                                                </View>
-                                                                        </View>
-                                                                        {false && <View style={styles.variants}>
-                                                                                <View style={styles.variant}>
-                                                                                        <Text style={styles.variantName}>Couleur</Text>
-                                                                                        <Text style={styles.variantValue}>Jaune</Text>
-                                                                                </View>
-                                                                                <View style={styles.variant}>
-                                                                                        <Text style={styles.variantName}>Taille</Text>
-                                                                                        <Text style={styles.variantValue}>M</Text>
-                                                                                </View>
-                                                                        </View>}
-                                                                        <View style={styles.quantityUnitPrice}>
-                                                                                <Text style={styles.quantity}>
-                                                                                        {item.QUANTITE} pièce{item.QUANTITE > 1 && 's'} ×
-                                                                                        {item.MONTANT ? item.MONTANT.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : item.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
-                                                                                </Text>
-                                                                                <Text style={styles.unitPrice}>{item.SOMME.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU</Text>
-                                                                        </View>
-                                                                </View>
-                                                        </View>
-                                                </TouchableWithoutFeedback>
+                                                <CommandesDetails
+                                                        item={item}
+                                                        index={index}
+                                                        key={index}
+                                                        serviceCategory={serviceCategory}
+                                                />
                                         )
                                 })}
-                        </ScrollView>
+                         </ScrollView>
+                       
                         <Modalize
                                 ref={modalizeRef}
                                 alwaysOpen={110}
@@ -102,7 +77,7 @@ export default function CommandeTabScreen() {
                                                                         {/* <Text style={styles.mainDetailLabel}>
                                                                                 Livraison
                                                                         </Text> */}
-                                                                </View>          
+                                                                </View>
                                                         </Text>
                                                 </View>
                                         </View>
@@ -164,58 +139,6 @@ export default function CommandeTabScreen() {
 }
 
 const styles = StyleSheet.create({
-        product: {
-                flexDirection: 'row',
-                height: 120,
-                marginTop: 10,
-                backgroundColor: '#FFF',
-                padding: 10,
-                borderRadius: 8
-        },
-        productImage: {
-                height: "100%",
-                width: "28%",
-                borderRadius: 10,
-                backgroundColor: '#F1F1F1'
-        },
-        image: {
-                height: "100%",
-                width: "100%",
-                borderRadius: 10,
-                resizeMode: 'contain'
-        },
-        productDetails: {
-                marginLeft: 10,
-                justifyContent: 'space-between',
-                flex: 1
-        },
-        productNames: {
-        },
-        quantityUnitPrice: {
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-        },
-        quantity: {
-                color: '#777',
-                fontSize: 12
-        },
-        variant: {
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-        },
-        variantName: {
-                color: '#777',
-                fontSize: 12
-        },
-        productName: {
-                color: COLORS.ecommercePrimaryColor,
-                fontWeight: 'bold'
-        },
-        unitPrice: {
-                fontWeight: 'bold'
-        },
         commandFooter: {
                 marginTop: 10
         },
