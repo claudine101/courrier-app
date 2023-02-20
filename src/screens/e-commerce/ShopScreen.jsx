@@ -47,8 +47,7 @@ export default function ShopScreen() {
                                 url=`/resto/restaurant_menus/one/${id}`
                         }
                         const response = await fetchApi(url)
-                        // console.log(response)
-                        // navigation.navigate("ProductDetailsScreen",{product:response.result})
+                        navigation.navigate("ProductDetailsScreen",{product:response.result, SERVICE:SERVICE })
                 }
                 catch(error){
                         console.log(error)
