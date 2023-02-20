@@ -49,7 +49,7 @@ export default function EcommerceCartScreen() {
                         if (products.length == 0) {
                                 try {
                                         setLoadingProducts(true)
-                                        var url = "/products"
+                                        var url = `/ecommerce/ecommerce_produits`
                                         const produits = await fetchApi(url)
                                         setRecomandations(produits.result)
                                 } catch (error) {

@@ -150,7 +150,7 @@ export default function ProductCart({ product, index }) {
 const styles = StyleSheet.create({
         product: {
                 flexDirection: 'row',
-                height: 130,
+                height: 135,
                 marginTop: 10,
                 backgroundColor: '#FFF',
                 padding: 10,

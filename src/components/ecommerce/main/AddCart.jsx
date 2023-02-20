@@ -113,13 +113,16 @@ export default function AddCart({ product, loadingForm, onClose }) {
                                                   return valueIds.sort().toString() === selectedValuesIds.sort().toString();
                                         })
                                         const variantsValues = [].concat(...variants.result.variants.map(variant => variant.values));
-                                        const newValues = combinaison.values.map(value => {
-                                                const fullValue = variantsValues.find(v => v.ID_VALUE == value.ID_VALUE)
-                                                return {
-                                                        ...value,
-                                                        ...fullValue,
-                                                }
-                                        })
+                                        var newValues
+                                        if(combinaison) {
+                                                  newValues = combinaison.values.map(value => {
+                                                          const fullValue = variantsValues.find(v => v.ID_VALUE == value.ID_VALUE)
+                                                          return {
+                                                                  ...value,
+                                                                  ...fullValue,
+                                                          }
+                                                  })
+                                        }
                                         const newCombinaison = combinaison ? {...combinaison,values:newValues}: null
                                         setSelectedCombinaison(newCombinaison || null)
                               }
@@ -138,10 +141,10 @@ export default function AddCart({ product, loadingForm, onClose }) {
                                                             <Image source={{ uri: product.produit.IMAGE }} style={styles.image} />
                                                   </View>
                                                   <View style={styles.productDetails}>
-                                                            <Text numberOfLines={3} style={styles.productName}>
+                                                            <Text numberOfLines={2} style={styles.productName}>
                                                                       {product.produit.NOM}
                                                             </Text>
-                                                            <Text style={styles.productSeller}>
+                                                            <Text style={styles.productSeller} numberOfLines={1}>
                                                                       {product.partenaire.NOM_ORGANISATION ? product.partenaire.NOM_ORGANISATION : `${product.partenaire.NOM} ${product.partenaire.PRENOM}`}
                                                             </Text>
                                                             <Text style={styles.price}>
