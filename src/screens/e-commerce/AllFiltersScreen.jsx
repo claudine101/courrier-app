@@ -36,7 +36,7 @@ const OrdersFiltres = [
 ]
 
 /**
- * Screens pour afficher les filtres par rapport des prix, categorie les plus cher, plus achettees et notes.... 
+ * Screens pour afficher les filtres par rapport des prix, categorie les plus cher, plus achettees et notes.... cote e-commerce
  * @author Vanny Boy <vanny@mediabox.bi>
  * @date 20/2/2023
  * @returns 
@@ -53,6 +53,7 @@ export default function AllFiltersScreen() {
         minumum: "",
         maximum: "",
     })
+
 
     const { errors, setError, getErrors, setErrors, checkFieldData, isValidate, getError, hasError } = useFormErrorsHandle(data, {
         minumum: {
@@ -81,6 +82,23 @@ export default function AllFiltersScreen() {
 
     const checkFiltres = async (index) => {
         setSelected(index)
+    }
+
+    const sendInformation = () =>{
+        var countFiltre = 0
+        if(selected){
+            countFiltre +=1
+        }
+        if(data.minumum){
+            countFiltre +=1
+        }
+        if(data.maximum){
+            countFiltre +=1
+        }
+        if(selectedCategory){
+            countFiltre +=1
+        }
+        navigation.navigate("EcommerceHomeScreen", {order_by:selected, min_prix:data.minumum, max_prix:data.maximum, category:selectedCategory, countFiltre})
     }
 
     useEffect(() => {
@@ -217,7 +235,7 @@ export default function AllFiltersScreen() {
 
             </ScrollView>
             <View style={styles.actionContainer}>
-                <TouchableOpacity style={[styles.addBtn]}>
+                <TouchableOpacity style={[styles.addBtn]} onPress={sendInformation}>
                     <Text style={[styles.addBtnText]}>Appliquer</Text>
                 </TouchableOpacity>
             </View>

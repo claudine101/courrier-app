@@ -8,6 +8,7 @@ import CategorieMenuScreen from "../screens/liste_restaurant/CategorieMenuScreen
 import MenuScreen from "../screens/liste_restaurant/MenuScreen";
 import MenuScreenCategorie from "../screens/liste_restaurant/MenuScreenCategorie";
 import RestaurantProcheScreen from "../screens/liste_restaurant/RestaurantProcheScreen";
+import AllFiltersScreen from "../screens/restaurant/AllFiltersScreen";
 
 import AllMenuScreen from "../screens/restaurant/AllMenuScreen";
 import MenuDetailScreen from "../screens/restaurant/MenuDetailScreen";
@@ -35,6 +36,7 @@ export default function RestaurantNavigator() {
                                         <Stack.Screen name="MenuScreen" component={MenuScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
                                         <Stack.Screen name="MenuScreenCategorie" component={MenuScreenCategorie} />
                                         <Stack.Screen name="RechercheScreen" component={RechercheScreen} />
+                                        <Stack.Screen name="AllFiltersScreen" component={AllFiltersScreen}/>
                               </Stack.Group>
                               <Stack.Screen name="ShopScreen" component={ShopScreen} options={{
                                         headerShown: true,

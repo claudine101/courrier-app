@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Text, View, StatusBar, StyleSheet, ScrollView, ActivityIndicator, TouchableNativeFeedback, TouchableOpacity } from "react-native";
 import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import fetchApi from "../../helpers/fetchApi";
-import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import Shops from "../../components/ecommerce/home/Shops";
@@ -12,6 +12,7 @@ import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import useFetch from "../../hooks/useFetch";
 import Categories from "../../components/ecommerce/home/Categories";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
+import { useEffect } from "react";
 
 /**
  * Screen de home pour afficher les boutiques, les categories et les produits recommande pour vous
@@ -30,6 +31,14 @@ export default function EcommerceHomeScreen() {
     const [IsLoadingMore, setIsLoadingMore] = useState(false)
     const [offset, setOffset] = useState(0)
     const navigation = useNavigation()
+    const route = useRoute()
+    const [nombreFiltre, setNombreFiltre] = useState(null)
+    const [filtre, setFiltre] = useState({
+        order_by: null,
+        min_prix: null,
+        max_prix: null,
+        category: null
+    })
 
 
     const LIMIT = 10
@@ -53,14 +62,22 @@ export default function EcommerceHomeScreen() {
     }
     const getProducts = useCallback(async (offset = 0) => {
         try {
-            var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}&`
+            var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}`
+            if(nombreFiltre > 0){
+                for(let key in filtre){
+                    if(filtre[key]) {
+                        url +=`&${key}=${filtre[key]}`
+                    }
+                }
+            }
+            console.log(url)
             return await fetchApi(url)
         }
         catch (error) {
             console.log(error)
         }
 
-    }, [])
+    }, [nombreFiltre, filtre])
     useFocusEffect(useCallback(() => {
         (async () => {
             try {
@@ -89,6 +106,17 @@ export default function EcommerceHomeScreen() {
             }
         })()
     }, []))
+
+    useEffect(() => {
+        const params = route.params || {}
+        const {countFiltre } = params
+        console.log({countFiltre})
+        if (countFiltre > 0) {
+            setFiltre(params)
+            setNombreFiltre(countFiltre)
+        }
+      
+    }, [route])
 
     return (
         <View style={styles.container}>
@@ -124,8 +152,11 @@ export default function EcommerceHomeScreen() {
                             </View>
                         </TouchableNativeFeedback>
                     </View>
-                    <TouchableOpacity onPress={()=> navigation.navigate("AllFiltersScreen")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("AllFiltersScreen")}>
                         <View style={styles.cardRecherche}>
+                             {(nombreFiltre != null && nombreFiltre != 0) ? <View style={styles.cardNomreFiltre}>
+                                <Text style={styles.actionBadgeText}>{nombreFiltre}</Text>
+                            </View> : null}
                             <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
                         </View>
                     </TouchableOpacity>
@@ -333,5 +364,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center'
-    }
+    },
+    cardNomreFiltre: {
+        minWidth: 20,
+        minHeight: 18,
+        backgroundColor: "#777",
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 3,
+        marginLeft: 5
+    },
+    actionBadgeText: {
+        color: '#FFF',
+        fontSize: 12,
+        marginTop: -2,
+        fontWeight: "bold"
+    },
 })
