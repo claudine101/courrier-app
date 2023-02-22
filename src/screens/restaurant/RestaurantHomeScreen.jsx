@@ -107,14 +107,16 @@ export default function RestaurantHomeScreen() {
                 fecthCategories()
         }, []))
 
-        useEffect(() => {
-                const params = route.params || {}
-                const { nombreFiltre } = params
-                if (nombreFiltre > 0) {
+        useFocusEffect(useCallback(() => {
+                (async () => {
+                    const params = route.params || {}
+                    const { countFiltre } = params
+                    if (countFiltre > 0) {
                         setFiltre(params)
-                }
-                setNombreFiltre(nombreFiltre)
-        }, [route])
+                        setNombreFiltre(countFiltre)
+                    }
+                })()
+            }, [route]))
 
         return (
                 <View style={styles.container}>

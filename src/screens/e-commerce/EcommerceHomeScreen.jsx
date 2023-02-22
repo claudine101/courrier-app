@@ -23,6 +23,7 @@ import { useEffect } from "react";
 
 export default function EcommerceHomeScreen() {
     const [loadingProducts, setLoadingProducts] = useState(false)
+    const [loadingAllProducts, setLoadingAllProducts] = useState(true)
     const [products, setProducts] = useState([])
     const [productsCommande, setProductCommandes] = useState([])
 
@@ -60,25 +61,25 @@ export default function EcommerceHomeScreen() {
             setIsLoadingMore(false)
         }
     }
-    const getProducts = useCallback(async (offset = 0) => {
+    const getProducts = async (offset = 0) => {
         try {
             var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}`
-            if(nombreFiltre > 0){
-                for(let key in filtre){
-                    if(filtre[key]) {
-                        url +=`&${key}=${filtre[key]}`
+            if (nombreFiltre > 0) {
+                for (let key in filtre) {
+                    if (filtre[key]) {
+                        url += `&${key}=${filtre[key]}`
                     }
                 }
             }
-            console.log(url)
+            // console.log(url)
             return await fetchApi(url)
         }
         catch (error) {
             console.log(error)
         }
 
-    }, [nombreFiltre, filtre])
-    useFocusEffect(useCallback(() => {
+    }
+    useEffect(() => {
         (async () => {
             try {
                 setOffset(0)
@@ -86,9 +87,11 @@ export default function EcommerceHomeScreen() {
                 setProducts(produts.result)
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoadingAllProducts(false)
             }
         })()
-    }, []))
+    }, [filtre])
 
     const getProductsCommandes = useCallback(async (offset = 0) => {
         var url = "/products/commande"
@@ -107,16 +110,16 @@ export default function EcommerceHomeScreen() {
         })()
     }, []))
 
-    useEffect(() => {
-        const params = route.params || {}
-        const {countFiltre } = params
-        console.log({countFiltre})
-        if (countFiltre > 0) {
-            setFiltre(params)
-            setNombreFiltre(countFiltre)
-        }
-      
-    }, [route])
+    useFocusEffect(useCallback(() => {
+        (async () => {
+            const params = route.params || {}
+            const { countFiltre } = params
+            if (countFiltre > 0) {
+                setFiltre(params)
+                setNombreFiltre(countFiltre)
+            }
+        })()
+    }, [route]))
 
     return (
         <View style={styles.container}>
@@ -154,7 +157,7 @@ export default function EcommerceHomeScreen() {
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("AllFiltersScreen")}>
                         <View style={styles.cardRecherche}>
-                             {(nombreFiltre != null && nombreFiltre != 0) ? <View style={styles.cardNomreFiltre}>
+                            {(nombreFiltre != null && nombreFiltre != 0) ? <View style={styles.cardNomreFiltre}>
                                 <Text style={styles.actionBadgeText}>{nombreFiltre}</Text>
                             </View> : null}
                             <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
@@ -171,18 +174,22 @@ export default function EcommerceHomeScreen() {
                     <Text style={styles.secionTitle}>Recommandé pour vous</Text>
                 </View>
                 <View style={styles.products}>
-                    {products.map((product, index) => {
-                        return (
-                            <Product
-                                product={product}
-                                index={index}
-                                totalLength={products.length}
-                                key={index}
-                                fixMargins
-                                IsLoadingMore={IsLoadingMore}
-                            />
-                        )
-                    })}
+                    {loadingAllProducts ? <HomeProductsSkeletons /> :
+                    <>
+                        {products.map((product, index) => {
+                            return (
+                                <Product
+                                    product={product}
+                                    index={index}
+                                    totalLength={products.length}
+                                    key={index}
+                                    fixMargins
+                                    IsLoadingMore={IsLoadingMore}
+                                />
+                            )
+                        })}
+                    </>}
+
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10, opacity: IsLoadingMore ? 1 : 0 }}>
                     <ActivityIndicator animating={true} size="large" color={"#000"} />

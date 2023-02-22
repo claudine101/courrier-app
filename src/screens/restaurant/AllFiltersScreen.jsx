@@ -97,7 +97,7 @@ export default function AllFiltersScreen() {
                 if (selectedCategory) {
                         nombreFiltre += 1
                 }
-                navigation.navigate("RestaurantHomeScreen", { order_by: selected, min_prix: data.minumum, max_prix: data.maximum, category: selectedCategory, nombreFiltre })
+                navigation.navigate("RestaurantHomeScreen", { order_by: selected, min_prix: data.minumum, max_prix: data.maximum, category: selectedCategory?.ID_RESTAURANT_MENU, countFiltre })
         }
 
         useEffect(() => {
@@ -154,14 +154,14 @@ export default function AllFiltersScreen() {
                                                 return (
                                                         <TouchableNativeFeedback
                                                                 key={index}
-                                                                onPress={() => checkFiltres(index)}>
+                                                                onPress={() => checkFiltres(index+1)}>
                                                                 <View style={styles.principal}>
                                                                         <View style={styles.iconsPrincipal}>
                                                                                 {oders.iconImage}
                                                                         </View>
                                                                         <View style={styles.cardIcons}>
                                                                                 <Text style={styles.filtres}>{oders.name}</Text>
-                                                                                {selected == index ? <Feather name="check" size={24} color="black" /> : null}
+                                                                                {selected == index+1 ? <Feather name="check" size={24} color="black" /> : null}
                                                                         </View>
                                                                 </View>
                                                         </TouchableNativeFeedback>
