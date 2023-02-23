@@ -18,6 +18,7 @@ import { ECONET_PHONE_NUMBER_STARTS } from '../../../constants/MOBILE_NUMBER_STA
 
 
 export default function EcocashModalize({ info, loadingForm, onClose, shipping_info, service,  onFInish }) {
+        console.log(service)
     const [loading, setLoading] = useState(false)
           const [data, handleChange] = useForm({
                     tel: ""
@@ -89,7 +90,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                         const orders = restaurants.map(restaurant => {
                                                 return {
                                                         QUANTITE: restaurant.QUANTITE,
-                                                        PRIX: restaurant.combinaison ? restaurant.combinaison.PRIX : product.produit_partenaire.PRIX,
+                                                        PRIX: restaurant.combinaison ? restaurant.combinaison.PRIX : restaurant.produit_partenaire.PRIX,
                                                         ID_COMBINATION: restaurant.combinaison ? restaurant.combinaison.ID_COMBINATION : null,
                                                         ID_RESTAURANT_MENU: restaurant.produit.ID_RESTAURANT_MENU,
                                                         ID_PARTENAIRE_SERVICE: restaurant.produit_partenaire.ID_PARTENAIRE_SERVICE
@@ -110,6 +111,7 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                   }),
                                                   headers: { "Content-Type": "application/json" },
                                         })
+                                        console.log(commande.result)
                                         onFInish(commande.result)
                               }
                     } catch (error) {

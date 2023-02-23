@@ -38,10 +38,7 @@ export default function AddCart({ menu, onClose, loadingForm }) {
           }
 
           const onIncrementOther = () => {
-                    if (amount == selectedCombinaison.QUANTITE) {
-                              return false
-                    }
-                    setAmount(l => parseInt(l) + 1)
+            setAmount(l => parseInt(l) + 1)     
           }
           const checkAmount = useCallback(() => {
                     setAmount(parseInt(amount) ? (parseInt(amount) >= selectedCombinaison.QUANTITE ? selectedCombinaison.QUANTITE : parseInt(amount)) : 1)
@@ -167,9 +164,9 @@ export default function AddCart({ menu, onClose, loadingForm }) {
                                                                                 </View> : null}
                                                                       </View>
 
-                                                                      {!selectedCombinaison ? <Text style={styles.noProductFeeback}>
+                                                                      {/* {!selectedCombinaison ? <Text style={styles.noProductFeeback}>
                                                                                 Menu non disponible pour le moment
-                                                                      </Text> :
+                                                                      </Text> : */}
                                                                                 <View style={styles.moreDetails}>
                                                                                           <View style={styles.amountContainer}>
                                                                                                     <TouchableOpacity style={[styles.amountChanger, (amount <= 1 || !/^\d+$/.test(amount)) && { opacity: 0.5 }]} onPress={onDecrementOther} disabled={amount <= 1 || !/^\d+$/.test(amount)}>
@@ -187,9 +184,9 @@ export default function AddCart({ menu, onClose, loadingForm }) {
                                                                                                               keyboardType="decimal-pad"
                                                                                                     />
                                                                                                     <TouchableOpacity
-                                                                                                              style={[styles.amountChanger, (!/^\d+$/.test(amount) || amount >= selectedCombinaison.QUANTITE) && { opacity: 0.5 }]}
+                                                                                                              style={[styles.amountChanger]}
                                                                                                               onPress={onIncrementOther}
-                                                                                                              disabled={(!/^\d+$/.test(amount) || amount >= selectedCombinaison.QUANTITE)
+                                                                                                              disabled={(!/^\d+$/.test(amount))
                                                                                                               }>
                                                                                                               <Text style={styles.amountChangerText}>+</Text>
                                                                                                     </TouchableOpacity>
@@ -197,7 +194,8 @@ export default function AddCart({ menu, onClose, loadingForm }) {
                                                                                           <TouchableOpacity style={[styles.addCartBtn, { opacity: !isValid() ? 0.5 : 1 }]} onPress={onAddToCart} disabled={!isValid()}>
                                                                                                     <Text style={styles.addCartBtnTitle}>Ajouter au panier</Text>
                                                                                           </TouchableOpacity>
-                                                                                </View>}
+                                                                                </View>
+                                                                                {/* } */}
                                                             </>}
                               </View>
           )

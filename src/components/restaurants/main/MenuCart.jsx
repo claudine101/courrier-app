@@ -11,7 +11,16 @@ import { COLORS } from '../../../styles/COLORS'
 
 const LIMIT = 50
 export default function MenuCart({ menu, index }) {
-    const totalPrice = menu.combinaison.PRIX * menu.QUANTITE
+
+    var totalPrice = 0
+    if (menu.combinaison) {
+        totalPrice = menu.combinaison.PRIX * menu.QUANTITE
+    } else {
+        totalPrice = menu.produit_partenaire.PRIX * menu.QUANTITE
+    }
+
+
+
     const [amount, setAmount] = useState(menu.QUANTITE)
     const [isFocused, setIsFocused] = useState(false)
 
@@ -38,12 +47,12 @@ export default function MenuCart({ menu, index }) {
         setAmount(am)
     }
     const checkAmount = () => {
-        setAmount(parseInt(amount) ? (parseInt(amount) >= menu.combinaison.QUANTITE ? menu.combinaison.QUANTITE : parseInt(amount)) : 1)
+        setAmount(parseInt(amount) ? (parseInt(amount) >= menu.QUANTITE ? menu.QUANTITE : parseInt(amount)) : 1)
     }
 
     let isnum = /^\d+$/.test(amount);
     const isValid = useCallback(() => {
-        return isnum ? (parseInt(amount) > 0 && parseInt(amount) <= menu.combinaison.QUANTITE) : false
+        return isnum ? (parseInt(amount) > 0 && parseInt(amount) <= menu.QUANTITE) : false
     }, [amount])
 
     const onRemoveProduct = () => {
@@ -86,7 +95,7 @@ export default function MenuCart({ menu, index }) {
                                                             { product.partenaire.NOM_ORGANISATION ? product.partenaire.NOM_ORGANISATION : `${product.partenaire.NOM} ${product.partenaire.PRENOM}` }
                                                             <FontAwesome5 name="building" size={10} color={COLORS.primary} style={{ marginLeft: 10 }} />
                                                   </Text> */}
-                                                  {menu.combinaison.PRIX ? <Text style={styles.unitPrice}>{menu.combinaison.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") } FBU</Text> : null}
+                                                  {totalPrice ? <Text style={styles.unitPrice}>{totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") } FBU</Text> : null}
                                         </View>
                                         <View style={styles.detailsFooter}>
                                                   <Text numberOfLines={1} style={styles.productPrice}>{totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") } FBU</Text>
@@ -106,7 +115,7 @@ export default function MenuCart({ menu, index }) {
                                                                       keyboardType="decimal-pad"
                                                                       editable={false}
                                                             />
-                                                            <TouchableOpacity style={[styles.amountChanger, (!/^\d+$/.test(amount) || amount >= menu.combinaison.QUANTITE) && { opacity: 0.5 }]} onPress={onIncrement} disabled={(!/^\d+$/.test(amount) || amount >= 100)}>
+                                                            <TouchableOpacity style={[styles.amountChanger, (!/^\d+$/.test(amount) || amount >= menu.QUANTITE) && { opacity: 0.5 }]} onPress={onIncrement} disabled={(!/^\d+$/.test(amount) || amount >= 100)}>
                                                                       <Text style={styles.amountChangerText}>+</Text>
                                                             </TouchableOpacity>
                                                   </View>

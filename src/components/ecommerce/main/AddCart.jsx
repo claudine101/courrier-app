@@ -34,12 +34,12 @@ export default function AddCart({ product, loadingForm, onClose }) {
                     setAmount(l => parseInt(l) - 1)
           }
 
-          const onIncrementOther = () => {
-                    if (amount == selectedCombinaison.QUANTITE) {
+          const onIncrementOther = useCallback(() => {
+                    if (amount == getQuantite()) {
                               return false
                     }
                     setAmount(l => parseInt(l) + 1)
-          }
+          },[getQuantite])
           const checkAmount = useCallback(() => {
                     setAmount(parseInt(amount) ? (parseInt(amount) >= getQuantite() ? getQuantite() : parseInt(amount)) : 1)
           }, [ getQuantite])

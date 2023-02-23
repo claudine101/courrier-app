@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, Statu
 import { Ionicons, AntDesign, MaterialIcons, Entypo, SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS"
-import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import Menu from "../../components/restaurants/main/Menu";
 import { Modalize } from "react-native-modalize";
 import fetchApi from "../../helpers/fetchApi";
@@ -14,6 +13,7 @@ import { HomeMenuSkeletons, HomeProductsSkeletons } from "../../components/ecomm
 import * as Location from 'expo-location';
 import RestosModalize from "../../components/restaurants/AllMenu/RestosModalize";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
+import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
 
 /**
  * composant pour afficher les menus avec filtres de categories ou filtre des restaurants
@@ -171,7 +171,7 @@ export default function MenuScreen() {
                                                                                 <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />
                                                                       </View>
                                                             </TouchableNativeFeedback>
-                                                            <EcommerceBadge />
+                                                            <RestaurantBadge/>
                                                   </View>
                                         </View>
                                         <ScrollView style={styles.cardOrginal} stickyHeaderIndices={[1]}>
