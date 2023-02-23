@@ -1,8 +1,10 @@
-import React from 'react'
-import { Image, StyleSheet, Text, TouchableNativeFeedback, useWindowDimensions, TouchableWithoutFeedback, View } from 'react-native'
+import React,{useEffect} from 'react'
+import { useState } from "react";
+import { Image, StyleSheet, Text, TouchableNativeFeedback, useWindowDimensions, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native'
 import { MaterialIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import { COLORS } from '../../../styles/COLORS';
 import { useNavigation } from '@react-navigation/native';
+import fetchApi from '../../../helpers/fetchApi';
 
 /**
  * composant pour afficher tous les menus
@@ -13,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
  */
 
 export default function Restaurant({ note, restaurant, restaurants, index, totalLength, isMore = true }) {
+        const [suivis, setSuivis] = useState(false)
           const navigation = useNavigation()
           const { width } = useWindowDimensions()
           const MAX_WIDTH = 200
@@ -29,6 +32,24 @@ export default function Restaurant({ note, restaurant, restaurants, index, total
           function strUcFirst(a) {
                     return (a + '').charAt(0).toUpperCase() + a.substr(1);
           }
+
+          const addBoutiqueSuivis = async () =>{
+                try{
+                        const suivis = await fetchApi(`/partenaires/ecommerce_boutique_suivis/${restaurant.ID_PARTENAIRE_SERVICE}`,{
+                                method: 'PUT',
+                        })
+                }
+                catch(error){
+                        console.log(error)
+                }
+        }
+
+        useEffect(()=>{
+                if(restaurant.ID_BOUTIQUE_SUIVIS){
+                        setSuivis(true)
+                }
+        },[])
+
           return (
                     <TouchableNativeFeedback onPress={() => navigation.navigate('ShopScreen', { id: restaurant.ID_PARTENAIRE_SERVICE, shop: restaurant })} useForeground background={TouchableNativeFeedback.Ripple('#ddd')}>
                               <View key={index} style={[styles.shop, additionStyles]}>
@@ -58,11 +79,19 @@ export default function Restaurant({ note, restaurant, restaurants, index, total
                                                             </View> : null}
                                                   </View>
                                                             <View>
-                                                  <TouchableNativeFeedback useForeground background={TouchableNativeFeedback.Ripple('#C4C4C4')}>
-                                                                      <View style={styles.followBtn}>
+                                                  <TouchableOpacity 
+                                                  onPress={()=> {
+                                                        addBoutiqueSuivis()
+                                                        setSuivis(b => !b)
+                                                  }}
+                                                  >
+                                                                     {suivis ? <View style={styles.followBtn}>
                                                                                 <Text style={styles.followBtnText}>+ S'abonner</Text>
-                                                                      </View>
-                                                  </TouchableNativeFeedback>
+                                                                      </View>:
+                                                                      <View style={styles.followBtnDesabonner}>
+                                                                                <Text style={styles.followBtnTextDesab}>- se desabonner</Text>
+                                                                      </View>}
+                                                  </TouchableOpacity>
                                                             </View>
                                         </View>
                               </View>
@@ -140,11 +169,24 @@ const styles = StyleSheet.create({
                     borderRadius: 30,
                     paddingVertical: 8,
                     paddingHorizontal: 15,
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    justifyContent:"center",
+                    alignItems:"center"
           },
           followBtnText: {
                     color: '#FFF',
                     fontWeight: 'bold',
                     opacity: 0.8
+          },
+          followBtnTextDesab:{
+                    fontWeight: 'bold',
+                    opacity: 0.8
+          },
+          followBtnDesabonner:{
+                backgroundColor:"#F1F1F1",
+                    borderRadius: 30,
+                    paddingVertical: 8,
+                    paddingHorizontal: 15,
+                    overflow: 'hidden'
           }
 })

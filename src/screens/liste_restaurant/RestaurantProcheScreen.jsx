@@ -6,10 +6,15 @@ import { COLORS } from "../../styles/COLORS"
 import RestaurantHome from "../../components/restaurants/main/RestaurantHome";
 import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import Restaurant from "../../components/restaurants/main/Restaurant";
+import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
+import { RestaurantSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
+import useFetch from "../../hooks/useFetch";
+
 export default function RestaurantProcheScreen() {
+        const [loadingResto, restaurants] = useFetch(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.resto}`)
           const navigation = useNavigation()
           const route = useRoute()
-          const { restaurants } = route.params
+        //   const { restaurants } = route.params
           return (
                     <View style={styles.container}>
                               <View style={styles.cardHeader}>
@@ -38,8 +43,9 @@ export default function RestaurantProcheScreen() {
                                                   <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, backgroundColor: '#fff', paddingBottom: 10 }}>
                                                   </View>
                                         </View>
+                                        { loadingResto ? <RestaurantSkeletons/> :
                                         <View style={styles.resto}>
-                                                  {restaurants.map((restaurant, index) => {
+                                                  {restaurants.result.map((restaurant, index) => {
                                                             return (
                                                                       <Restaurant
                                                                                 restaurant={restaurant}
@@ -52,7 +58,7 @@ export default function RestaurantProcheScreen() {
                                                             )
                                                   })}
 
-                                        </View>
+                                        </View>}
 
                               </ScrollView>
                     </View>

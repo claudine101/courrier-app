@@ -10,7 +10,7 @@ export default function Shop({ shop, index, totalLength, fixMargins = false }) {
     const { width } = useWindowDimensions()
     const PRODUCT_MARGIN = 10
     const PRODUCT_WIDTH = (width / 2) - PRODUCT_MARGIN - 10
-    const PRODUCT_HEIGHT = 220
+    const PRODUCT_HEIGHT = 180
     const additionStyles = {
         width: PRODUCT_WIDTH,
         height: PRODUCT_HEIGHT,
@@ -36,20 +36,21 @@ export default function Shop({ shop, index, totalLength, fixMargins = false }) {
                         {shop.categories[0].NOM}
                     </Text>
                 </View> : null}
-                <View style={[styles.shopDetail]}>
+                <View style={{...styles.shopDetail, alignItems:"center"}}>
+                    <View style={styles.footerBlock}>
+                        {shop.MOYENNE ? <AntDesign name="star" size={15} color={COLORS.ecommerceOrange}/>
+                            : null}
+                        {shop.MOYENNE ? <Text style={styles.footerText}>{parseFloat(shop.MOYENNE).toFixed(1)}</Text> : null}
+                    </View>
                     <View style={styles.shopFooter}>
-                        <View style={styles.footerBlock}>
+                        {/* <View style={styles.footerBlock}>
                             <Entypo name="location-pin" size={16} color={COLORS.ecommerceOrange} style={{ marginRight: 2 }} />
                             <Text style={styles.footerText}>
                                 {shop.DISTANCE ? shop.DISTANCE.toFixed(1) : null}1.2km
                             </Text>
-                        </View>
+                        </View> */}
 
-                        <View style={styles.footerBlock}>
-                            {shop.MOYENNE ? <AntDesign name="star" size={15} color={COLORS.ecommerceOrange} style={{ marginRight: 2 }} />
-                                : null}
-                            {shop.MOYENNE ? <Text style={styles.footerText}>{parseFloat(shop.MOYENNE).toFixed(1)}</Text> : null}
-                        </View>
+
                     </View>
                 </View>
             </View>
@@ -106,10 +107,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: "flex-end",
         flex: 1,
-    },
-    footerBlock: {
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     footerText: {
         color: '#777'
