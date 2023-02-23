@@ -77,17 +77,24 @@ export default function RestaurantHomeScreen() {
         }
 
 
-        const getMenus = useCallback(async (offset = 0) => {
+        const getMenus = async (offset = 0) => {
                 try {
                         var url = `/resto/restaurant_menus?limit=${LIMIT}&offset=${offset}&`
+                        if (nombreFiltre > 0) {
+                                for (let key in filtre) {
+                                        if (filtre[key]) {
+                                                url += `&${key}=${filtre[key]}`
+                                        }
+                                }
+                        }
                         return await fetchApi(url)
                 }
                 catch (error) {
                         console.log(error)
                 }
-        })
+        }
 
-        useFocusEffect(useCallback(() => {
+        useEffect(() => {
                 (async () => {
                         try {
                                 setOffset(0)
@@ -99,7 +106,7 @@ export default function RestaurantHomeScreen() {
                                 setFirstLoadingMenus(false)
                         }
                 })()
-        }, []))
+        }, [filtre])
 
 
 
@@ -109,14 +116,14 @@ export default function RestaurantHomeScreen() {
 
         useFocusEffect(useCallback(() => {
                 (async () => {
-                    const params = route.params || {}
-                    const { countFiltre } = params
-                    if (countFiltre > 0) {
-                        setFiltre(params)
-                        setNombreFiltre(countFiltre)
-                    }
+                        const params = route.params || {}
+                        const { countFiltre } = params
+                        if (countFiltre > 0) {
+                                setFiltre(params)
+                                setNombreFiltre(countFiltre)
+                        }
                 })()
-            }, [route]))
+        }, [route]))
 
         return (
                 <View style={styles.container}>

@@ -84,20 +84,20 @@ export default function AllFiltersScreen() {
         }
 
         const sendInformation = () => {
-                var nombreFiltre = 0
+                var countFiltre = 0
                 if (selected) {
-                        nombreFiltre += 1
+                        countFiltre += 1
                 }
                 if (data.minumum) {
-                        nombreFiltre += 1
+                        countFiltre += 1
                 }
                 if (data.maximum) {
-                        nombreFiltre += 1
+                        countFiltre += 1
                 }
                 if (selectedCategory) {
-                        nombreFiltre += 1
+                        countFiltre += 1
                 }
-                navigation.navigate("RestaurantHomeScreen", { order_by: selected, min_prix: data.minumum, max_prix: data.maximum, category: selectedCategory?.ID_RESTAURANT_MENU, countFiltre })
+                navigation.navigate("RestaurantHomeScreen", { order_by: selected, min_prix: data.minumum, max_prix: data.maximum, category: selectedCategory?.ID_CATEGORIE_MENU, countFiltre })
         }
 
         useEffect(() => {

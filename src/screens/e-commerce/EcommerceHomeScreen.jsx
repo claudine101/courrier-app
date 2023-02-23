@@ -71,7 +71,6 @@ export default function EcommerceHomeScreen() {
                     }
                 }
             }
-            // console.log(url)
             return await fetchApi(url)
         }
         catch (error) {
