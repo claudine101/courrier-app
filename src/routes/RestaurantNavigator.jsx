@@ -34,9 +34,9 @@ export default function RestaurantNavigator() {
                                         <Stack.Screen name="RestaurantProcheScreen" component={RestaurantProcheScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
                                         <Stack.Screen name="CategorieMenuScreen" component={CategorieMenuScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
                                         <Stack.Screen name="MenuScreen" component={MenuScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
-                                        <Stack.Screen name="MenuScreenCategorie" component={MenuScreenCategorie} />
-                                        <Stack.Screen name="RechercheScreen" component={RechercheScreen} />
-                                        <Stack.Screen name="AllFiltersScreen" component={AllFiltersScreen}/>
+                                        <Stack.Screen name="MenuScreenCategorie" component={MenuScreenCategorie} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }}/>
+                                        <Stack.Screen name="RechercheScreen" component={RechercheScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }}/>
+                                        <Stack.Screen name="AllFiltersScreen" component={AllFiltersScreen} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }}/>
                               </Stack.Group>
                               <Stack.Screen name="ShopScreen" component={ShopScreen} options={{
                                         headerShown: true,
