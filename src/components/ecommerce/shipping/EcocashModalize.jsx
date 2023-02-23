@@ -18,7 +18,6 @@ import { ECONET_PHONE_NUMBER_STARTS } from '../../../constants/MOBILE_NUMBER_STA
 
 
 export default function EcocashModalize({ info, loadingForm, onClose, shipping_info, service,  onFInish }) {
-        console.log(service)
     const [loading, setLoading] = useState(false)
           const [data, handleChange] = useForm({
                     tel: ""
