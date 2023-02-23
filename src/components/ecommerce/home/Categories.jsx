@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableNativeFeedback, View, ScrollView, TouchableW
 import { MaterialIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import { COLORS } from "../../../styles/COLORS";
 
-export default function Categories({ categories }) {
+export default function Categories({ categories }) {  
           const navigation = useNavigation()
           return (
                               <>

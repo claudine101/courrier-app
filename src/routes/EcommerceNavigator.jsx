@@ -10,6 +10,7 @@ import BoutiqueListeScreen from "../screens/liste_e-commerce/BoutiqueListeScreen
 import CategorieListeScreen from "../screens/liste_e-commerce/CategorieListeScreen";
 import PlusRecommandeScreen from "../screens/liste_e-commerce/PlusRecommandeListeScreen";
 import EcommerceHeader from "../components/ecommerce/main/EcommerceHeader";
+import AllFiltersScreen from "../screens/e-commerce/AllFiltersScreen";
 
 export default function EcommerceNavigator() { 
     
@@ -26,6 +27,8 @@ export default function EcommerceNavigator() {
                                                   <Stack.Screen name="BoutiqueListeScreen" component={BoutiqueListeScreen}/>
                                                   <Stack.Screen name="CategorieListeScreen" component={CategorieListeScreen}/>
                                                   <Stack.Screen name="PlusRecommandeScreen" component={PlusRecommandeScreen}/>
+                                                  <Stack.Screen name="AllFiltersScreen" component={AllFiltersScreen}/>
+                                                  
                                         </Stack.Group>
                                         <Stack.Screen name="ShopScreen" component={ShopScreen} options={{ 
                                                   headerShown: true,

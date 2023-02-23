@@ -15,6 +15,7 @@ import SearchResultTabsScreen from '../screens/search/SearchResultTabsScreen';
 import SearchAllLivreurScreen from '../screens/e-commerce/SearchAllLivreurScreen';
 import EditRatingScreen from '../screens/e-commerce/EditRatingScreen';
 import AllNotesScreen from '../screens/e-commerce/AllNotesScreen';
+import AllFiltersScreen from '../screens/e-commerce/AllFiltersScreen';
 
 
 export default function RootNavigator() {
@@ -55,6 +56,7 @@ export default function RootNavigator() {
                                         }} />
                                         <Stack.Screen name="AllNotesScreen" component={AllNotesScreen} options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
                                         <Stack.Screen name="EditRatingScreen" component={EditRatingScreen} options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }}/>
+                                        <Stack.Screen name="AllFiltersScreen" component={AllFiltersScreen} options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
                               </Stack.Navigator>
                     </NavigationContainer>
           )

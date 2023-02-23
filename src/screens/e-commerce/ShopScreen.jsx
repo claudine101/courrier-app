@@ -117,7 +117,7 @@ export default function ShopScreen() {
                                                         <ActivityIndicator animating={true} size="large" color={"#000"} />
                                                 </View> :
                                                 <>
-                                                loading && <Loading />
+                                                {loading && <Loading />}
                                                 <View style={styles.reviews}>
                                                         {partenaireNotes.result.map((review, index) => {
                                                                 return (

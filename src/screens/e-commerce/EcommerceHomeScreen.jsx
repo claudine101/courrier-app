@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Text, View, StatusBar, StyleSheet, ScrollView, ActivityIndicator, TouchableNativeFeedback, TouchableOpacity } from "react-native";
 import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import fetchApi from "../../helpers/fetchApi";
-import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
 import HomeProducts from "../../components/ecommerce/home/HomeProducts";
 import Shops from "../../components/ecommerce/home/Shops";
@@ -12,6 +12,7 @@ import EcommerceBadge from "../../components/ecommerce/main/EcommerceBadge";
 import useFetch from "../../hooks/useFetch";
 import Categories from "../../components/ecommerce/home/Categories";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
+import { useEffect } from "react";
 
 /**
  * Screen de home pour afficher les boutiques, les categories et les produits recommande pour vous
@@ -22,6 +23,7 @@ import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES";
 
 export default function EcommerceHomeScreen() {
     const [loadingProducts, setLoadingProducts] = useState(false)
+    const [loadingAllProducts, setLoadingAllProducts] = useState(true)
     const [products, setProducts] = useState([])
     const [productsCommande, setProductCommandes] = useState([])
 
@@ -30,6 +32,14 @@ export default function EcommerceHomeScreen() {
     const [IsLoadingMore, setIsLoadingMore] = useState(false)
     const [offset, setOffset] = useState(0)
     const navigation = useNavigation()
+    const route = useRoute()
+    const [nombreFiltre, setNombreFiltre] = useState(null)
+    const [filtre, setFiltre] = useState({
+        order_by: null,
+        min_prix: null,
+        max_prix: null,
+        category: null
+    })
 
 
     const LIMIT = 10
@@ -51,17 +61,24 @@ export default function EcommerceHomeScreen() {
             setIsLoadingMore(false)
         }
     }
-    const getProducts = useCallback(async (offset = 0) => {
+    const getProducts = async (offset = 0) => {
         try {
-            var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}&`
+            var url = `/ecommerce/ecommerce_produits?limit=${LIMIT}&offset=${offset}`
+            if (nombreFiltre > 0) {
+                for (let key in filtre) {
+                    if (filtre[key]) {
+                        url += `&${key}=${filtre[key]}`
+                    }
+                }
+            }
             return await fetchApi(url)
         }
         catch (error) {
             console.log(error)
         }
 
-    }, [])
-    useFocusEffect(useCallback(() => {
+    }
+    useEffect(() => {
         (async () => {
             try {
                 setOffset(0)
@@ -69,9 +86,11 @@ export default function EcommerceHomeScreen() {
                 setProducts(produts.result)
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoadingAllProducts(false)
             }
         })()
-    }, []))
+    }, [filtre])
 
     const getProductsCommandes = useCallback(async (offset = 0) => {
         var url = "/products/commande"
@@ -89,6 +108,17 @@ export default function EcommerceHomeScreen() {
             }
         })()
     }, []))
+
+    useFocusEffect(useCallback(() => {
+        (async () => {
+            const params = route.params || {}
+            const { countFiltre } = params
+            if (countFiltre > 0) {
+                setFiltre(params)
+                setNombreFiltre(countFiltre)
+            }
+        })()
+    }, [route]))
 
     return (
         <View style={styles.container}>
@@ -124,13 +154,14 @@ export default function EcommerceHomeScreen() {
                             </View>
                         </TouchableNativeFeedback>
                     </View>
-
-
-                   
+                    <TouchableOpacity onPress={() => navigation.navigate("AllFiltersScreen")}>
                         <View style={styles.cardRecherche}>
+                            {(nombreFiltre != null && nombreFiltre != 0) ? <View style={styles.cardNomreFiltre}>
+                                <Text style={styles.actionBadgeText}>{nombreFiltre}</Text>
+                            </View> : null}
                             <SimpleLineIcons name="equalizer" size={24} color="white" style={{ fontWeight: 'bold', transform: [{ rotate: '-90deg' }] }} />
                         </View>
-                   
+                    </TouchableOpacity>
 
                 </View>
                 {loadingShops ? <HomeProductsSkeletons /> : <Shops shops={shops.result} />}
@@ -142,18 +173,22 @@ export default function EcommerceHomeScreen() {
                     <Text style={styles.secionTitle}>Recommandé pour vous</Text>
                 </View>
                 <View style={styles.products}>
-                    {products.map((product, index) => {
-                        return (
-                            <Product
-                                product={product}
-                                index={index}
-                                totalLength={products.length}
-                                key={index}
-                                fixMargins
-                                IsLoadingMore={IsLoadingMore}
-                            />
-                        )
-                    })}
+                    {loadingAllProducts ? <HomeProductsSkeletons /> :
+                    <>
+                        {products.map((product, index) => {
+                            return (
+                                <Product
+                                    product={product}
+                                    index={index}
+                                    totalLength={products.length}
+                                    key={index}
+                                    fixMargins
+                                    IsLoadingMore={IsLoadingMore}
+                                />
+                            )
+                        })}
+                    </>}
+
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10, opacity: IsLoadingMore ? 1 : 0 }}>
                     <ActivityIndicator animating={true} size="large" color={"#000"} />
@@ -335,5 +370,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center'
-    }
+    },
+    cardNomreFiltre: {
+        minWidth: 20,
+        minHeight: 18,
+        backgroundColor: "#777",
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 3,
+        marginLeft: 5
+    },
+    actionBadgeText: {
+        color: '#FFF',
+        fontSize: 12,
+        marginTop: -2,
+        fontWeight: "bold"
+    },
 })
