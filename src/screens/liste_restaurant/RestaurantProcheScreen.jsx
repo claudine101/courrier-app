@@ -9,6 +9,7 @@ import Restaurant from "../../components/restaurants/main/Restaurant";
 import IDS_SERVICE_CATEGORIES from "../../constants/IDS_SERVICE_CATEGORIES"
 import { RestaurantSkeletons } from "../../components/ecommerce/skeletons/Skeletons";
 import useFetch from "../../hooks/useFetch";
+import RestaurantBadge from "../../components/restaurants/main/RestaurantBadge";
 
 export default function RestaurantProcheScreen() {
         const [loadingResto, restaurants] = useFetch(`/partenaires/partenaire_service?ID_SERVICE_CATEGORIE=${IDS_SERVICE_CATEGORIES.resto}`)
@@ -29,10 +30,10 @@ export default function RestaurantProcheScreen() {
                                                   </TouchableNativeFeedback>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                  <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('EcommerceCartScreen')}>
+                                                  <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate("SearchHistoryScreen", {service:1})}>
                                                             <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />
                                                   </TouchableOpacity>
-                                                  <EcommerceBadge />
+                                                  <RestaurantBadge />
                                         </View>
                               </View>
 

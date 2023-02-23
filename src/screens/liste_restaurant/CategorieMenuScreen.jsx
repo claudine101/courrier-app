@@ -54,7 +54,7 @@ export default function CategorieMenuScreen() {
                                                   </View>
                                         </TouchableNativeFeedback>
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                  <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('EcommerceCartScreen')}>
+                                                  <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate("SearchHistoryScreen", {service:1})}>
                                                             <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />
                                                   </TouchableOpacity>
                                                   <EcommerceBadge />
