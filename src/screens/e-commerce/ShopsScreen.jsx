@@ -43,9 +43,14 @@ export default function ShopsScreen() {
                                                   </TouchableNativeFeedback>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                  <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('EcommerceCartScreen')}>
-                                                            <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />
-                                                  </TouchableOpacity>
+                                                  <TouchableNativeFeedback
+                                                            style={{}}
+                                                            onPress={() => navigation.navigate("SearchHistoryScreen", {service:1})}
+                                                            background={TouchableNativeFeedback.Ripple('#c9c5c5', true)}>
+                                                                      <View style={{ padding: 10 }}>
+                                                                                <AntDesign name="search1" size={24} color={COLORS.ecommercePrimaryColor} />
+                                                                      </View>
+                                                  </TouchableNativeFeedback>
                                                   <EcommerceBadge />
                                         </View>
                               </View>

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View, TouchableOpacity, ImageBackground, 
 import { TextField, FilledTextField, InputAdornment, OutlinedTextField } from 'rn-material-ui-textfield'
 import { FontAwesome, Fontisto, EvilIcons, Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import fetchApi from '../../helpers/fetchApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setUserAction } from "../../store/actions/userActions"
@@ -11,6 +11,8 @@ import { COLORS } from '../../styles/COLORS';
 import { useForm } from '../../hooks/useForm';
 import { useFormErrorsHandle } from '../../hooks/useFormErrorsHandle';
 import Loading from '../../components/app/Loading';
+import registerPushNotification from '../../helpers/registerPushNotification';
+import { notificationTokenSelector } from '../../store/selectors/appSelectors';
 
 export default function InscriptionScreen() {
         const dispatch = useDispatch()
@@ -21,6 +23,7 @@ export default function InscriptionScreen() {
         const emailInputRef = useRef(null)
         const passwordInputRef = useRef(null)
         const password_confirmInputRef = useRef(null)
+        const token = useSelector(notificationTokenSelector)
 
 
         const [data, handleChange, setValue] = useForm({
@@ -78,14 +81,17 @@ export default function InscriptionScreen() {
 
         const enregistrement = async () => {
                 setLoading(true)
+                // const token = registerPushNotification()
                 try {
-                        const res = await fetchApi("/users", {
+                        const res = await fetchApi("/auth/users", {
                                 method: 'POST',
                                 body: JSON.stringify({
                                         NOM: data.nom,
                                         PRENOM: data.prenom,
                                         EMAIL: data.email,
-                                        PASSWORD: data.password
+                                        PASSWORD: data.password,
+                                        PUSH_NOTIFICATION_TOKEN: token,
+                                        DEVICE: Platform.OS === 'ios' ? 1 : 0
                                 }),
                                 headers: { "Content-Type": "application/json" },
                         })

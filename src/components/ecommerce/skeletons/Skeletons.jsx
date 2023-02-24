@@ -75,16 +75,7 @@ export const estaurantSkeletons = () => {
 }
 export const RestaurantSkeletons = () => {
           return (
-                    <View style={styles.resto}>
-                              {new Array(50).fill(0).map((_, index) => {
-                                        return (
-                                                  <View style={[styles.category, index == 0 && { marginLeft: 0 }]} key={index}>
-                                                            <View style={styles.categoryPhotoResto} />
-                                                            <View style={styles.categoryTextResto} />
-                                                  </View>
-                                        )
-                              })}
-                    </View>
+                    <HomeProductsSkeletons />
           )
 }
 export const HomeProductsSkeletons = ({ wrap = false, noTitle = false }) => {
@@ -127,26 +118,7 @@ export const HomeMenuSkeletons = ({ wrap = false }) => {
                     marginLeft: PRODUCT_MARGIN,
                     marginRight: PRODUCT_MARGIN
           }
-          return (
-                    <>
-                              <View style={[{ marginTop: 15, marginBottom: 30, flexDirection: "row", alignItems: "center" }, wrap && { flexWrap: "wrap" }]}>
-                                        {(new Array(10).fill(0)).map((category, index) => {
-                                                  return (
-                                                            <View style={[styles.menu, additionStyles,]}>
-                                                            </View>
-                                                  )
-                                        }
-                                        )}
-                              </View>
-                              <View style={{ marginBottom: -20, marginTop: -40, flexDirection: "row", alignItems: "center" }}>
-                                        <View style={{ ...styles.iconMenu, height: 30, width: '30%', backgroundColor: '#d9ddde', marginLeft: 10, marginTop: 20, borderRadius: 10, marginBottom: 10 }} />
-                                        <View style={{ ...styles.iconMenu, height: 30, width: '25%', backgroundColor: '#d9ddde', marginLeft: 10, marginTop: 20, borderRadius: 10, marginBottom: 10 }} />
-
-                              </View>
-                              <View style={{ ...styles.prix, height: 15, width: '25%', backgroundColor: '#d9ddde', marginLeft: 10, marginTop: 20, borderRadius: 5, marginBottom: 10 }} />
-
-                    </>
-          )
+          return <HomeProductsSkeletons />
 }
 
 const styles = StyleSheet.create({

@@ -12,7 +12,7 @@ import { Portal } from "react-native-portalize"
 import fetchApi from '../../../helpers/fetchApi'
 import Loading from '../../app/Loading'
 import { restaurantCartSelector } from '../../../store/selectors/restaurantCartSelectors'
-import ServicesIDS from '../../../constants/ServicesIDS'
+import IDS_SERVICE_CATEGORIES from '../../../constants/IDS_SERVICE_CATEGORIES'
 import { ECONET_PHONE_NUMBER_STARTS } from '../../../constants/MOBILE_NUMBER_STARTS'
 
 
@@ -38,11 +38,11 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
 
           const getTotal = () => {
                     var total = 0
-                    if(service == ServicesIDS.ecommerce) {
+                    if(service == IDS_SERVICE_CATEGORIES.ecommerce) {
                               products.forEach(product => {
                                         total += product.combinaison ? product.combinaison.PRIX * product.QUANTITE : product.produit_partenaire.PRIX * product.QUANTITE
                               })
-                    } else if(service == ServicesIDS.resto){
+                    } else if(service == IDS_SERVICE_CATEGORIES.resto){
                         restaurants.forEach(restaurant => {
                                 total += restaurant.combinaison ? restaurant.combinaison.PRIX * restaurant.QUANTITE : restaurant.produit_partenaire.PRIX * restaurant.QUANTITE
                             })
@@ -59,17 +59,17 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                               if (!isnum || !ECONET_PHONE_NUMBER_STARTS.includes(phoneStart)) {
                                         return setError("tel", ["Numéro de téléphone invalide"])
                               }
-                              if (service == ServicesIDS.ecommerce) {
+                              if (service == IDS_SERVICE_CATEGORIES.ecommerce) {
                                         const orders = products.map(product => {
                                                   return {
                                                             QUANTITE: product.QUANTITE,
-                                                            PRIX: product.combinaison.PRIX,
-                                                            ID_COMBINATION: product.combinaison.ID_COMBINATION,
+                                                            PRIX: product.combinaison ? product.combinaison.PRIX : product.produit_partenaire.PRIX,
+                                                            ID_COMBINATION: product.combinaison ? product.combinaison.ID_COMBINATION:null,
                                                             ID_PRODUIT: product.produit.ID_PRODUIT,
                                                             ID_PARTENAIRE_SERVICE: product.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                   }
                                         })
-                                        const commande = await fetchApi('/commandes/clients', {
+                                        const commande = await fetchApi('/ecommerce/ecommerce_commandes', {
                                                   method: "POST",
                                                   body: JSON.stringify({
                                                             numero: data.tel,
@@ -79,23 +79,23 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                                       PRENOM: shipping_info.prenom,
                                                                       ADRESSE: shipping_info.address,
                                                             },
-                                                            service: ServicesIDS.ecommerce,
+                                                            service: IDS_SERVICE_CATEGORIES.ecommerce,
                                                             commandes: orders
                                                   }),
                                                   headers: { "Content-Type": "application/json" },
                                         })
                                         onFInish(commande.result)
-                              } else if (service == ServicesIDS.resto) {
+                              } else if (service == IDS_SERVICE_CATEGORIES.resto) {
                                         const orders = restaurants.map(restaurant => {
                                                 return {
                                                         QUANTITE: restaurant.QUANTITE,
-                                                        PRIX: restaurant.combinaison.PRIX,
-                                                        ID_COMBINATION: restaurant.combinaison.ID_COMBINATION,
+                                                        PRIX: restaurant.combinaison ? restaurant.combinaison.PRIX : restaurant.produit_partenaire.PRIX,
+                                                        ID_COMBINATION: restaurant.combinaison ? restaurant.combinaison.ID_COMBINATION : null,
                                                         ID_RESTAURANT_MENU: restaurant.produit.ID_RESTAURANT_MENU,
                                                         ID_PARTENAIRE_SERVICE: restaurant.produit_partenaire.ID_PARTENAIRE_SERVICE
                                                 }
                                         })
-                                        const commande = await fetchApi('/commandes/clients/restaurant', {
+                                        const commande = await fetchApi('/resto/restaurant_commandes', {
                                                   method: "POST",
                                                   body: JSON.stringify({
                                                             numero: data.tel,
@@ -105,11 +105,12 @@ export default function EcocashModalize({ info, loadingForm, onClose, shipping_i
                                                                       PRENOM: shipping_info.prenom,
                                                                       ADRESSE: shipping_info.address,
                                                             },
-                                                            service: ServicesIDS.resto,
+                                                            service: IDS_SERVICE_CATEGORIES.resto,
                                                             commandes: orders
                                                   }),
                                                   headers: { "Content-Type": "application/json" },
                                         })
+                                        console.log(commande.result)
                                         onFInish(commande.result)
                               }
                     } catch (error) {

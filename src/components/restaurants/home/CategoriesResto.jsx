@@ -12,75 +12,89 @@ import { COLORS } from "../../../styles/COLORS";
  * @returns 
  */
 
-export default function CategoriesResto({categories}) {
-        const navigation = useNavigation()
-        return (
-                <>
-                        <TouchableNativeFeedback onPress={() => navigation.navigate("CategorieMenuScreen", { categories })}
-                                accessibilityRole="button"
-                                background={TouchableNativeFeedback.Ripple('#c9c5c5')}
-                        >
-                                <View style={styles.header}>
-                                        <Text style={styles.title}>Les catégories</Text>
-                                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                                </View>
-                        </TouchableNativeFeedback>
-                        <ScrollView
-                                style={styles.shops}
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                        >
-                                {categories.map((categorie, index) => {
-                                        return (
-                                                <TouchableWithoutFeedback
-                                                        onPress={() => navigation.navigate('MenuScreen', {
-                                                                categorie
-                                                        })} key={index}>
-                                                        <View style={[styles.category]}>
-                                                                <View style={styles.categoryPhoto}>
-                                                                        <Image source={{ uri: categorie.IMAGE }} style={styles.image} />
-                                                                </View>
-                                                                <Text style={styles.categoryName}>{categorie.NOM}</Text>
-                                                        </View>
-                                                </TouchableWithoutFeedback>
-                                        )
-                                })}
-                        </ScrollView>
-                </>
-        )
+export default function CategoriesResto({ categories }) {
+          const navigation = useNavigation()
+          return (
+                    <>
+                              <TouchableNativeFeedback onPress={() => navigation.navigate("CategorieMenuScreen", { categories })}
+                                        accessibilityRole="button"
+                                        background={TouchableNativeFeedback.Ripple('#c9c5c5')}
+                              >
+                                        <View style={styles.header}>
+                                                  <Text style={styles.title}>Les catégories</Text>
+                                                  <View style={styles.moreIndicator}>
+                                                            <Text style={styles.showMore}>
+                                                                      Voir plus
+                                                            </Text>
+                                                            <MaterialIcons name="navigate-next" size={13} color={COLORS.primary} />
+                                                  </View>
+                                        </View>
+                              </TouchableNativeFeedback>
+                              <ScrollView
+                                        style={styles.shops}
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                              >
+                                        {categories.map((categorie, index) => {
+                                                  return (
+                                                            <TouchableWithoutFeedback
+                                                                      onPress={() => navigation.navigate('MenuScreen', {
+                                                                                categorie
+                                                                      })} key={index}>
+                                                                      <View style={[styles.category]}>
+                                                                                <View style={styles.categoryPhoto}>
+                                                                                          <Image source={{ uri: categorie.IMAGE }} style={styles.image} />
+                                                                                </View>
+                                                                                <Text style={styles.categoryName}>{categorie.NOM}</Text>
+                                                                      </View>
+                                                            </TouchableWithoutFeedback>
+                                                  )
+                                        })}
+                              </ScrollView>
+                    </>
+          )
 }
 
 const styles = StyleSheet.create({
-        header: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 10,
-                marginTop: 10
-        },
-        title: {
-                color: COLORS.ecommercePrimaryColor,
-                fontSize: 17,
-                fontWeight: "bold"
-        },
-        category: {
-                alignItems: 'center',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderRadius: 10,
-        },
-        categoryPhoto: {
-                width: 80,
-                height: 80,
-                borderRadius: 8,
-        },
-        image: {
-                width: '100%',
-                height: '100%',
-                borderRadius: 8,
-        },
-        categoryName: {
-                marginTop: 2
-        }
+          header: {
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingVertical: 10,
+                    paddingHorizontal: 10,
+          },
+          title: {
+                    color: COLORS.ecommercePrimaryColor,
+                    fontSize: 17,
+                    fontWeight: "bold"
+          },
+          category: {
+                    alignItems: 'center',
+                    paddingHorizontal: 10,
+                    backgroundColor: 'white',
+                    borderRadius: 10,
+          },
+          categoryPhoto: {
+                    width: 80,
+                    height: 80,
+                    borderRadius: 8,
+          },
+          image: {
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 8,
+          },
+          categoryName: {
+                    marginTop: 2
+          },
+          showMore: {
+                    fontSize: 12,
+                    color: COLORS.primary,
+                    fontWeight: 'bold',
+                    marginRight: 5
+          },
+          moreIndicator: {
+                    flexDirection: 'row',
+                    alignItems: 'center'
+          }
 })

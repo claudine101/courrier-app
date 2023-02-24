@@ -18,15 +18,13 @@ export default function Product({ product, index, totalLength, fixMargins = fals
           const navigation = useNavigation()
           const { width } = useWindowDimensions()
           const PRODUCT_MARGIN = 10
-          const PRODUCT_WIDTH = (width / 2) - (PRODUCT_MARGIN*2)
-          const PRODUCT_HEIGHT = 270
+          const PRODUCT_WIDTH = (width / 2) - (PRODUCT_MARGIN * 2)
+          const PRODUCT_HEIGHT = 300
           const additionStyles = {
                     width: PRODUCT_WIDTH,
                     height: PRODUCT_HEIGHT,
                     marginLeft: index > 0 ? PRODUCT_MARGIN : (fixMargins ? PRODUCT_MARGIN : 0),
-                    // marginRight: index == totalLength - 1 ? PRODUCT_MARGIN : (fixMargins ? 0 : 0)
           }
-
           const modalizeRef = useRef(null)
           const [isOpen, setIsOpen] = useState(false)
           const [loadingForm, setLoadingForm] = useState(true)
@@ -35,70 +33,27 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                     setIsOpen(true)
                     modalizeRef.current?.open()
           }
-          const fecthWishlist = async () => {
+
+          const addwishlist = async () => {
                     try {
-                              const wishliste = await fetchApi(`/wishlist/verification/${product.produit.ID_PRODUIT_PARTENAIRE}`, {
-                                        method: "GET",
-                                        headers: { "Content-Type": "application/json" },
+                              const form = new FormData()
+                              const newWishlist = await fetchApi(`/ecommerce/ecommerce_wishlist_produit/${product.produit.ID_PRODUIT}`, {
+                                        method: 'PUT',
                               })
-                              if (wishliste.result) {
-                                        setWishlist(true)
-                              }
                     } catch (error) {
                               console.log(error)
                     }
           }
-          useFocusEffect(useCallback(() => {
-                    fecthWishlist()
-          }, []))
-
-
-          const Addishlist = async (id) => {
-                    //  console.log(id)
-                    if (wishlist) {
-                              try {
-                                        const newWishlist = await fetchApi(`/wishlist/suppression/${id}`, {
-                                                  method: "DELETE",
-                                        })
-                                        if (onRemove) {
-                                                  onRemove(id)
-                                        }
-                                        setWishlist(false)
-
-                              } catch (error) {
-                                        console.log(error)
-                              }
-                    }
-                    else {
-                              try {
-                                        const form = new FormData()
-                                        // form.append("ID_PRODUIT", id)
-                                        //  console.log(id)
-                                        const newWishlist = await fetchApi('/wishlist', {
-                                                  method: 'POST',
-                                                  body: JSON.stringify({
-                                                            ID_PRODUIT_PARTENAIRE: id,
-
-                                                  }),
-                                                  headers: { "Content-Type": "application/json" },
-                                        })
-
-                                        setWishlist(true)
-
-
-                              } catch (error) {
-                                        console.log(error)
-                              }
-
-                    }
-
-          }
           const onCloseAddToCart = () => {
                     modalizeRef.current?.close()
           }
-
           const productInCart = useSelector(ecommerceProductSelector(product.produit.ID_PRODUIT))
-          //  console.log(product.produit.ID_PRODUIT_PARTENAIRE)
+
+          useEffect(() => {
+                    if (product.produit.ID_WISHLIST) {
+                              setWishlist(true)
+                    }
+          }, [])
           useEffect(() => {
                     if (isOpen) {
                               const timer = setTimeout(() => {
@@ -111,7 +66,7 @@ export default function Product({ product, index, totalLength, fixMargins = fals
           }, [isOpen])
 
           return (
-                    <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product })}>
+                    <TouchableWithoutFeedback onPress={() => navigation.push('ProductDetailsScreen', { product: product, SERVICE: 1 })}>
                               <View key={index} style={[styles.product, additionStyles]}>
                                         <View style={styles.imageCard}>
                                                   <Image source={{ uri: product.produit.IMAGE }} style={styles.image} />
@@ -119,8 +74,8 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                                         <View style={{ flexDirection: "row" }}>
                                                   <TouchableOpacity
                                                             onPress={() => {
-                                                                      Addishlist(product.produit.ID_PRODUIT_PARTENAIRE)
-                                                                      setWishlist(true)
+                                                                      addwishlist()
+                                                                      setWishlist(b => !b)
                                                             }}
                                                   >
                                                             <View style={styles.cardLike}>
@@ -137,13 +92,20 @@ export default function Product({ product, index, totalLength, fixMargins = fals
                                                             </>
                                                   </TouchableOpacity>
                                         </View>
-                                        <View style={styles.productNames}>
-                                                  <Text numberOfLines={2} style={styles.productName}>
-
-                                                            <Text numberOfLines={2} style={styles.productName}> {product.produit.NOM}</Text>
-                                                  </Text>
+                                        <Text numberOfLines={2} style={styles.productName}> {product.produit.NOM}</Text>
+                                        <Text numberOfLines={1} style={styles.partenaireNom}> {product.partenaire.NOM_ORGANISATION}</Text>
+                                        <View style={styles.productFooter}>
+                                                  {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>
+                                                            {product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} FBU
+                                                  </Text> : null}
+                                                  {product.produit.AVG ? <View style={styles.producmoyenne}>
+                                                            <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                                                            <Text numberOfLines={2} style={styles.productnotes} >
+                                                                      {parseFloat(product.produit.AVG).toFixed(1)}
+                                                            </Text>
+                                                  </View> : null}
                                         </View>
-                                        {product.produit_partenaire.PRIX ? <Text style={{ color: "#F29558", fontWeight: "bold" }}>{product.produit_partenaire.PRIX.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Fbu</Text> : null}
+
                                         <Portal>
                                                   <GestureHandlerRootView style={{ height: isOpen ? '100%' : 0, opacity: isOpen ? 1 : 0, backgroundColor: 'rgba(0, 0, 0, 0)', position: 'absolute', width: '100%', zIndex: 1 }}>
                                                             <Modalize
@@ -185,11 +147,31 @@ const styles = StyleSheet.create({
                     shadowColor: '#919191',
                     borderRadius: 10,
                     padding: 5,
-                    marginTop:10
+                    marginTop: 10
+          },
+          producmoyenne: {
+                    flexDirection: "row",
+                    alignItems: 'center'
+          },
+          productnotes: {
+                    color: COLORS.primary,
+                    fontSize: 12
+          },
+          partenaireNom: {
+                    fontSize: 10,
+                    color: COLORS.primary,
+          },
+          productFooter: {
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    position: "absolute",
+                    bottom: 6,
+                    width: '100%',
+                    marginLeft: 5
           },
           imageCard: {
                     borderRadius: 8,
-                    height: "60%",
+                    height: "55%",
                     width: "100%"
           },
           image: {

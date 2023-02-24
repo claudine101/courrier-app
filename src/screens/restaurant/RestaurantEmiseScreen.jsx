@@ -4,17 +4,23 @@ import { Feather, Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from "react";
 import fetchApi from "../../helpers/fetchApi";
 import moment from "moment/moment";
-import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/COLORS";
 import CommandeSkeletons from "../../components/app/Skeletons";
 import { useCallback } from "react";
 import LottieView from 'lottie-react-native';
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/selectors/userSelector";
+import AppHeader from "../../components/app/AppHeader";
 
-export default function RestaurationComEmises() {
+export default function RestaurantEmiseScreen() {
+        const route = useRoute()
+        const {serviceCategory} = route.params
           const [commandes, setCommandes] = useState([])
           const navigation = useNavigation()
           const [loading, setLoading] = useState(true)
           const [refreshing, setRefreshing] = useState(false)
+          const user = useSelector(userSelector)
           moment.updateLocale('fr', {
                     calendar: {
                               sameDay: "[Aujourd'hui]",
@@ -26,7 +32,7 @@ export default function RestaurationComEmises() {
           })
           const getCommandes = async () => {
                     try {
-                              return await fetchApi(`/commandes/restaurant`, {
+                              return await fetchApi(`/resto/restaurant_commandes?ID_USER=${user.ID_USER}`, {
                                         method: "GET",
                                         headers: { "Content-Type": "application/json" },
                               })
@@ -35,17 +41,15 @@ export default function RestaurationComEmises() {
                     }
           }
 
-          const handleCommandePress = commande => {
-  navigation.navigate('DetailCommandeMenuscreen', { commande })
-
-                    // navigation.navigate('NoHeaderSearchLivreurScreen', { commande })
+          
+          const handleCommandePress = (commande, index) => {
+            navigation.push('SearchAllLivreurScreen', { commande:commande, serviceCategory:serviceCategory, index:index })
           }
           useFocusEffect(useCallback(() => {
                     (async () => {
                               try {
                                         const response = await getCommandes()
                                         setCommandes(response.result)
-                                        console.log(response)
                               } catch (error) {
                                         console.log(error)
                               } finally {
@@ -77,52 +81,29 @@ export default function RestaurationComEmises() {
           }
           return (
                     <View style={styles.container}>
-                              <View style={styles.cardHeader}>
-                                        <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-                                                  <View style={styles.menuOpenerLine} />
-                                                  <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                  <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                        </TouchableOpacity>
-                                        <View style={styles.imageContainer}>
-                                                  <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
-                                        </View>
-                                        <View style={{ marginTop: 25 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary} />
-                                        </View>
-                              </View>
+                              <AppHeader />
                               <Text style={styles.title}>Commandes emises</Text>
                               {loading ? <CommandeSkeletons /> :
                                         <>
-
                                                   {commandes.length == 0 ?
                                                             <View style={{ marginTop: 30 }}>
                                                                       <LottieView style={{ width: 200, height: 200, alignSelf: "center" }} source={require('../../../assets/lotties/empty-cart.json')} autoPlay loop={false} />
                                                                       <Text style={styles.emptyFeedback}>Aucune commande trouvée</Text>
                                                             </View> :
                                                             <>
-                                                                      <View style={{
-                                                                                flexDirection: "row",
-                                                                                justifyContent: "space-between",
-                                                                                paddingBottom: 10,
-                                                                                paddingHorizontal: 10
-                                                                      }}>
-                                                                                <View style={{ ...styles.carre, backgroundColor: "#EE7526" }}>
-                                                                                          <Text style={{ color: "white", textAlign: "center", fontWeight: "bold", }}>En ettente</Text>
-                                                                                </View>
-                                                                                <View style={{ ...styles.carre, backgroundColor: "#FCEADE" }}>
-                                                                                          <Text style={{ color: "#EE7526", textAlign: "center", fontWeight: "bold", }}>Livrées</Text>
-                                                                                </View>
-                                                                      </View>
                                                                       <FlatList
                                                                                 data={commandes}
                                                                                 keyExtractor={(item, index) => index}
                                                                                 showsVerticalScrollIndicator={false}
-                                                                                refreshControl={<RefreshControl
-                                                                                          colors={[COLORS.ecommercePrimaryColor]} refreshing={refreshing}
-                                                                                          onRefresh={onRefresh} />}
+                                                                                refreshControl={
+                                                                                          <RefreshControl
+                                                                                                    colors={[COLORS.ecommercePrimaryColor]} refreshing={refreshing}
+                                                                                                    onRefresh={onRefresh}
+                                                                                          />
+                                                                                }
                                                                                 renderItem={(({ item: commande, index }) => {
                                                                                           return (
-                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande)}>
+                                                                                                    <TouchableNativeFeedback onPress={() => handleCommandePress(commande, index)}>
                                                                                                               <View style={styles.commande} key={index}>
                                                                                                                         <View style={styles.cardAchat}>
                                                                                                                                   <Image source={{ uri: commande.details[0]?.IMAGE_1 }} style={styles.productImage} />
@@ -174,7 +155,8 @@ const styles = StyleSheet.create({
                     height: 88,
           },
           menuOpener: {
-                    marginTop: 25
+                    marginTop: 25,
+                    padding: 10
           },
           menuOpenerLine: {
                     height: 3,
@@ -195,7 +177,8 @@ const styles = StyleSheet.create({
                     fontWeight: "bold",
                     fontSize: 20,
                     color: COLORS.primary,
-                    paddingVertical: 20,
+                    paddingVertical: 10,
+                    paddingBottom: 0,
                     paddingHorizontal: 10
           },
           carre: {

@@ -4,7 +4,8 @@ import {
           Image,
           FlatList,
           useWindowDimensions,
-          TouchableOpacity
+          TouchableOpacity,
+          TouchableNativeFeedback
 } from "react-native";
 import { Feather, FontAwesome, EvilIcons, AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
@@ -13,25 +14,14 @@ import Carousel from "../../components/app/Carousel";
 import ServicesCategories from "../../components/app/ServicesCategories";
 import { COLORS } from "../../styles/COLORS";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import AppHeader from "../../components/app/AppHeader";
 
 export default function HomeScreen() {
           const navigation = useNavigation()
           return (
                     <>
                     <View style={styles.imgBackground}>
-                              <View style={styles.cardHeader}>
-                                        <TouchableOpacity style={styles.menuOpener} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-                                                  <View style={styles.menuOpenerLine} />
-                                                  <View style={[styles.menuOpenerLine, { width: 15 }]} />
-                                                  <View style={[styles.menuOpenerLine, { width: 25 }]} />
-                                        </TouchableOpacity>
-                                        <View style={styles.imageContainer}>
-                                                  <Image source={require('../../../assets/images/chapchap.png')} style={styles.logo} />
-                                        </View>
-                                        <View style={{ marginTop: 25 }}>
-                                                  <AntDesign name="search1" size={24} color={COLORS.primary}  />
-                                        </View>
-                              </View>
+                              <AppHeader />
                               <Carousel />
                               <ServicesCategories />
                     </View>
@@ -43,7 +33,7 @@ const styles = StyleSheet.create({
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 10,
                     height: 88
           },
           imageContainer: {
@@ -59,7 +49,8 @@ const styles = StyleSheet.create({
                     marginTop: 25
           },
           menuOpener: {
-                    marginTop: 25
+                    marginTop: 25,
+                    padding: 10
           },
           menuOpenerLine: {
                     height: 3,

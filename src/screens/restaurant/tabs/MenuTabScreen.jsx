@@ -11,87 +11,87 @@ import Product from "../../../components/ecommerce/main/Product";
 import Menu from "../../../components/restaurants/main/Menu";
 
 export default function MenuTabScreen({ shop, serviceResto, serviceEco }) {
-        const [products, setProducts] = useState([])
-        const [loading, setLoading] = useState(true)
-        const navigation = useNavigation()
+          const [products, setProducts] = useState([])
+          const [loading, setLoading] = useState(true)
+          const navigation = useNavigation()
 
 
-        const renderProducts = ({ item: product, index }) => {
-                return (
-                        <Menu
-                                menu={product}
-                                index={index}
-                                totalLength={products.length}
-                                key={index}
-                                fixMargins
-                        />
+          const renderProducts = ({ item: product, index }) => {
+                    return (
+                              <Menu
+                                        menu={product}
+                                        index={index}
+                                        totalLength={products.length}
+                                        key={index}
+                                        fixMargins
+                              />
 
-                )
-        }
+                    )
+          }
 
-        useFocusEffect(useCallback(() => {
-                (async () => {
-                        try {
-                                var url = `/resto/menu?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
-                                const produits = await fetchApi(url)
-                                setProducts(produits.result)
-                        } catch (error) {
-                                console.log(error)
-                        } finally {
-                                setLoading(false)
-                        }
-                })()
-        }, []))
+          useFocusEffect(useCallback(() => {
+                    (async () => {
+                              try {
+                                        var url = `/resto/restaurant_menus?partenaireService=${shop.ID_PARTENAIRE_SERVICE}`
+                                        const produits = await fetchApi(url)
+                                        setProducts(produits.result)
+                              } catch (error) {
+                                        console.log(error)
+                              } finally {
+                                        setLoading(false)
+                              }
+                    })()
+          }, []))
 
-        return (
-                <>
-                        {loading ? <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-                                <View style={styles.container}>
-                                        <View style={styles.loadingContainer}>
-                                                <ActivityIndicator size={"large"} color='#777' />
+          return (
+                    <>
+                              {loading ? <Tabs.ScrollView showsVerticalScrollIndicator={false}>
+                                        <View style={styles.container}>
+                                                  <View style={styles.loadingContainer}>
+                                                            <ActivityIndicator size={"large"} color='#777' />
+                                                  </View>
                                         </View>
-                                </View>
-                        </Tabs.ScrollView> :
-                                products.length == 0 ?
-                                        <Tabs.ScrollView>
-                                                <View style={styles.container}>
-                                                        <View style={styles.emptyContainer}>
-                                                                <Feather name="check-square" size={24} color="#777" />
-                                                                <Text style={styles.emptyFeedback}>
-                                                                        Pas de menu dans ce restaurant
-                                                                </Text>
-                                                        </View>
-                                                </View>
-                                        </Tabs.ScrollView> :
-                                        <Tabs.FlatList
-                                                data={products}
-                                                renderItem={renderProducts}
-                                                contentContainerStyle={styles.products}
-                                        />
-                        }
-                </>
+                              </Tabs.ScrollView> :
+                                        products.length == 0 ?
+                                                  <Tabs.ScrollView>
+                                                            <View style={styles.container}>
+                                                                      <View style={styles.emptyContainer}>
+                                                                                <Feather name="check-square" size={24} color="#777" />
+                                                                                <Text style={styles.emptyFeedback}>
+                                                                                          Pas de menu dans ce restaurant
+                                                                                </Text>
+                                                                      </View>
+                                                            </View>
+                                                  </Tabs.ScrollView> :
+                                                  <Tabs.FlatList
+                                                            data={products}
+                                                            renderItem={renderProducts}
+                                                            contentContainerStyle={styles.products}
+                                                  />
+                              }
+                    </>
 
-        )
+          )
 }
 
 const styles = StyleSheet.create({
-        container: {
-                flex: 1,
-        },
-        emptyContainer: {
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 30
-        },
-        emptyFeedback: {
-                marginTop: 10,
-                color: '#777',
-                textAlign: "center",
-                paddingHorizontal: 30
-        },
-        products: {
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexWrap: 'wrap'
-        }
+          container: {
+                    flex: 1,
+          },
+          emptyContainer: {
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 30
+          },
+          emptyFeedback: {
+                    marginTop: 10,
+                    color: '#777',
+                    textAlign: "center",
+                    paddingHorizontal: 30
+          },
+          products: {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap'
+          }
 })

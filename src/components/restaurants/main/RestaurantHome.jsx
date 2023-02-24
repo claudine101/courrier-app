@@ -44,16 +44,7 @@ export default function RestaurantHome({ restaurant, restaurants, index, totalLe
 }
 const styles = StyleSheet.create({
   shop: {
-    // marginHorizontal: 10,
-    // maxHeight: 150,
-    // marginTop: 5,
-    // backgroundColor: 'white',
     
-    // borderRadius: 10,
-    // padding: 10,
-    // maxWidth: 200,
-    // marginBottom: 20,
-    // fontSize:40
   },
   imageCard: {
     borderRadius: 10,

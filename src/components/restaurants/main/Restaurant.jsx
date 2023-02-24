@@ -1,8 +1,10 @@
-import React from 'react'
-import { Image, StyleSheet, Text, TouchableNativeFeedback, useWindowDimensions,TouchableWithoutFeedback, View } from 'react-native'
-import { MaterialIcons, AntDesign, Ionicons } from '@expo/vector-icons';
+import React,{useEffect} from 'react'
+import { useState } from "react";
+import { Image, StyleSheet, Text, TouchableNativeFeedback, useWindowDimensions, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native'
+import { MaterialIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import { COLORS } from '../../../styles/COLORS';
 import { useNavigation } from '@react-navigation/native';
+import fetchApi from '../../../helpers/fetchApi';
 
 /**
  * composant pour afficher tous les menus
@@ -12,90 +14,179 @@ import { useNavigation } from '@react-navigation/native';
  * @returns 
  */
 
-export default function Restaurant({ note, restaurant, restaurants, index, totalLength }) {
-  const navigation = useNavigation()
-  const { width } = useWindowDimensions()
-  const MAX_WIDTH = 200
-  const PRODUCT_MARGIN = 10
-  const PRODUCT_WIDTH = (width / 2) - PRODUCT_MARGIN - 10
-  const PRODUCT_HEIGHT = 200
-  const additionStyles = {
-    width: PRODUCT_WIDTH,
-    height: PRODUCT_HEIGHT,
-    marginLeft: index > 0 ? PRODUCT_MARGIN : 0,
-    marginRight: index == totalLength - 1 ? PRODUCT_MARGIN : 0
-  }
-  function strUcFirst(a) {
-    return (a + '').charAt(0).toUpperCase() + a.substr(1);
-  }
-  return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate('ShopScreen', { id: restaurant.ID_PARTENAIRE_SERVICE, shop: restaurant })}>
-      <View key={index} style={[styles.shop, additionStyles]}>
-        <View style={styles.imageCard}>
-          <Image source={{ uri: restaurant.LOGO }} style={styles.image} />
-        </View>
-        <View style={styles.shopDetail}>
-          <Text style={styles.shopName} numberOfLines={2}>
-            {strUcFirst(restaurant.NOM_ORGANISATION.toLowerCase())}
-          </Text>
-        </View>
-        <View style={styles.shopDetail}>
-          <Text style={styles.shopCategory} numberOfLines={2}>
-          Restaurant
-          </Text>
-        </View> 
+export default function Restaurant({ note, restaurant, restaurants, index, totalLength, isMore = true }) {
+        const [suivis, setSuivis] = useState(false)
+          const navigation = useNavigation()
+          const { width } = useWindowDimensions()
+          const MAX_WIDTH = 200
+          const PRODUCT_MARGIN = 20
+          const PRODUCT_WIDTH = (width) - PRODUCT_MARGIN
+          const PRODUCT_HEIGHT = 200
+          const additionStyles = {
+                    width: PRODUCT_WIDTH,
+                    // height: PRODUCT_HEIGHT,
+                    marginLeft: index == 0 ? 0 : PRODUCT_MARGIN,
+                    marginRight: index == totalLength - 1 ? PRODUCT_MARGIN : 0,
+                    marginTop: isMore ? 10 : 0
+          }
+          function strUcFirst(a) {
+                    return (a + '').charAt(0).toUpperCase() + a.substr(1);
+          }
 
-        <View style={{ flexDirection: "row", marginHorizontal: -1 }}>
-          {restaurant.note ?
-            <AntDesign name="staro" size={20} color="#EFC519" /> :
-            <AntDesign name="star" size={20} color="#EFC519" />}
-          <Text style={{ fontSize: 17, marginLeft: 10, color: "#797E9A", right: 10 }}>{restaurant.note.nbre}.0</Text>
-          <Text style={{ fontSize: 17, marginLeft: 10, color: "#797E9A", right: 12, top: -10, fontWeight: "bold" }}>.</Text>
-          <Text style={{ fontSize: 17, marginLeft: 10, color: "#797E9A", right: 15 }}>à {restaurant.DISTANCE ? restaurant.DISTANCE.toFixed(1) : null} Km</Text>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
-  )
+          const addBoutiqueSuivis = async () =>{
+                try{
+                        const suivis = await fetchApi(`/partenaires/ecommerce_boutique_suivis/${restaurant.ID_PARTENAIRE_SERVICE}`,{
+                                method: 'PUT',
+                        })
+                }
+                catch(error){
+                        console.log(error)
+                }
+        }
+
+        useEffect(()=>{
+                if(restaurant.ID_BOUTIQUE_SUIVIS){
+                        setSuivis(true)
+                }
+        },[])
+
+          return (
+                    <TouchableNativeFeedback onPress={() => navigation.navigate('ShopScreen', { id: restaurant.ID_PARTENAIRE_SERVICE, shop: restaurant })} useForeground background={TouchableNativeFeedback.Ripple('#ddd')}>
+                              <View key={index} style={[styles.shop, additionStyles]}>
+                                        <View style={styles.imageCard}>
+                                                  <Image source={{ uri: restaurant.BACKGROUND_IMAGE }} style={styles.image} />
+                                                  <Image source={{ uri: restaurant.LOGO }} style={styles.logo} />
+                                        </View>
+                                        <View style={styles.shopDetail}>
+                                                  <Text style={styles.shopName} numberOfLines={2}>
+                                                            {strUcFirst(restaurant.NOM_ORGANISATION.toLowerCase())}
+                                                  </Text>
+                                                  <Text style={styles.shopAddress} numberOfLines={2}>
+                                                            { restaurant.ADRESSE_COMPLETE }
+                                                  </Text>
+                                        </View>
+                                        <View style={styles.shopFooter}>
+                                                  <View style={styles.footerLeft}>
+                                                            <View style={styles.footerBlock}>
+                                                                      <Entypo name="location-pin" size={16} color={COLORS.primary} style={{ marginRight: 2 }} />
+                                                                      <Text style={styles.footerText}>
+                                                                                1.2km
+                                                                      </Text>
+                                                            </View>
+                                                            {restaurant.MOYENNE ? <View style={[styles.footerBlock, { marginLeft: 10 }]}>
+                                                                      <AntDesign name="star" size={15} color={COLORS.primary} style={{ marginRight: 2 }} />
+                                                                      <Text style={styles.footerText}>{parseFloat(restaurant.MOYENNE).toFixed(1)}</Text>
+                                                            </View> : null}
+                                                  </View>
+                                                            <View>
+                                                  <TouchableOpacity 
+                                                  onPress={()=> {
+                                                        addBoutiqueSuivis()
+                                                        setSuivis(b => !b)
+                                                  }}
+                                                  >
+                                                                     {suivis ? <View style={styles.followBtn}>
+                                                                                <Text style={styles.followBtnText}>+ S'abonner</Text>
+                                                                      </View>:
+                                                                      <View style={styles.followBtnDesabonner}>
+                                                                                <Text style={styles.followBtnTextDesab}>- se desabonner</Text>
+                                                                      </View>}
+                                                  </TouchableOpacity>
+                                                            </View>
+                                        </View>
+                              </View>
+                    </TouchableNativeFeedback>
+          )
 }
 const styles = StyleSheet.create({
-  shop: {
-    maxWidth: 160,
-    marginHorizontal: 5,
-    backgroundColor: '#F5F4F1',
-    borderRadius: 10,
-    padding: 10
-
-  },
-  imageCard: {
-    height: "55%",
-    width: "100%",
-    borderRadius: 10,
-    backgroundColor: '#FFF',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    borderRadius: 10,
-    resizeMode: 'contain',
-
-
-  },
-  shopName: {
-    color: COLORS.ecommercePrimaryColor,
-    fontWeight: "bold",
-    fontSize: 13,
-    textAlign: 'center'
-  },
-  shopCategory: {
-    textAlign: 'center',
-    color: '#777',
-    fontSize: 12
-  },
-  shopDetail: {
-    flex: 1,
-    justifyContent: "center"
-  }
+          shop: {
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    borderRadius: 10,
+                    paddingBottom: 5
+          },
+          imageCard: {
+                    height: 200,
+                    width: "100%",
+                    borderRadius: 10,
+                    backgroundColor: '#FFF',
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+          },
+          image: {
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: 10,
+                    resizeMode: 'contain',
+          },
+          logo: {
+                    width: 60,
+                    height: 60,
+                    borderRadius: 50,
+                    position: 'absolute',
+                    bottom: 10,
+                    left: 10
+          },
+          shopName: {
+                    color: '#333',
+                    fontWeight: "bold",
+                    fontSize: 15,
+          },
+          shopAddress: {
+                    color: COLORS.smallBrown,
+                    fontSize: 12
+          },
+          shopCategory: {
+                    textAlign: 'center',
+                    color: '#777',
+                    fontSize: 12
+          },
+          shopFooter: {
+                    flexDirection: 'row',
+                    alignItems: "center",
+                    justifyContent: 'space-between',
+                    flex: 1,
+          },
+          footerLeft: {
+                    flexDirection: 'row',
+                    alignItems: "center",
+          },
+          footerBlock: {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+          },
+          footerText: {
+                    color: COLORS.primary
+          },
+          shopDetail: {
+                    flex: 1,
+                    justifyContent: "center",
+                    marginTop: 5
+          },
+          followBtn: {
+                    backgroundColor: COLORS.ecommercePrimaryColor,
+                    borderRadius: 30,
+                    paddingVertical: 8,
+                    paddingHorizontal: 15,
+                    overflow: 'hidden',
+                    justifyContent:"center",
+                    alignItems:"center"
+          },
+          followBtnText: {
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                    opacity: 0.8
+          },
+          followBtnTextDesab:{
+                    fontWeight: 'bold',
+                    opacity: 0.8
+          },
+          followBtnDesabonner:{
+                backgroundColor:"#F1F1F1",
+                    borderRadius: 30,
+                    paddingVertical: 8,
+                    paddingHorizontal: 15,
+                    overflow: 'hidden'
+          }
 })
