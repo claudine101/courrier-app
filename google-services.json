@@ -1,15 +1,15 @@
 {
           "project_info": {
                     "project_number": "478535834202",
-                    "project_id": "chapchap-376408",
-                    "storage_bucket": "chapchap-376408.appspot.com"
+                    "project_id": "courrier-376408",
+                    "storage_bucket": "courrier-376408.appspot.com"
           },
           "client": [
                     {
                               "client_info": {
                                         "mobilesdk_app_id": "1:478535834202:android:129d316409d02b684c9663",
                                         "android_client_info": {
-                                                  "package_name": "com.mediabox.chapchap"
+                                                  "package_name": "com.mediabox.courrier"
                                         }
                               },
                               "oauth_client": [

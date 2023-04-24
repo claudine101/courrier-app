@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { ImageBackground, ScrollView, StyleSheet, Image,Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { TextField, FilledTextField, InputAdornment, OutlinedTextField } from 'rn-material-ui-textfield'
 import { FontAwesome, Fontisto, EvilIcons, AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -91,9 +91,11 @@ export default function ConnexionScreen() {
                                         <ScrollView keyboardShouldPersistTaps="handled">
                                                   <View>
                                                             <View style={styles.cardTitle}>
-                                                                      <Text style={styles.Title}>Compte client</Text>
-                                                                      <Text style={styles.description}> Chap Chap</Text>
+                                                                      <Text style={styles.Title}>Authentification</Text>
+                                                                      {/* <Text style={styles.description}> Chap Chap</Text> */}
                                                             </View>
+                                                  <Image source={require('../../../assets/images/logo1.png')} style={styles.image} />
+
 
                                                             <View style={styles.inputCard}>
                                                                       <View>
@@ -224,4 +226,8 @@ const styles = StyleSheet.create({
           container: {
                     flex: 1,
           },
+          image: {
+            marginTop: 30,
+            alignSelf: "center",
+  },
 })

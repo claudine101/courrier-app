@@ -7,10 +7,8 @@ import ConnexionScreen from './ConnexionScreen';
 import InscriptionScreen from './InscriptionScreen';
 
 const TopBar = createMaterialTopTabNavigator()
-
 export default function LoginScreen() {
           const { height } = useWindowDimensions()
-
           useEffect(() => {
                     (async () => {
                               await AsyncStorage.setItem('onboarding', JSON.stringify({ finished: true }))
@@ -19,8 +17,9 @@ export default function LoginScreen() {
           return (
                     <>
                               <View style={styles.container}>
-                                        <View style={{ backgroundColor: "#fff" }}>
-                                                  <Image source={require('../../../assets/images/chapchap_logo.png')} style={styles.image} />
+                              <View  style={styles.image}>
+                                        {/* <View style={{ backgroundColor: "#fff" }}> */}
+                                                  {/* <Image source={require('../../../assets/images/logo1.png')} style={styles.image} /> */}
                                         </View>
                                         <View style={styles.tabIndicator} />
                                         <TopBar.Navigator
